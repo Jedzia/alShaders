@@ -24,6 +24,7 @@ struct BrdfData_wrap
    mutable bool ibs;
 };
 
+/* ToDoJed: Fix for Porting >v5, AiEvaluateLightSample removed
 AtRGB AiMicrofacetMISBRDF_wrap(const void* brdf_data, const AtVector* indir)
 {
    const BrdfData_wrap* brdfw =
@@ -37,6 +38,13 @@ AtRGB AiMicrofacetMISBRDF_wrap(const void* brdf_data, const AtVector* indir)
    {
       AtVector H;
       AiV3Normalize(H, (*indir) + brdfw->V);
+
+
+// old AI_API AI_PURE  AtColor  AiMicrofacetMISBRDF(const void* brdf_data, const AtVector* indir);
+// new AI_API AI_DEVICE AtBSDF* AiMicrofacetBSDF(const AtShaderGlobals* sg, const AtRGB& weight,
+//                                          int distribution, const AtVector& N, const AtVector *U,
+//                                          float eta, float rx, float ry, uint8_t exit_type = 0,
+//                                          const AtString label = AtString());
       result = brdfw->fr->kr(std::max(0.0f, AiV3Dot(H, *indir))) *
                AiMicrofacetMISBRDF(brdfw->brdf_data, indir);
    }
@@ -141,3 +149,4 @@ AtVector AiCookTorranceMISSample_wrap(const void* brdf_data, float randx,
    }
    return indir;
 }
+*/

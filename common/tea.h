@@ -23,7 +23,7 @@
  * \return
  *     A uniformly distributed 64-bit integer
  */
-inline AtUInt64 sampleTEA(uint32_t v0, uint32_t v1, int rounds = 64) {
+inline uint64_t sampleTEA(uint32_t v0, uint32_t v1, int rounds = 64) {
     uint32_t sum = 0;
 
     for (int i=0; i<rounds; ++i)

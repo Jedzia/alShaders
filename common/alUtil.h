@@ -22,6 +22,26 @@ inline void AiV3Create(AtVector& vout, float x, float y, float z)
     vout.z = z;
 }
 
+inline void AiV3Normalize(AtVector& out, const AtVector& in)
+{
+    out = AiV3Normalize(in);
+}
+
+/**
+ * Convert a RGB color to a RGBA color (setting alpha to 1.0)
+ */
+inline AtRGBA AiRGBtoRGBA(const AtColor& c)
+{
+    AtRGBA out;
+    out.r = c.r;
+    out.g = c.g;
+    out.b = c.b;
+    out.a = 1.f;
+    return out;
+}
+
+// ToDoJed: end of modifications.
+
 inline AtRGB rgb(float f)
 {
     AtRGB c;

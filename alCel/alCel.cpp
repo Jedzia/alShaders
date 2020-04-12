@@ -308,13 +308,14 @@ node_update
 {
     ShaderData* shaderData = (ShaderData*)AiNodeGetLocalData(node);
 
+    // ToDo: commented out to compile, this is NECESSARY !!!
 //    shaderData->aov_direct_diffuse_cel = params[p_aov_direct_diffuse_cel].STR;
 //    shaderData->aov_direct_diffuse_raw_cel = params[p_aov_direct_diffuse_raw_cel].STR;
 //    shaderData->aov_indirect_diffuse_cel = params[p_aov_indirect_diffuse_cel].STR;
 
-    AiAOVRegister(shaderData->aov_direct_diffuse_cel.c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
-    AiAOVRegister(shaderData->aov_direct_diffuse_raw_cel.c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
-    AiAOVRegister(shaderData->aov_indirect_diffuse_cel.c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
+    AiAOVRegister(shaderData->aov_direct_diffuse_cel, AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
+    AiAOVRegister(shaderData->aov_direct_diffuse_raw_cel, AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
+    AiAOVRegister(shaderData->aov_indirect_diffuse_cel, AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
 
     // get the arrays from the connected Maya Ramp node
     //getMayaRampArrays(node, "diffuseRamp", &shaderData->diffusePositions, &shaderData->diffuseColors, &shaderData->diffuseInterp);

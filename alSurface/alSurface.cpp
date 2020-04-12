@@ -1908,10 +1908,11 @@ shader_evaluate
             float specular_strength = AiLightGetSpecular(sg->Lp);
 
             brdfw.ibs = false;
-            LspecularDirect =
+            /*LspecularDirect = ToDoJed: Fix for Porting >v5
                 AiEvaluateLightSample(sg, &brdfw, GlossyMISSample_wrap,
                                       GlossyMISBRDF_wrap, GlossyMISPDF_wrap) *
-                specular_strength * specular1Color;
+                specular_strength * specular1Color;*/
+            LspecularDirect = AI_RGB_ZERO;
             // if the light is assigned a valid group number, add this
             // sample's
             // contribution to that light group
