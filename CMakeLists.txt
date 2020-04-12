@@ -89,18 +89,18 @@ include_directories(${CMAKE_SOURCE_DIR})
 # Set the list of subdirectories to recurse into to find stuff to build
 set(SUBDIRECTORIES 
 #        alSurface
-#        alRemap
-#        alCombine
+        alRemap
+        alCombine
 #        alNoise
-#        alLayer
+# NEXT #        alLayer
 #        alPattern
 #        alCurvature
 #        alBlackbody
-#        alInputVector
+        alInputVector
 #        alHair
 #        alColorSpace
 #        alTriplanar
-#        alSwitch
+        alSwitch
 #        alJitterColor
         alCache
         alCel

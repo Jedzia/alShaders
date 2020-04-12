@@ -83,8 +83,7 @@ node_parameters
 	AiParameterEnum("type", T_POINT, TypeNames);
 	AiParameterStr("userName", "");
 	AiParameterVec("vector", 0.0f, 0.0f, 0.0f);
-	float mtx[4][4];
-	AiM4Identity(mtx);
+	auto mtx = AiM4Identity();
 	AiParameterMtx("matrix", mtx);
 	AiParameterEnum("coordinates", CS_CARTESIAN, coordinatesNames);
 }
@@ -156,13 +155,15 @@ shader_evaluate
 		vector = sg->dPdv;
 		break;
 	case IN_Ld:
-		vector = sg->Ld;
+		AtLightSample ls;
+		AiLightsGetSample(sg, ls);
+		vector = ls.Ld;
 		break;
 	case IN_Rd:
 		vector = sg->Rd;
 		break;
 	case IN_UV:
-		AiV3Create(vector, sg->u, sg->v, 0);
+		vector = AtVector(sg->u, sg->v, 0);
 		break;
 	case IN_USER:
 		AiUDataGetPnt(userName, &vector);

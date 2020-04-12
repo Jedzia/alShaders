@@ -56,7 +56,7 @@ shader_evaluate
      result = lerp(input, r.remap(input), mask);
    }
 
-	sg->out.FLT = result;
+	sg->out.FLT() = result;
 }
 
 

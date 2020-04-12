@@ -100,7 +100,7 @@ shader_evaluate
         break;
     }
 
-    sg->out.FLT = result;
+    sg->out.FLT() = result;
 }
 
 

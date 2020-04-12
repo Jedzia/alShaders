@@ -140,5 +140,5 @@ shader_evaluate
 		result = lerp(result, layerVal, layerAlpha);
 	}
 
-	sg->out.FLT = result;
+	sg->out.FLT() = result;
 }

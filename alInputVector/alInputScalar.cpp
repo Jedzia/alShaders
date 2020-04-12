@@ -98,7 +98,7 @@ shader_evaluate
    RemapFloat r = REMAP_FLOAT_CREATE;
    result = r.remap(result);
 
-   sg->out.FLT = result;
+   sg->out.FLT() = result;
 }
 
 
