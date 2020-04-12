@@ -66,3 +66,10 @@ In order to run the test suite you must first have built and installed the shade
 Then download the test suite files from here: https://bitbucket.org/anderslanglands/alshaders/downloads/test.tar.gz
 Next unpack it to the your top-level alShaders directory and run "python test.py"
 The whole thing takes about 40 minutes to run on my ageing MacBook Pro. If you want it to go faster you can edit test_header.ass and reduce the AA_samples to 1.
+
+EXAMPLE LOCAL CONFIG
+--------------------
+#> cat local.cmake
+set(ARNOLD_ROOT E:/Devel/CPP/Libs/Arnold/Arnold-4.2.14.4-windows)
+set(MTOA_ROOT E:/Devel/CPP/Libs/Arnold/MtoA-1.2.7.3-2014)
+set(BOOST_INCLUDE_PATH E:/Devel/CPP/Libs/boost/boost-1.55.0)
