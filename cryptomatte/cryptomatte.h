@@ -136,6 +136,10 @@ unsigned char g_pointcloud_instance_verbosity = 0;  // to do: remove this.
 #define CACHE_ALIGN __attribute__((aligned(CACHE_LINE)))
 #endif
 
+#if _MSC_VER >= 1700
+  #include <algorithm>
+#endif
+
 struct CACHE_ALIGN CryptomatteCache {
     AtNode * object;        //       8 bytes
     AtColor nsp_hash_clr;   //      16 bytes
