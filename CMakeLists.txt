@@ -95,13 +95,13 @@ set(SUBDIRECTORIES
 #        alLayer
         alPattern
 #        alCurvature
-#        alBlackbody
+        alBlackbody
         alInputVector
 #        alHair
-#        alColorSpace
+        alColorSpace
 #        alTriplanar
         alSwitch
-#        alJitterColor
+        alJitterColor
         alCache
         alCel
 #        alFlake

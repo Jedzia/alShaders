@@ -258,7 +258,7 @@ shader_evaluate
 	{
 		if (data->randomChips)
 		{
-			AtVector v = AiVCellNoise3(AiPoint(ID[0]/100, 0, 0));
+			AtVector v = AiVCellNoise3(AtPoint(ID[0]/100, 0, 0));
 			sg->out.RGB.r = v.x;
 			sg->out.RGB.g = v.y;
 			sg->out.RGB.b = v.z;

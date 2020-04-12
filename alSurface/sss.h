@@ -260,7 +260,7 @@ inline AtRGB integrateDirectional(const ScatteringParamsDirectional& sp, float r
 
         float pdf = (diffusionPdf(rs, sp.sigma_tr[0]) + diffusionPdf(rs, sp.sigma_tr[1]) + diffusionPdf(rs, sp.sigma_tr[2])) / 3.0f;
 
-        AtPoint Pi = AiPoint(rs, 0.0f, 0.0f);
+        AtPoint Pi(rs, 0.0f, 0.0f);
         result += directionalDipole(Pi, up, Po, up, up, up, sp) * rs / pdf;
 
         ns++;
@@ -296,7 +296,7 @@ inline AtRGB integrateDirectionalHemi(const ScatteringParamsDirectional& sp, flo
 
         float pdf = (diffusionPdf(rs, sp.sigma_tr[0]) + diffusionPdf(rs, sp.sigma_tr[1]) + diffusionPdf(rs, sp.sigma_tr[2])) / 3.0f;
 
-        AtPoint Pi = AiPoint(rs, 0.0f, 0.0f);
+        AtPoint Pi(rs, 0.0f, 0.0f);
 
         for (float u1 = hemi_step/2; u1 < 1.0f; u1 += hemi_step)
         {
