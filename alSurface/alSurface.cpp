@@ -358,7 +358,7 @@ node_parameters
    AiParameterFlt("sssWeight3", .0f);
    AiParameterRGB("sssRadiusColor3", .523, .637, .667);
    AiParameterFlt("sssDensityScale", 1.0f);
-   AiParameterSTR("sssTraceSet", "");
+   AiParameterStr("sssTraceSet", "");
    AiParameterInt("sssExtraSamples", 0);
 
    AiParameterFlt("ssInScatteringStrength", 0.0f);
@@ -509,13 +509,13 @@ node_parameters
 
    AiParameterBool("rr", true);
 
-   AiParameterSTR("traceSetAll", "");
-   AiParameterSTR("traceSetShadows", "");
-   AiParameterSTR("traceSetDiffuse", "");
-   AiParameterSTR("traceSetBacklight", "");
-   AiParameterSTR("traceSetSpecular1", "");
-   AiParameterSTR("traceSetSpecular2", "");
-   AiParameterSTR("traceSetTransmission", "");
+   AiParameterStr("traceSetAll", "");
+   AiParameterStr("traceSetShadows", "");
+   AiParameterStr("traceSetDiffuse", "");
+   AiParameterStr("traceSetBacklight", "");
+   AiParameterStr("traceSetSpecular1", "");
+   AiParameterStr("traceSetSpecular2", "");
+   AiParameterStr("traceSetTransmission", "");
 
    AiParameterEnum("debug", DB_OFF, debugNames);
 

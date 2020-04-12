@@ -40,7 +40,7 @@ enum alMeasuredParams
 
 node_parameters
 {
-	AiParameterSTR("filename", "");
+	AiParameterStr("filename", "");
 }
 
 

@@ -41,7 +41,7 @@ node_loader
 
 node_parameters
 {
-    AiParameterSTR("filename", "shapeName.ids");
+    AiParameterStr("filename", "shapeName.ids");
 }
 
 node_initialize

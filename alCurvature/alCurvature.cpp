@@ -52,7 +52,7 @@ node_parameters
 	AiParameterEnum("mode", CRV_POSITIVE, curvatureModeNames)
 	AiParameterInt("samples", 3);
 	AiParameterFlt("sampleRadius", 1.0f);
-	AiParameterSTR("traceSet", "");
+	AiParameterStr("traceSet", "");
 	AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
 	AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);
 	REMAP_FLOAT_PARAM_DECLARE;

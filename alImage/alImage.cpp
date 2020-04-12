@@ -17,7 +17,7 @@ enum alImageParams
 
 node_parameters
 {
-    AiParameterSTR("filename", "");
+    AiParameterStr("filename", "");
     AiParameterInt("frame", 0);
 }
 

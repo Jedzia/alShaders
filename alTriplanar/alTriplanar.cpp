@@ -78,7 +78,7 @@ node_parameters
     AiParameterEnum("normal", 0, triplanarNormalNames);
     AiParameterEnum("tiling", 0, triplanarTilingNames);
     AiParameterFlt("frequency", 1.0f);
-    AiParameterSTR("texture", "");
+    AiParameterStr("texture", "");
     AiParameterFlt("blendSoftness", 0.1);
     AiParameterFlt("cellSoftness", 0.1);
     AiParameterFlt("scalex", 1.0f);
