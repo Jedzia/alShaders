@@ -14,14 +14,7 @@
 
 #define IMPORTANCE_EPS 1e-5f
 
-// ToDoJed: check this change, maybe with the new api we should create AtVector per ctor.
-inline void AiV3Create(AtVector& vout, float x, float y, float z)
-{
-    vout.x = x;
-    vout.y = y;
-    vout.z = z;
-}
-
+// ToDoJed: Port to V6 modifications.
 inline void AiV3Normalize(AtVector& out, const AtVector& in)
 {
     out = AiV3Normalize(in);
@@ -73,14 +66,12 @@ inline AtRGB rgb(const AtVector& v)
 
 inline AtVector aivec(float x, float y, float z)
 {
-    AtVector v; AiV3Create(v, x, y, z);
-    return v;
+    return AtVector(x, y, z);
 }
 
 inline AtVector aivec(float x)
 {
-    AtVector v; AiV3Create(v, x, x, x);
-    return v;
+    return AtVector(x, x, x);
 }
 
 inline AtRGB max(const AtRGB& c1, const AtRGB& c2)
@@ -141,8 +132,7 @@ inline AtVector clamp(const AtVector& a, const AtVector& mn, const AtVector& mx)
 
 inline AtVector fabs(const AtVector& v)
 {
-    AtVector r; AiV3Create(r, fabsf(v.x), fabsf(v.y), fabsf(v.z));
-    return r;
+    return AtVector(fabsf(v.x), fabsf(v.y), fabsf(v.z));
 }
 
 inline AtRGB fabs(const AtRGB& c)
@@ -292,9 +282,7 @@ inline AtVector uniformSampleSphere(float u1, float u2)
      float phi = 2.f * float(AI_PI) * u2;
      float x = r * cosf(phi);
      float y = r * sinf(phi);
-     AtVector v;
-    AiV3Create(v, x, y, z);
-    return v;
+    return AtVector(x, y, z);
 }
 
 inline AtVector uniformSampleHemisphere(float u1, float u2) {
@@ -892,16 +880,12 @@ inline float wrap(float s, float period)
 
 inline AtVector wrap(const AtVector& s, const AtVector& period)
 {
-    AtVector r;
-    AiV3Create(r, wrap(s.x, period.x), wrap(s.y, period.y), wrap(s.z, period.z));
-    return r;
+    return AtVector(wrap(s.x, period.x), wrap(s.y, period.y), wrap(s.z, period.z));
 }
 
 inline AtVector floor(const AtVector& v)
 {
-    AtVector r;
-    AiV3Create(r, floorf(v.x), floorf(v.y), floorf(v.z));
-    return r;
+    return AtVector(floorf(v.x), floorf(v.y), floorf(v.z));
 }
 
 inline bool AiIsFinite(const AtRGB& c)
