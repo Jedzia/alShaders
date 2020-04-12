@@ -252,7 +252,7 @@ shader_evaluate
 		RemapFloat r = REMAP_FLOAT_CREATE;
 		n = r.remap(n);
 
-		sg->out.RGB() = AiColorLerp(n, color1, color2);
+		sg->out.RGB() = AiLerp(n, color1, color2);
 	}
 	else if (data->mode == CN_CHIPS)
 	{
