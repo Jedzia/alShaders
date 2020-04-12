@@ -22,14 +22,14 @@ enum alTriplanarParams
 node_parameters
 {
     AiParameterRGB("input", 1.0, 1.0, 1.0);
-    AiParameterFLT("minSaturation", 0.0);
-    AiParameterFLT("maxSaturation", 1.0);
-    AiParameterFLT("minHueOffset", -.1);
-    AiParameterFLT("maxHueOffset", 0.1);
-    AiParameterFLT("minGain", 0.5);
-    AiParameterFLT("maxGain", 1.5);
-    AiParameterBOOL("clamp", true);
-    AiParameterFLT("signal", 0.f);
+    AiParameterFlt("minSaturation", 0.0);
+    AiParameterFlt("maxSaturation", 1.0);
+    AiParameterFlt("minHueOffset", -.1);
+    AiParameterFlt("maxHueOffset", 0.1);
+    AiParameterFlt("minGain", 0.5);
+    AiParameterFlt("maxGain", 1.5);
+    AiParameterBool("clamp", true);
+    AiParameterFlt("signal", 0.f);
 }
 
 node_loader

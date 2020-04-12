@@ -32,7 +32,7 @@ node_parameters
    AiParameterFlt("amount", 0.7f);
    AiParameterFlt("size", 0.01f);
    AiParameterFlt("divergence", 0.5f);
-   AiParameterPnt("P", 0.0f, 0.0, 0.0);
+   AiParameterVec("P", 0.0f, 0.0, 0.0);
    AiParameterEnum("space", S_TANGENT, space_names);
 }
 

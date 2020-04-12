@@ -18,18 +18,18 @@
 	p_RMPclampMax					\
 
 #define REMAP_FLOAT_PARAM_DECLARE 				\
-	AiParameterFLT("RMPinputMin", 0.0f);			\
-	AiParameterFLT("RMPinputMax", 1.0f);			\
-	AiParameterFLT("RMPcontrast", 1.0f);			\
-	AiParameterFLT("RMPcontrastPivot", 0.5f);		\
-	AiParameterFLT("RMPbias", 0.5f);				\
-	AiParameterFLT("RMPgain", 0.5f);				\
-	AiParameterFLT("RMPoutputMin", 0.0f);			\
-	AiParameterFLT("RMPoutputMax", 1.0f);			\
-    AiParameterBOOL("RMPclampEnable", true);		\
-	AiParameterBOOL("RMPthreshold", false);		\
-	AiParameterFLT("RMPclampMin", 0.0f);			\
-	AiParameterFLT("RMPclampMax", 1.0f);			\
+	AiParameterFlt("RMPinputMin", 0.0f);			\
+	AiParameterFlt("RMPinputMax", 1.0f);			\
+	AiParameterFlt("RMPcontrast", 1.0f);			\
+	AiParameterFlt("RMPcontrastPivot", 0.5f);		\
+	AiParameterFlt("RMPbias", 0.5f);				\
+	AiParameterFlt("RMPgain", 0.5f);				\
+	AiParameterFlt("RMPoutputMin", 0.0f);			\
+	AiParameterFlt("RMPoutputMax", 1.0f);			\
+    AiParameterBool("RMPclampEnable", true);		\
+	AiParameterBool("RMPthreshold", false);		\
+	AiParameterFlt("RMPclampMin", 0.0f);			\
+	AiParameterFlt("RMPclampMax", 1.0f);			\
 
 struct RemapFloat
 {

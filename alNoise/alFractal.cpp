@@ -53,20 +53,20 @@ enum alNoiseParams
 
 node_parameters
 {
-	AiParameterENUM("mode", 0, noiseModeNames);
-	AiParameterENUM("space", 0, noiseSpaceNames);
-	AiParameterFLT("frequency", 1.0f);
-	AiParameterPNT("scale", 1.0f, 1.0f, 1.0f);
-	AiParameterFLT("time", 0.0f);
-	AiParameterINT("octaves", 8);
-	AiParameterFLT("distortion", 0.0f);
-	AiParameterFLT("lacunarity", 2.121f);
-	AiParameterFLT("gain", 0.5f);
-	AiParameterBOOL("turbulent", false);
+	AiParameterEnum("mode", 0, noiseModeNames);
+	AiParameterEnum("space", 0, noiseSpaceNames);
+	AiParameterFlt("frequency", 1.0f);
+	AiParameterVec("scale", 1.0f, 1.0f, 1.0f);
+	AiParameterFlt("time", 0.0f);
+	AiParameterInt("octaves", 8);
+	AiParameterFlt("distortion", 0.0f);
+	AiParameterFlt("lacunarity", 2.121f);
+	AiParameterFlt("gain", 0.5f);
+	AiParameterBool("turbulent", false);
 	REMAP_FLOAT_PARAM_DECLARE;
 	AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
 	AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);
-	AiParameterPnt("P", 0.0f, 0.0f, 0.0f);
+	AiParameterVec("P", 0.0f, 0.0f, 0.0f);
 }
 
 node_loader

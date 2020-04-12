@@ -48,9 +48,9 @@ const char* curvatureModeNames[] = {
 
 node_parameters
 {
-	AiParameterENUM("mode", CRV_POSITIVE, curvatureModeNames)
-	AiParameterINT("samples", 3);
-	AiParameterFLT("sampleRadius", 1.0f);
+	AiParameterEnum("mode", CRV_POSITIVE, curvatureModeNames)
+	AiParameterInt("samples", 3);
+	AiParameterFlt("sampleRadius", 1.0f);
 	AiParameterSTR("traceSet", "");
 	AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
 	AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);

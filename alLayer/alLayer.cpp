@@ -174,7 +174,7 @@ node_parameters
 
    AiParameterBool("standardCompatibleAOVs", false);
 
-   AiParameterBOOL("aiEnableMatte", false);
+   AiParameterBool("aiEnableMatte", false);
    AiParameterRGB("aiMatteColor", 0.0f, 0.0f, 0.0f);
    AiParameterFlt("aiMatteColorA", 0.0f);
 }

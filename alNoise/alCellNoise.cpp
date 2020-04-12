@@ -68,32 +68,32 @@ enum alCellNoiseParams
 
 node_parameters
 {
-	AiParameterENUM("space", 0, cellnoiseSpaceNames);
-	AiParameterFLT("frequency", 1.0f);
-	AiParameterENUM("mode", 0, cellNoiseModeNames);
-	AiParameterINT("octaves", 1);
-	AiParameterFLT("randomness", 1.0f);
-	AiParameterFLT("lacunarity", 2.121f);
+	AiParameterEnum("space", 0, cellnoiseSpaceNames);
+	AiParameterFlt("frequency", 1.0f);
+	AiParameterEnum("mode", 0, cellNoiseModeNames);
+	AiParameterInt("octaves", 1);
+	AiParameterFlt("randomness", 1.0f);
+	AiParameterFlt("lacunarity", 2.121f);
 	// AiParameterFlt("f1w", -1.0f);
 	// AiParameterFlt("f2w", 1.0f);
 	// AiParameterFlt("f3w", 0.0f);
 	// AiParameterFlt("f4w", 0.0f);
-	// AiParameterFLT("mynkowskiShape", 2.0f);
+	// AiParameterFlt("mynkowskiShape", 2.0f);
 	AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
 	AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);
-	AiParameterBOOL("smoothChips", false);
-	AiParameterBOOL("randomChips", false);
+	AiParameterBool("smoothChips", false);
+	AiParameterBool("randomChips", false);
 	AiParameterRGB("chipColor1", .383f, .318f, .252f);
-	AiParameterFLT("chipProb1", 1.0f);
+	AiParameterFlt("chipProb1", 1.0f);
 	AiParameterRGB("chipColor2", .383f, .191f, 0.01f);
-	AiParameterFLT("chipProb2", 1.0f);
+	AiParameterFlt("chipProb2", 1.0f);
 	AiParameterRGB("chipColor3", .635f, .612f, .563f);
-	AiParameterFLT("chipProb3", 1.0f);
+	AiParameterFlt("chipProb3", 1.0f);
 	AiParameterRGB("chipColor4", .509f, .361f, .213f);
-	AiParameterFLT("chipProb4", 1.0f);
+	AiParameterFlt("chipProb4", 1.0f);
 	AiParameterRGB("chipColor5", .593f, .472f, .248f);
-	AiParameterFLT("chipProb5", 1.0f);
-	AiParameterPnt("P", 0.0f, 0.0f, 0.0f);
+	AiParameterFlt("chipProb5", 1.0f);
+	AiParameterVec("P", 0.0f, 0.0f, 0.0f);
 	REMAP_FLOAT_PARAM_DECLARE;
 }
 

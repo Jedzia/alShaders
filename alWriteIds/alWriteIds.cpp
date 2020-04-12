@@ -96,7 +96,7 @@ enum WriteIdsParams
 node_parameters // static void Parameters(AtList* params, AtMetaDataStore* mds)
 {
     AiParameterRGB("passthrough", 0.0f, 0.0f, 0.0f);
-    AiParameterENUM("string", WI_SHAPE_NAME, stringOptionsNames);
+    AiParameterEnum("string", WI_SHAPE_NAME, stringOptionsNames);
     for (int i = 0; i < WI_NUM_AOVS; i++)
     {
         AiParameterStr(aov_paramNames[i], aov_namesDefaultValues[i]);

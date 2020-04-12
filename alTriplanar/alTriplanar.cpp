@@ -74,26 +74,26 @@ enum alTriplanarParams
 node_parameters
 {
 	AiParameterRGB("input", 0.0f, 0.0f, 0.0f);
-    AiParameterENUM("space", 0, triplanarSpaceNames);
-    AiParameterENUM("normal", 0, triplanarNormalNames);
-    AiParameterENUM("tiling", 0, triplanarTilingNames);
-    AiParameterFLT("frequency", 1.0f);
+    AiParameterEnum("space", 0, triplanarSpaceNames);
+    AiParameterEnum("normal", 0, triplanarNormalNames);
+    AiParameterEnum("tiling", 0, triplanarTilingNames);
+    AiParameterFlt("frequency", 1.0f);
     AiParameterSTR("texture", "");
-    AiParameterFLT("blendSoftness", 0.1);
-    AiParameterFLT("cellSoftness", 0.1);
-    AiParameterFLT("scalex", 1.0f);
-    AiParameterFLT("scaley", 1.0f);
-    AiParameterFLT("scalez", 1.0f);
-    AiParameterFLT("offsetx", 0.0f);
-    AiParameterFLT("offsety", 0.0f);
-    AiParameterFLT("offsetz", 0.0f);
-    AiParameterFLT("rotx", 0.0f);
-    AiParameterFLT("roty", 0.0f);
-    AiParameterFLT("rotz", 0.0f);
-    AiParameterFLT("rotjitterx", 1.0f);
-    AiParameterFLT("rotjittery", 1.0f);
-    AiParameterFLT("rotjitterz", 1.0f);
-    AiParameterINT("mipMapBias", 0);
+    AiParameterFlt("blendSoftness", 0.1);
+    AiParameterFlt("cellSoftness", 0.1);
+    AiParameterFlt("scalex", 1.0f);
+    AiParameterFlt("scaley", 1.0f);
+    AiParameterFlt("scalez", 1.0f);
+    AiParameterFlt("offsetx", 0.0f);
+    AiParameterFlt("offsety", 0.0f);
+    AiParameterFlt("offsetz", 0.0f);
+    AiParameterFlt("rotx", 0.0f);
+    AiParameterFlt("roty", 0.0f);
+    AiParameterFlt("rotz", 0.0f);
+    AiParameterFlt("rotjitterx", 1.0f);
+    AiParameterFlt("rotjittery", 1.0f);
+    AiParameterFlt("rotjitterz", 1.0f);
+    AiParameterInt("mipMapBias", 0);
 }
 
 node_loader

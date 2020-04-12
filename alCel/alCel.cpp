@@ -37,7 +37,7 @@ node_parameters
     AiParameterStr("aov_indirect_diffuse_cel", "indirect_diffuse_cel");
 
 
-    AiParameterBOOL("aiEnableMatte", false);
+    AiParameterBool("aiEnableMatte", false);
     AiParameterRGB("aiMatteColor", 0.0f, 0.0f, 0.0f);
     AiParameterFlt("aiMatteColorA", 0.0f);
 }
@@ -110,13 +110,13 @@ bool SortFloatIndexArray(AtArray *a, unsigned int *shuffle)
 {
    bool modified = false;
 
-   if (a && shuffle && a->nelements > 0)
+   if (a && shuffle && AiArrayGetNumElements(a) > 0)
    {
       float p0, p1;
       int tmp;
 
       bool swapped = true;
-      uint32_t n = a->nelements;
+      uint32_t n = AiArrayGetNumElements(a);
 
       for (uint32_t i = 0; (i < n); ++i)
       {

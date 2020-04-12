@@ -19,14 +19,14 @@ enum alRemapParams
 node_parameters
 {
 	AiParameterRGB("input", 0.18f, 0.18f, 0.18f);
-	AiParameterFLT("gamma", 1.0f);
-	AiParameterFLT("saturation", 1.0f);
-	AiParameterFLT("hueOffset", 0.0f);
-	AiParameterFLT("contrast", 1.0f);
-	AiParameterFLT("contrastPivot", 0.18f);
-	AiParameterFLT("gain", 1.0f);
-	AiParameterFLT("exposure", 0.f);
-	AiParameterFLT("mask", 1.0f);
+	AiParameterFlt("gamma", 1.0f);
+	AiParameterFlt("saturation", 1.0f);
+	AiParameterFlt("hueOffset", 0.0f);
+	AiParameterFlt("contrast", 1.0f);
+	AiParameterFlt("contrastPivot", 0.18f);
+	AiParameterFlt("gain", 1.0f);
+	AiParameterFlt("exposure", 0.f);
+	AiParameterFlt("mask", 1.0f);
 }
 
 node_loader

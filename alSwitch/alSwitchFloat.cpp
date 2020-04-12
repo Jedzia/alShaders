@@ -19,16 +19,16 @@ enum alSwitchParams
 
 node_parameters
 {
-    AiParameterFLT("inputA", 0.0f);
-    AiParameterFLT("inputB", 1.0f);
-    AiParameterFLT("inputC", .15f);
-    AiParameterFLT("inputD", .30f);
-    AiParameterFLT("inputE", .45f);
-    AiParameterFLT("inputF", .60f);
-    AiParameterFLT("inputG", .75f);
-    AiParameterFLT("inputH", .90f);
-    AiParameterFLT("mix", 1.0f);
-    AiParameterFLT("threshold", 0.5f);
+    AiParameterFlt("inputA", 0.0f);
+    AiParameterFlt("inputB", 1.0f);
+    AiParameterFlt("inputC", .15f);
+    AiParameterFlt("inputD", .30f);
+    AiParameterFlt("inputE", .45f);
+    AiParameterFlt("inputF", .60f);
+    AiParameterFlt("inputG", .75f);
+    AiParameterFlt("inputH", .90f);
+    AiParameterFlt("mix", 1.0f);
+    AiParameterFlt("threshold", 0.5f);
 }
 
 node_loader

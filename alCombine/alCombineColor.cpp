@@ -40,8 +40,8 @@ node_parameters
 {
 	AiParameterRGB("input1", 1.0f, 1.0f, 1.0f);
 	AiParameterRGB("input2", 1.0f, 1.0f, 1.0f);
-	AiParameterFLT("input3", 0.0f);
-	AiParameterENUM("combineOp", 0, combineOpNames);
+	AiParameterFlt("input3", 0.0f);
+	AiParameterEnum("combineOp", 0, combineOpNames);
 }
 
 node_loader

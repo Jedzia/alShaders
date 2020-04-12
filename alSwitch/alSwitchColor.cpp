@@ -27,8 +27,8 @@ node_parameters
     AiParameterRGB("inputF", 1.f, 1.f, 0.f);
     AiParameterRGB("inputG", 1.f, 0.f, 1.f);
     AiParameterRGB("inputH", 0.f, 1.f, 1.f);
-    AiParameterFLT("mix", 1.0f);
-    AiParameterFLT("threshold", 0.5f);
+    AiParameterFlt("mix", 1.0f);
+    AiParameterFlt("threshold", 0.5f);
 }
 
 node_loader

@@ -32,10 +32,10 @@ static const char* combineOpNames[] =
 
 node_parameters
 {
-	AiParameterFLT("input1", 0.0f);
-	AiParameterFLT("input2", 0.0f);
-	AiParameterFLT("input3", 0.0f);
-	AiParameterENUM("combineOp", 0, combineOpNames);
+	AiParameterFlt("input1", 0.0f);
+	AiParameterFlt("input2", 0.0f);
+	AiParameterFlt("input3", 0.0f);
+	AiParameterEnum("combineOp", 0, combineOpNames);
 }
 
 node_loader

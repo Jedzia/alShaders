@@ -319,90 +319,90 @@ const char* debugNames[] = {
 
 node_parameters
 {
-    AiParameterFLT("diffuseStrength", 1.0f );
+    AiParameterFlt("diffuseStrength", 1.0f );
     AiParameterRGB("diffuseColor", 0.5f, 0.5f, 0.5f );
-    AiParameterFLT("diffuseRoughness", 0.0f );
+    AiParameterFlt("diffuseRoughness", 0.0f );
 
-    AiParameterFLT("backlightStrength", 0.0f );
+    AiParameterFlt("backlightStrength", 0.0f );
     AiParameterRGB("backlightColor", 0.18f, 0.18f, 0.18f );
-    AiParameterFLT("backlightIndirectStrength", 1.0f);
+    AiParameterFlt("backlightIndirectStrength", 1.0f);
 
-    AiParameterFLT("emissionStrength", 0.0f );
+    AiParameterFlt("emissionStrength", 0.0f );
     AiParameterRGB("emissionColor", 1.0f, 1.0f, 1.0f);
 
-    AiParameterFLT("sssMix", 0.0f );
+    AiParameterFlt("sssMix", 0.0f );
     AiParameterEnum("sssMode", SSSMODE_CUBIC, SssModeNames);
-    AiParameterFLT("sssRadius", 1.5f );
-    AiParameterFLT("sssWeight1", 1.0f  );
+    AiParameterFlt("sssRadius", 1.5f );
+    AiParameterFlt("sssWeight1", 1.0f  );
     AiParameterRGB("sssRadiusColor", .439, .156, .078);
-    AiParameterFLT("sssRadius2", 4.0f );
-    AiParameterFLT("sssWeight2", 0.0f );
+    AiParameterFlt("sssRadius2", 4.0f );
+    AiParameterFlt("sssWeight2", 0.0f );
     AiParameterRGB("sssRadiusColor2", .439, .08, .018 );
-    AiParameterFLT("sssRadius3", .75f );
-    AiParameterFLT("sssWeight3", .0f);
+    AiParameterFlt("sssRadius3", .75f );
+    AiParameterFlt("sssWeight3", .0f);
     AiParameterRGB("sssRadiusColor3", .523, .637, .667 );
-    AiParameterFLT("sssDensityScale", 1.0f );
+    AiParameterFlt("sssDensityScale", 1.0f );
     AiParameterSTR("sssTraceSet", "");
-    AiParameterINT("sssExtraSamples", 0);
+    AiParameterInt("sssExtraSamples", 0);
 
-    AiParameterFLT("ssInScatteringStrength", 0.0f);
+    AiParameterFlt("ssInScatteringStrength", 0.0f);
     AiParameterRGB("ssAttenuationColor", 1.0f, 1.0f, 1.0f);
-    AiParameterBOOL("ssSpecifyCoefficients", false);
+    AiParameterBool("ssSpecifyCoefficients", false);
     AiParameterRGB("ssScattering", 1.0f, 1.0f, 1.0f);
     AiParameterRGB("ssAbsorption", 1.0f, 1.0f, 1.0f);
-    AiParameterFLT("ssDensityScale", 1.0f);
-    AiParameterFLT("ssDirection", 0.0f);
+    AiParameterFlt("ssDensityScale", 1.0f);
+    AiParameterFlt("ssDirection", 0.0f);
 
-    AiParameterINT("diffuseExtraSamples", 0);
-    AiParameterFLT("diffuseIndirectStrength", 1.0f);
-    AiParameterFLT("diffuseIndirectClamp", 0.0f);
+    AiParameterInt("diffuseExtraSamples", 0);
+    AiParameterFlt("diffuseIndirectStrength", 1.0f);
+    AiParameterFlt("diffuseIndirectClamp", 0.0f);
     AiParameterVec("diffuseNormal", 0, 0, 0);
 
-    AiParameterFLT("specular1Strength", 1.0f );
+    AiParameterFlt("specular1Strength", 1.0f );
     AiParameterRGB("specular1Color", 1.0f, 1.0f, 1.0f );
-    AiParameterFLT("specular1Roughness", 0.3f );
-    AiParameterFLT("specular1Anisotropy", 0.5f );
-    AiParameterFLT("specular1Rotation", 0.0f );
-    AiParameterENUM("specular1FresnelMode", FM_DIELECTRIC, fresnel_mode_names);
-    AiParameterFLT("specular1Ior", 1.4f );
+    AiParameterFlt("specular1Roughness", 0.3f );
+    AiParameterFlt("specular1Anisotropy", 0.5f );
+    AiParameterFlt("specular1Rotation", 0.0f );
+    AiParameterEnum("specular1FresnelMode", FM_DIELECTRIC, fresnel_mode_names);
+    AiParameterFlt("specular1Ior", 1.4f );
     AiParameterRGB("specular1Reflectivity", 0.548, .549, .570);
     AiParameterRGB("specular1EdgeTint", 0.579, .598, .620);
-    AiParameterFLT("specular1RoughnessDepthScale", 1.0f);
-    AiParameterINT("specular1ExtraSamples", 0);
+    AiParameterFlt("specular1RoughnessDepthScale", 1.0f);
+    AiParameterInt("specular1ExtraSamples", 0);
     AiParameterVec("specular1Normal", 0, 0, 0);
-    AiParameterFLT("specular1IndirectStrength", 1.0f );
-    AiParameterFLT("specular1IndirectClamp", 0.0f );
-    AiParameterBOOL("specular1CausticPaths", false);
+    AiParameterFlt("specular1IndirectStrength", 1.0f );
+    AiParameterFlt("specular1IndirectClamp", 0.0f );
+    AiParameterBool("specular1CausticPaths", false);
 
 
-    AiParameterFLT("specular2Strength", 0.0f );
+    AiParameterFlt("specular2Strength", 0.0f );
     AiParameterRGB("specular2Color", 1.0f, 1.0f, 1.0f );
-    AiParameterFLT("specular2Roughness", 0.5f );
-    AiParameterFLT("specular2Anisotropy", 0.5f );
-    AiParameterFLT("specular2Rotation", 0.0f );
-    AiParameterENUM("specular2FresnelMode", FM_DIELECTRIC, fresnel_mode_names);
-    AiParameterFLT("specular2Ior", 1.4f );
+    AiParameterFlt("specular2Roughness", 0.5f );
+    AiParameterFlt("specular2Anisotropy", 0.5f );
+    AiParameterFlt("specular2Rotation", 0.0f );
+    AiParameterEnum("specular2FresnelMode", FM_DIELECTRIC, fresnel_mode_names);
+    AiParameterFlt("specular2Ior", 1.4f );
     AiParameterRGB("specular2Reflectivity", 0.548, .549, .570);
     AiParameterRGB("specular2EdgeTint", 0.579, .598, .620);
-    AiParameterFLT("specular2RoughnessDepthScale", 1.0f);
-    AiParameterINT("specular2ExtraSamples", 0);
+    AiParameterFlt("specular2RoughnessDepthScale", 1.0f);
+    AiParameterInt("specular2ExtraSamples", 0);
     AiParameterVec("specular2Normal", 0, 0, 0);
-    AiParameterFLT("specular2IndirectStrength", 1.0f );
-    AiParameterFLT("specular2IndirectClamp", 0.0f );
-    AiParameterBOOL("specular2CausticPaths", false);
+    AiParameterFlt("specular2IndirectStrength", 1.0f );
+    AiParameterFlt("specular2IndirectClamp", 0.0f );
+    AiParameterBool("specular2CausticPaths", false);
 
-    AiParameterFLT("transmissionStrength", 0.0f );
+    AiParameterFlt("transmissionStrength", 0.0f );
     AiParameterRGB("transmissionColor", 1.0f, 1.0f, 1.0f );
-    AiParameterBOOL("transmissionLinkToSpecular1", true);
-    AiParameterFLT("transmissionRoughness", 0.f );
-    AiParameterFLT("transmissionIor", 1.4f );
-    AiParameterFLT("transmissionRoughnessDepthScale", 1.0f);
-    AiParameterBOOL("transmissionEnableCaustics", true);
-    AiParameterINT("transmissionExtraSamples", 0);
-    AiParameterFLT("transmissionClamp", 0.0f );
-    AiParameterBOOL("transmissionDoDirect", false);
+    AiParameterBool("transmissionLinkToSpecular1", true);
+    AiParameterFlt("transmissionRoughness", 0.f );
+    AiParameterFlt("transmissionIor", 1.4f );
+    AiParameterFlt("transmissionRoughnessDepthScale", 1.0f);
+    AiParameterBool("transmissionEnableCaustics", true);
+    AiParameterInt("transmissionExtraSamples", 0);
+    AiParameterFlt("transmissionClamp", 0.0f );
+    AiParameterBool("transmissionDoDirect", false);
     AiParameterVec("transmissionNormal", 0, 0, 0);
-    AiParameterBOOL("transmissionCausticPaths", false);
+    AiParameterBool("transmissionCausticPaths", false);
 
 
     AiParameterRGB("id1", 0.0f, 0.0f, 0.0f);
@@ -414,7 +414,7 @@ node_parameters
     AiParameterRGB("id7", 0.0f, 0.0f, 0.0f);
     AiParameterRGB("id8", 0.0f, 0.0f, 0.0f);
 
-    AiParameterBOOL("aiEnableMatte", false);
+    AiParameterBool("aiEnableMatte", false);
     AiParameterRGB("aiMatteColor", 0.0f, 0.0f, 0.0f);
     AiParameterFlt("aiMatteColorA", 0.0f);
 
@@ -477,7 +477,7 @@ node_parameters
     AiParameterSTR("traceSetSpecular2", "");
     AiParameterSTR("traceSetTransmission", "");
 
-    AiParameterENUM("debug", DB_OFF, debugNames);
+    AiParameterEnum("debug", DB_OFF, debugNames);
 
     AiParameterFlt("aov_diffuse_color_clamp", 0.0f);
     AiParameterFlt("aov_direct_diffuse_clamp", 0.0f);

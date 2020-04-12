@@ -60,14 +60,14 @@ enum alPatternParams
 
 node_parameters
 {
-	AiParameterENUM("space", 0, patternSpaceNames);
-	AiParameterENUM("axis", 0, axisNames);
-	AiParameterENUM("shape", 0, patternNames);
-	AiParameterFLT("frequency", 5.0f);
-	AiParameterFLT("offset", 0.0f);
+	AiParameterEnum("space", 0, patternSpaceNames);
+	AiParameterEnum("axis", 0, axisNames);
+	AiParameterEnum("shape", 0, patternNames);
+	AiParameterFlt("frequency", 5.0f);
+	AiParameterFlt("offset", 0.0f);
 	AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
 	AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);
-	AiParameterPnt("P", 0.0f, 0.0f, 0.0f);
+	AiParameterVec("P", 0.0f, 0.0f, 0.0f);
 	REMAP_FLOAT_PARAM_DECLARE;
 }
 

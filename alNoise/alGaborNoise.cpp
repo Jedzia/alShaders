@@ -248,7 +248,7 @@ node_parameters
     AiParameterRGB("color1", 0.0f, 0.0f, 0.0f);
     AiParameterRGB("color2", 1.0f, 1.0f, 1.0f);
 
-    AiParameterPnt("P", 0.0f, 0.0f, 0.0f);
+    AiParameterVec("P", 0.0f, 0.0f, 0.0f);
 }
 
 node_loader
