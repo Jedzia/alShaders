@@ -134,7 +134,7 @@ inline float dipoleProfileRd(float r, float sigma_tr, float zr, float zv)
     float sigma_tr_dr = sigma_tr * dr;
     float sigma_tr_dv = sigma_tr * dv;
 
-    return zr*(sigma_tr_dr+1.0f) * AiFastExp(-sigma_tr_dr) * inv_dr3 + zv*(sigma_tr_dv+1.0f) * fast_exp(-sigma_tr_dv) * inv_dv3;
+    return zr*(sigma_tr_dr+1.0f) * AiFastExp(-sigma_tr_dr) * inv_dr3 + zv*(sigma_tr_dv+1.0f) * AiFastExp(-sigma_tr_dv) * inv_dv3;
 }
 
 inline AtRGB dipoleProfileRd(float r, const AtRGB& sigma_tr, const AtRGB& zr, const AtRGB& zv)
