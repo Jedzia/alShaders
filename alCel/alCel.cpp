@@ -182,9 +182,9 @@ AtRGBA Mix(const AtRGBA &c0, const AtRGBA &c1, float t)
 template <typename ValType>
 void RampT(AtArray *p, AtArray *c, float t, RampInterpolationType it, ValType &result, ValType (*getv)(AtArray*, unsigned int), unsigned int *shuffle)
 {
-   unsigned int inext = p->nelements;
+   unsigned int inext = AiArrayGetNumElements(p);
 
-   for (unsigned int i = 0; (i < p->nelements); ++i)
+   for (unsigned int i = 0; (i < AiArrayGetNumElements(p)); ++i)
    {
       if (t < AiArrayGetFlt(p, shuffle[i]))
       {
@@ -193,9 +193,9 @@ void RampT(AtArray *p, AtArray *c, float t, RampInterpolationType it, ValType &r
       }
    }
 
-   if (inext >= p->nelements)
+   if (inext >= AiArrayGetNumElements(p))
    {
-      result = getv(c, shuffle[p->nelements - 1]);
+      result = getv(c, shuffle[AiArrayGetNumElements(p) - 1]);
       return;
    }
 
@@ -284,7 +284,7 @@ void Ramp(AtArray *p, AtArray *v, float t, RampInterpolationType it, AtRGB &out,
 
 void generateRampLUT(AtArray* positions, AtArray* colors, RampInterpolationType interp, AtRGB* lut)
 {
-    unsigned int* shuffle = new unsigned int[positions->nelements];
+    unsigned int* shuffle = new unsigned int[AiArrayGetNumElements(positions)];
     SortFloatIndexArray(positions, shuffle);
     for (int i=0; i < LUT_SIZE; ++i)
     {
@@ -363,7 +363,7 @@ shader_evaluate
             diff_t = clamp(diff_t, 0.0f, 1.0f);
 
             // lookup the diffuse ramp
-            unsigned int* shuffle = (unsigned int*)AiShaderGlobalsQuickAlloc(sg, sizeof(unsigned int) * diffusePositions->nelements);
+            unsigned int* shuffle = (unsigned int*)AiShaderGlobalsQuickAlloc(sg, sizeof(unsigned int) * AiArrayGetNumElements(diffusePositions));
             SortFloatIndexArray(diffusePositions, shuffle);
             Ramp(diffusePositions, diffuseColors, diff_t, diffuseInterp, direct_diffuse_raw, shuffle);
 

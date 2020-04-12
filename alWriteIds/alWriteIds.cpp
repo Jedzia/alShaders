@@ -42,9 +42,9 @@ void writeIdsFromShaderNodeNameAtStringHashes(AtShaderGlobals* sg, const ShaderD
 {
     assert(hasParamEntry(sg->Op, shaderParamName, AI_TYPE_ARRAY) && "there should always be a shader array param" );
     const AtArray* shaderArray = AiNodeGetArray(sg->Op, shaderParamName);
-    assert(shaderArray->type == AI_TYPE_NODE && "the shader array param should hold node types");
-    assert(shaderArray->nelements >= 1 && "the shader array param should have one or more elements");
-    for(uint32_t i = 0; i < shaderArray->nelements; i++)
+    assert(AiArrayGetType(shaderArray) == AI_TYPE_NODE && "the shader array param should hold node types");
+    assert(AiArrayGetNumElements(shaderArray) >= 1 && "the shader array param should have one or more elements");
+    for(uint32_t i = 0; i < AiArrayGetNumElements(shaderArray); i++)
     {
         const AtNode *shaderNode = static_cast<AtNode *>(AiArrayGetPtr(shaderArray, i));
         if (AiNodeEntryGetType(AiNodeGetNodeEntry(shaderNode)) == AI_NODE_SHADER)

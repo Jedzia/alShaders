@@ -473,7 +473,7 @@ void write_array_of_AOVs(AtShaderGlobals * sg, AtArray * names, float id) {
     val.y = 0.0f;
     val.z = AiColorToGrey(sg->out_opacity);
 
-    for (uint32_t i=0; i < names->nelements; i++) {
+    for (uint32_t i=0; i < AiArrayGetNumElements(names); i++) {
         const char * aovName = AiArrayGetStr( names, i);
         if (!string_has_content(aovName))
             return;
@@ -508,7 +508,7 @@ void write_metadata_to_driver(AtNode * driver, std::string cryptomatte_name, man
         return;
 
     AtArray * orig_md = AiNodeGetArray( driver, "custom_attributes");
-    const uint32_t orig_num_entries = orig_md ? orig_md->nelements : 0;
+    const uint32_t orig_num_entries = orig_md ? AiArrayGetNumElements(orig_md): 0;
 
     std::string metadata_hash, metadata_conv, metadata_name, metadata_manf; // the new entries
     AtArray * combined_md = AiArrayAllocate(orig_num_entries + 4, 1, AI_TYPE_STRING); //Does not need destruction
@@ -613,7 +613,7 @@ void build_user_metadata(AtArray * uc_info, AtArray* drivers) {
     AtArray * uc_src_array = AiArrayGetArray(uc_info, 1);
 
     bool do_anything = false;
-    for (uint32_t i=0; i<drivers->nelements; i++) {
+    for (uint32_t i=0; i<AiArrayGetNumElements(drivers); i++) {
         AtNode *driver = static_cast<AtNode*>(AiArrayGetPtr(drivers, i));
         if (driver == NULL) {
             do_metadata[i] = false;
@@ -629,7 +629,7 @@ void build_user_metadata(AtArray * uc_info, AtArray* drivers) {
     AtNodeIterator * shape_iterator = AiUniverseGetNodeIterator(AI_NODE_SHAPE);
     while (!AiNodeIteratorFinished(shape_iterator)) {
         AtNode *node = AiNodeIteratorGetNext(shape_iterator);
-        for (uint32_t i=0; i<drivers->nelements; i++) {
+        for (uint32_t i=0; i<AiArrayGetNumElements(drivers); i++) {
             if (!do_metadata[i])
                 continue;
             const char * user_data_name = AiArrayGetStr(uc_src_array, i);
@@ -643,7 +643,7 @@ void build_user_metadata(AtArray * uc_info, AtArray* drivers) {
             } else {
                 AtArray * values = AiNodeGetArray(node, user_data_name);
                 if (values != NULL) {
-                    for (uint32_t ai=0; ai<values->nelements; ai++)
+                    for (uint32_t ai=0; ai<AiArrayGetNumElements(values); ai++)
                         add_hash_to_map(AiArrayGetStr(values, ai), &map_md_user[i]);
                 }
             }
@@ -651,7 +651,7 @@ void build_user_metadata(AtArray * uc_info, AtArray* drivers) {
     }
     AiNodeIteratorDestroy(shape_iterator);
 
-    for (uint32_t i=0; i<drivers->nelements; i++) {
+    for (uint32_t i=0; i<AiArrayGetNumElements(drivers); i++) {
         if (!do_metadata[i])
             continue;
         
@@ -707,7 +707,7 @@ void build_standard_metadata(AtNode* driver_asset, AtNode* driver_object, AtNode
             // Process all shaders from the objects into the manifest. 
             // This includes cluster materials.
             AtArray * shaders = AiNodeGetArray(node, "shader");
-            for (uint32_t i = 0; i < shaders->nelements; i++) {
+            for (uint32_t i = 0; i < AiArrayGetNumElements(shaders); i++) {
                 AtNode * shader = static_cast<AtNode*>(AiArrayGetPtr(shaders, i));
                 get_material_name(NULL, node, shader, strip_mat_ns, NULL, mat_name);
                 add_hash_to_map(mat_name, &map_md_material); 
@@ -788,7 +788,7 @@ AtArray* init_user_cryptomatte_data() {
                 AiArraySetStr(uc_src_array, 0, AiNodeGetStr(renderOptions, CRYPTO_USER_SRC_PARAM));
             }
 
-            if (!uc_aov_array || !uc_src_array || uc_aov_array->nelements != uc_src_array->nelements) {
+            if (!uc_aov_array || !uc_src_array || AiArrayGetNumElements(uc_aov_array) != AiArrayGetNumElements(uc_src_array)) {
                 if (uc_aov_array)
                     AiArrayDestroy(uc_aov_array);
                 if (uc_src_array)
@@ -796,10 +796,10 @@ AtArray* init_user_cryptomatte_data() {
                 uc_aov_array = NULL;
                 uc_src_array = NULL;
             } else {
-                const int user_aov_num = std::min(uc_aov_array->nelements, (uint32_t) MAX_USER_CRYPTOMATTES);
-                if (user_aov_num < (int) uc_aov_array->nelements) {
+                const int user_aov_num = std::min(AiArrayGetNumElements(uc_aov_array), (uint32_t) MAX_USER_CRYPTOMATTES);
+                if (user_aov_num < (int) AiArrayGetNumElements(uc_aov_array)) {
                     AiMsgWarning("Cryptomatte: Maximum number of user cryptomattes is %d, removing %d", 
-                        MAX_USER_CRYPTOMATTES, uc_aov_array->nelements - user_aov_num);
+                        MAX_USER_CRYPTOMATTES, AiArrayGetNumElements(uc_aov_array) - user_aov_num);
                 }
                 uc_info = AiArrayAllocate(2+user_aov_num, 1, AI_TYPE_ARRAY);
                 AiArraySetArray(uc_info, 0, uc_aov_array);
@@ -967,7 +967,7 @@ private:
         AtArray* uc_aov_array = AiArrayGetArray(this->user_cryptomatte_info, 0);
         AtArray* uc_src_array = AiArrayGetArray(this->user_cryptomatte_info, 1);
 
-        for (uint32_t uc_index=2; uc_index<this->user_cryptomatte_info->nelements; uc_index++) {
+        for (uint32_t uc_index=2; uc_index < AiArrayGetNumElements(this->user_cryptomatte_info); uc_index++) {
             AtArray * aovArray = AiArrayGetArray(this->user_cryptomatte_info, uc_index);
             if (aovArray != NULL) {
                 uint32_t i = uc_index-2;
@@ -1013,7 +1013,7 @@ private:
             bool cachable = true;
             AtArray * shaders = AiNodeGetArray(sg->Op, "shader");
             AtNode *shader = NULL;
-            if (shaders->nelements == 1) {
+            if (AiArrayGetNumElements(shaders) == 1) {
                 // use whatever is assigned, not whatever is currently evaluating
                 // this will match the manifest
                 shader = static_cast<AtNode*>(AiArrayGetPtr(shaders, 0));
@@ -1049,9 +1049,9 @@ private:
         if (this->user_cryptomatte_info != NULL) {
             uc_aov_array = AiArrayGetArray(this->user_cryptomatte_info, 0);
             uc_src_array = AiArrayGetArray(this->user_cryptomatte_info, 1);
-            tmp_uc_drivers = AiArrayAllocate(uc_aov_array->nelements, 1, AI_TYPE_NODE); // destroyed later
+            tmp_uc_drivers = AiArrayAllocate(AiArrayGetNumElements(uc_aov_array), 1, AI_TYPE_NODE); // destroyed later
 
-            num_cryptomatte_AOVs += (this->user_cryptomatte_info)->nelements - 2;
+            num_cryptomatte_AOVs += AiArrayGetNumElements(this->user_cryptomatte_info) - 2;
         }
 
         this->aovArray_cryptoasset = AiArrayAllocate(this->globals.aov_depth, 1, AI_TYPE_STRING);
@@ -1066,7 +1066,7 @@ private:
         AtArray * tmp_new_outputs = AiArrayAllocate(num_cryptomatte_AOVs * this->globals.aov_depth, 1, AI_TYPE_STRING); // destroyed later
         int new_output_num = 0;
 
-        for (uint32_t i=0; i < outputs->nelements; i++) {
+        for (uint32_t i=0; i < AiArrayGetNumElements(outputs); i++) {
             const char * output_string = AiArrayGetStr( outputs, i);
             size_t output_string_chars = strlen(output_string);
             char temp_string[MAX_STRING_LENGTH * 8]; 
@@ -1101,7 +1101,7 @@ private:
                 driver = AiNodeLookUpByName(driver_name);
                 driver_cryptoMaterial = driver;
             } else if (this->user_cryptomatte_info != NULL) {
-                for (uint32_t j=0; j < uc_aov_array->nelements; j++) {
+                for (uint32_t j=0; j < AiArrayGetNumElements(uc_aov_array); j++) {
                     const char * user_aov_name = AiArrayGetStr(uc_aov_array, j);
                     if (strcmp(aov_name, user_aov_name) == 0) {
                         cryptoAOVs = AiArrayAllocate(MAX_CRYPTOMATTE_DEPTH, 1, AI_TYPE_STRING); // will be destroyed when cryptomatteData is
@@ -1118,15 +1118,15 @@ private:
         }
 
         if (new_output_num > 0) {
-            int total_outputs = outputs->nelements + new_output_num;
+            int total_outputs = AiArrayGetNumElements(outputs) + new_output_num;
             AtArray * final_outputs = AiArrayAllocate(total_outputs, 1, AI_TYPE_STRING); // Does not need destruction
-            for (uint32_t i=0; i < outputs->nelements; i++) {
+            for (uint32_t i=0; i < AiArrayGetNumElements(outputs); i++) {
                 // Iterate through old outputs and add them
                 AiArraySetStr(final_outputs, i, AiArrayGetStr( outputs, i));
             }
             for (int i=0; i < new_output_num; i++)  {
                 // Iterate through new outputs and add them
-                AiArraySetStr(final_outputs, i + outputs->nelements, AiArrayGetStr( tmp_new_outputs, i));
+                AiArraySetStr(final_outputs, i + AiArrayGetNumElements(outputs), AiArrayGetStr( tmp_new_outputs, i));
             }
             AiNodeSetArray(renderOptions, "outputs", final_outputs );
         }
@@ -1187,7 +1187,7 @@ private:
 
         AtArray * outputs = AiNodeGetArray( AiUniverseGetOptions(), "outputs");
         std::unordered_set<std::string> outputSet;
-        for (uint32_t i=0; i < outputs->nelements; i++)
+        for (uint32_t i=0; i < AiArrayGetNumElements(outputs); i++)
             outputSet.insert( std::string(AiArrayGetStr(outputs, i)));
 
         ///////////////////////////////////////////////
@@ -1251,7 +1251,7 @@ private:
         if (this->aovArray_cryptomaterial)
             AiArrayDestroy(this->aovArray_cryptomaterial);
         if (this->user_cryptomatte_info) {
-            for (uint32_t i=0; i<this->user_cryptomatte_info->nelements; i++) {
+            for (uint32_t i=0; i<AiArrayGetNumElements(this->user_cryptomatte_info); i++) {
                 AtArray *subarray = AiArrayGetArray(this->user_cryptomatte_info, i);
                 AiArraySetArray(this->user_cryptomatte_info, i, NULL);
                 if (subarray)
