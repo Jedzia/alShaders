@@ -19,7 +19,10 @@
 
 inline void* aligned_malloc(size_t size, size_t alignment)
 {
-#ifdef __GNUC__
+#ifdef __MINGW_GCC_VERSION
+    return _aligned_malloc(size, alignment);
+#else
+    #ifdef __GNUC__
 #if _WIN32
     void *pResult = ::memalign(alignment, size);
     if (pResult == NULL)
@@ -33,6 +36,7 @@ inline void* aligned_malloc(size_t size, size_t alignment)
     return pResult;
 #else
     return _aligned_malloc(size, alignment);
+#endif
 #endif
 }
 

@@ -20,8 +20,19 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
+# set(Python_ADDITIONAL_VERSIONS xxx xxx)
+find_package(PythonInterp 2.7 EXACT REQUIRED)
+#message(FATAL_ERROR "PYTHON_VERSION_MAJOR: ${PYTHON_VERSION_MAJOR}")
+
 # Compiler flags
-if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+if (MINGW)
+    # ToDo: check whats needed here (jed)
+    #add_definitions( "-D_CRT_SECURE_NO_WARNINGS -wd4005 -wd4996 -wd4305 -wd4244 -nologo" )
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fvisibility=hidden -DNDEBUG")
+	# my stuff during debug (jed)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wfatal-errors -static")
+    # set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -fno-omit-frame-pointer")
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     # Disable some of the bullshit warnings MSVC wants to barf
     add_definitions( "-W3 -D_CRT_SECURE_NO_WARNINGS -wd4005 -wd4996 -wd4305 -wd4244 -nologo" )
 else()
@@ -117,7 +128,7 @@ function(build_shader)
         target_link_libraries(${SHADER} ai)
         set_target_properties(${SHADER} PROPERTIES PREFIX "")
 
-        add_custom_command(OUTPUT ${MTD} COMMAND python ARGS ${CMAKE_SOURCE_DIR}/uigen.py ${UI} ${MTD} ${AE} ${AEXML} ${NEXML} ${SPDL} ${KARGS} ${CMAKE_CURRENT_BINARY_DIR} ${HTML} DEPENDS ${UI})
+        add_custom_command(OUTPUT ${MTD} COMMAND ${PYTHON_EXECUTABLE} ARGS ${CMAKE_SOURCE_DIR}/uigen.py ${UI} ${MTD} ${AE} ${AEXML} ${NEXML} ${SPDL} ${KARGS} ${CMAKE_CURRENT_BINARY_DIR} ${HTML} DEPENDS ${UI})
         add_custom_target(${SHADER}UI ALL DEPENDS ${MTD})
 
         install(TARGETS ${SHADER} DESTINATION ${DSO_INSTALL_DIR})

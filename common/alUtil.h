@@ -13,6 +13,13 @@
 
 #define IMPORTANCE_EPS 1e-5f
 
+/*inline void AiV3Create(AtVector& vout, float x, float y, float z)
+{
+    vout.x = x;
+    vout.y = y;
+    vout.z = z;
+}*/
+
 inline AtRGB rgb(float f)
 {
     AtRGB c;
