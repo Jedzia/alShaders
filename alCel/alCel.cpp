@@ -308,9 +308,9 @@ node_update
 {
     ShaderData* shaderData = (ShaderData*)AiNodeGetLocalData(node);
 
-    shaderData->aov_direct_diffuse_cel = params[p_aov_direct_diffuse_cel].STR;
-    shaderData->aov_direct_diffuse_raw_cel = params[p_aov_direct_diffuse_raw_cel].STR;
-    shaderData->aov_indirect_diffuse_cel = params[p_aov_indirect_diffuse_cel].STR;
+//    shaderData->aov_direct_diffuse_cel = params[p_aov_direct_diffuse_cel].STR;
+//    shaderData->aov_direct_diffuse_raw_cel = params[p_aov_direct_diffuse_raw_cel].STR;
+//    shaderData->aov_indirect_diffuse_cel = params[p_aov_indirect_diffuse_cel].STR;
 
     AiAOVRegister(shaderData->aov_direct_diffuse_cel.c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
     AiAOVRegister(shaderData->aov_direct_diffuse_raw_cel.c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
@@ -327,7 +327,15 @@ shader_evaluate
 {
     ShaderData* shaderData = (ShaderData*)AiNodeGetLocalData(node);
 
-    sg->out_opacity = AI_RGB_WHITE;
+    // old
+    //sg->out_opacity = AI_RGB_WHITE;
+
+    // new (jed)
+    AtRGB opacity = AI_RGB_WHITE;
+    AtClosureList closures;
+    closures.add(AiOrenNayarBSDF(sg, AI_RGB_WHITE, sg->Nf));
+    closures *= opacity;
+    sg->out.CLOSURE() = closures;
 
     // pull on the connected surface shader
     AtRGB result = AiShaderEvalParamRGB(p_surfaceShader);
@@ -352,10 +360,10 @@ shader_evaluate
             AtRGB direct_specular = AI_RGB_BLACK;
             AtRGB indirect_diffuse = AI_RGB_BLACK;
             //AiAOVGetRGB(sg, "direct_diffuse_raw", direct_diffuse_raw);
-            AiStateGetMsgRGB("als_diffuse_color", &diffuse_color);
-            AiStateGetMsgRGB("als_direct_diffuse_raw", &direct_diffuse_raw);
-            AiStateGetMsgRGB("als_direct_specular", &direct_specular);
-            AiStateGetMsgRGB("als_indirect_diffuse", &indirect_diffuse);
+            AiStateGetMsgRGB(AtString("als_diffuse_color"), &diffuse_color);
+            AiStateGetMsgRGB(AtString("als_direct_diffuse_raw"), &direct_diffuse_raw);
+            AiStateGetMsgRGB(AtString("als_direct_specular"), &direct_specular);
+            AiStateGetMsgRGB(AtString("als_indirect_diffuse"), &indirect_diffuse);
 
             // remap and clamp it
             float diffuseDirectStrength = AiShaderEvalParamFlt(p_diffuseDirectStrength);
