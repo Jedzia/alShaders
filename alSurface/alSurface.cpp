@@ -1090,67 +1090,67 @@ shader_evaluate
       switch (data->debug)
       {
       case DB_diffuseStrength:
-         result = AiColor(AiShaderEvalParamFlt(p_diffuseStrength));
+         result = AtRGB(AiShaderEvalParamFlt(p_diffuseStrength));
          break;
       case DB_diffuseColor:
          result = AiShaderEvalParamRGB(p_diffuseColor);
          break;
       case DB_diffuseRoughness:
-         result = AiColor(AiShaderEvalParamFlt(p_diffuseRoughness));
+         result = AtRGB(AiShaderEvalParamFlt(p_diffuseRoughness));
          break;
       case DB_backlightStrength:
-         result = AiColor(AiShaderEvalParamFlt(p_backlightStrength));
+         result = AtRGB(AiShaderEvalParamFlt(p_backlightStrength));
          break;
       case DB_backlightColor:
          result = AiShaderEvalParamRGB(p_backlightColor);
          break;
       case DB_sssMix:
-         result = AiColor(AiShaderEvalParamFlt(p_sssMix));
+         result = AtRGB(AiShaderEvalParamFlt(p_sssMix));
          break;
       case DB_sssWeight1:
-         result = AiColor(AiShaderEvalParamFlt(p_sssWeight1));
+         result = AtRGB(AiShaderEvalParamFlt(p_sssWeight1));
          break;
       case DB_sssColor1:
          result = AiShaderEvalParamRGB(p_sssRadiusColor);
          break;
       case DB_sssWeight2:
-         result = AiColor(AiShaderEvalParamFlt(p_sssWeight2));
+         result = AtRGB(AiShaderEvalParamFlt(p_sssWeight2));
          break;
       case DB_sssColor2:
          result = AiShaderEvalParamRGB(p_sssRadiusColor2);
          break;
       case DB_sssWeight3:
-         result = AiColor(AiShaderEvalParamFlt(p_sssWeight3));
+         result = AtRGB(AiShaderEvalParamFlt(p_sssWeight3));
          break;
       case DB_sssColor3:
          result = AiShaderEvalParamRGB(p_sssRadiusColor3);
          break;
       case DB_specular1Strength:
-         result = AiColor(AiShaderEvalParamFlt(p_specular1Strength));
+         result = AtRGB(AiShaderEvalParamFlt(p_specular1Strength));
          break;
       case DB_specular1Color:
          result = AiShaderEvalParamRGB(p_specular1Color);
          break;
       case DB_specular1Roughness:
-         result = AiColor(AiShaderEvalParamFlt(p_specular1Roughness));
+         result = AtRGB(AiShaderEvalParamFlt(p_specular1Roughness));
          break;
       case DB_specular2Strength:
-         result = AiColor(AiShaderEvalParamFlt(p_specular2Strength));
+         result = AtRGB(AiShaderEvalParamFlt(p_specular2Strength));
          break;
       case DB_specular2Color:
          result = AiShaderEvalParamRGB(p_specular2Color);
          break;
       case DB_specular2Roughness:
-         result = AiColor(AiShaderEvalParamFlt(p_specular2Roughness));
+         result = AtRGB(AiShaderEvalParamFlt(p_specular2Roughness));
          break;
       case DB_transmissionStrength:
-         result = AiColor(AiShaderEvalParamFlt(p_transmissionStrength));
+         result = AtRGB(AiShaderEvalParamFlt(p_transmissionStrength));
          break;
       case DB_transmissionColor:
          result = AiShaderEvalParamRGB(p_transmissionColor);
          break;
       case DB_transmissionRoughness:
-         result = AiColor(AiShaderEvalParamFlt(p_transmissionRoughness));
+         result = AtRGB(AiShaderEvalParamFlt(p_transmissionRoughness));
          break;
       }
 

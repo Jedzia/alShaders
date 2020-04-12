@@ -119,7 +119,7 @@ shader_evaluate
         v1 = aivec(input1.r, input1.g, input1.b);
         v2 = aivec(input2.r, input2.g, input2.b);
         d = AiV3Dot(v1, v2);
-        f = AiColor(d, d, d);
+        f = AtRGB(d, d, d);
         break;
    case CO_DISTANCE:
         input1 = AiShaderEvalParamRGB(p_input1);
@@ -127,7 +127,7 @@ shader_evaluate
         v1 = aivec(input1.r, input1.g, input1.b);
         v2 = aivec(input2.r, input2.g, input2.b);
         d = AiV3Length(v2 - v1);
-        f = AiColor(d, d, d);
+        f = AtRGB(d, d, d);
         break;
    case CO_CROSS:
         input1 = AiShaderEvalParamRGB(p_input1);
@@ -135,7 +135,7 @@ shader_evaluate
         v1 = aivec(input1.r, input1.g, input1.b);
         v2 = aivec(input2.r, input2.g, input2.b);
         v = AiV3Cross(v1, v2);
-        f = AiColor(v.x, v.y, v.z);
+        f = AtRGB(v.x, v.y, v.z);
         break;
 	default:
 		f = input1;

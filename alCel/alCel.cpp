@@ -384,7 +384,7 @@ shader_evaluate
             if (diffuseIndirectSaturation != 1.0f)
             {
                 float lum = luminance(indirect_diffuse);
-                indirect_diffuse = lerp(AiColor(lum), indirect_diffuse, diffuseIndirectSaturation);
+                indirect_diffuse = lerp(AtRGB(lum), indirect_diffuse, diffuseIndirectSaturation);
             }
 
             indirect_diffuse *= diffuseIndirectStrength * diffuseIndirectTint;
