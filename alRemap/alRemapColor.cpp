@@ -106,7 +106,7 @@ shader_evaluate
 			result = lerp(input, result, mask);
 		}
 	}
-	sg->out.RGB = result;
+	sg->out.RGB() = result;
 }
 
 

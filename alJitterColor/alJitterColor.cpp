@@ -100,5 +100,5 @@ shader_evaluate
         result = AiColorClamp(result, 0.f, 1.f);
     }
 
-    sg->out.RGB = result;
+    sg->out.RGB() = result;
 }

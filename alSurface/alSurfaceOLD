@@ -1693,7 +1693,7 @@ shader_evaluate
 
     // Sum final result from temporaries
     //
-    sg->out.RGB =    result_diffuseDirect
+    sg->out.RGB() =    result_diffuseDirect
                     +result_backlightDirect
                     +result_sss
                     +result_glossyDirect

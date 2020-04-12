@@ -343,7 +343,7 @@ shader_evaluate
       }
    }
 
-   sg->out.RGB = result;
+   sg->out.RGB() = result;
    sg->out_opacity = result_opacity;
 
    data->cryptomatte->do_cryptomattes(sg, node, -1, -1, -1);

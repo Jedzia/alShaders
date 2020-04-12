@@ -1558,7 +1558,7 @@ struct HairBsdf
             }            
         }
 
-        sg->out.RGB =   result_R_direct +
+        sg->out.RGB() =   result_R_direct +
                         result_R_indirect +
                         result_TT_direct +
                         result_TT_indirect +
@@ -1849,7 +1849,7 @@ shader_evaluate
     // early out if we're a hair-hair glossy ray and the ray depth says we should be calculating dual scattering only
     if (sg->Rr_gloss > data->dual_depth && als_raytype == ALS_RAY_HAIR) 
     {
-        sg->out.RGB = AI_RGB_BLACK;
+        sg->out.RGB() = AI_RGB_BLACK;
         return;
     }
     

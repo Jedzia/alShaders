@@ -52,7 +52,7 @@ shader_evaluate
 {
    CryptomatteData *cryptomatte = (CryptomatteData*) AiNodeGetLocalData(node);
    
-   sg->out.RGB = AiShaderEvalParamRGB(p_passthrough);
+   sg->out.RGB() = AiShaderEvalParamRGB(p_passthrough);
    
    cryptomatte->do_cryptomattes(sg, node,
                                 p_crypto_asset_override,

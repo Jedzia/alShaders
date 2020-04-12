@@ -1154,7 +1154,7 @@ shader_evaluate
          break;
       }
 
-      sg->out.RGB = result;
+      sg->out.RGB() = result;
       sg->out_opacity = AI_RGB_WHITE;
       return;
    }
@@ -1435,7 +1435,7 @@ shader_evaluate
 
    if (maxh(opacity) < IMPORTANCE_EPS)
    {
-      sg->out.RGB = AI_RGB_BLACK;
+      sg->out.RGB() = AI_RGB_BLACK;
       sg->out_opacity = AI_RGB_BLACK;
    }
    sg->out_opacity = opacity;
@@ -3571,7 +3571,7 @@ shader_evaluate
 
    // Sum final result from temporaries
    //
-   sg->out.RGB = result_diffuseDirect + result_backlightDirect + result_sss +
+   sg->out.RGB() = result_diffuseDirect + result_backlightDirect + result_sss +
                  result_glossyDirect + result_glossy2Direct +
                  result_diffuseIndirect + result_backlightIndirect +
                  result_glossyIndirect + result_glossy2Indirect + result_ss +

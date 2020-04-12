@@ -84,8 +84,6 @@ node_update
 
 }
 
-
-
 shader_evaluate
 {
 	float temperature = AiShaderEvalParamFlt(p_temperature);
@@ -104,7 +102,7 @@ shader_evaluate
 		result *= lerp(1.0f, pow(temperature, 4) * 5.67e-8 * powf(2.0f, exposure), physicalIntensity);
 	}
 
-	sg->out.RGB = result * strength ;
+	sg->out.RGB() = result * strength ;
 }
 
 

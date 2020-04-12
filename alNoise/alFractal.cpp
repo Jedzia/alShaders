@@ -178,7 +178,7 @@ shader_evaluate
 		RemapFloat r = REMAP_FLOAT_CREATE;
 		n = r.remap(n);
 
-		sg->out.RGB = AiColorLerp(n, color1, color2);
+		sg->out.RGB() = AiColorLerp(n, color1, color2);
 	}
 	else
 	{
@@ -203,7 +203,7 @@ shader_evaluate
         n.g = r.remap(n.g);
         n.b = r.remap(n.b);
 
-		sg->out.RGB = n;
+		sg->out.RGB() = n;
 	}
 }
 

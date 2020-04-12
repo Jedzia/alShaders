@@ -161,7 +161,7 @@ shader_evaluate
 	RemapFloat r = REMAP_FLOAT_CREATE;
 	result = r.remap(result);
 
-	sg->out.RGB = AiColorLerp(result, color1, color2);
+	sg->out.RGB() = AiColorLerp(result, color1, color2);
 }
 
 

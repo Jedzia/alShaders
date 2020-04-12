@@ -78,7 +78,7 @@ shader_evaluate
 		break;
 	}
 
-	sg->out.RGB = result;
+	sg->out.RGB() = result;
 }
 
 

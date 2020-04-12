@@ -572,7 +572,7 @@ shader_evaluate
             result = AI_RGBA_BLUE;
             break;
     }
-    sg->out.RGB = lerp(input, result.rgb(), result.a);
+    sg->out.RGB() = lerp(input, result.rgb(), result.a);
 
 		// clean up after ourselves
 	SGC.restoreSG(sg);

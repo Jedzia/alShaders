@@ -220,7 +220,7 @@ shader_evaluate
 		}
 	}
 
-	sg->out.RGB = lerp(color1, color2, result);
+	sg->out.RGB() = lerp(color1, color2, result);
 	AiShaderGlobalsDestroy(hitpoint);	
 }
 

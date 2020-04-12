@@ -390,7 +390,7 @@ shader_evaluate
 
     }
 
-    sg->out.RGB = result;
+    sg->out.RGB() = result;
 }
 
 

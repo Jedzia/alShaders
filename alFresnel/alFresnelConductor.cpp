@@ -70,5 +70,5 @@ shader_evaluate
 	FresnelConductor fr(material, r, g);
    AiStateSetMsgRGB("als_fr_r", fr._r);
    AiStateSetMsgRGB("als_fr_g", fr._g);
-	sg->out.RGB = fr.kr(AiV3Dot(-sg->Rd, sg->Nf));
+	sg->out.RGB() = fr.kr(AiV3Dot(-sg->Rd, sg->Nf));
 }

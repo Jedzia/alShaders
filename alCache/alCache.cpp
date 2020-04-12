@@ -79,7 +79,7 @@ shader_evaluate
     NodeResultCache *cache = reinterpret_cast<NodeResultCache*>(AiNodeGetLocalData(node));
     if (!cache)
     {
-        sg->out.RGB = AiShaderEvalParamRGB(p_input);
+        sg->out.RGB() = AiShaderEvalParamRGB(p_input);
         return;
     }
 
@@ -92,7 +92,7 @@ shader_evaluate
         entry.m_u == sg->u &&
         entry.m_v == sg->v)
     {
-        sg->out.RGB = entry.m_color;
+        sg->out.RGB() = entry.m_color;
         return;
     }
 
@@ -106,7 +106,7 @@ shader_evaluate
 
     // cache off the actual result (evaluate the connected network)
     entry.m_color = AiShaderEvalParamRGB(p_input);
-    sg->out.RGB = entry.m_color;
+    sg->out.RGB() = entry.m_color;
 }
 
 

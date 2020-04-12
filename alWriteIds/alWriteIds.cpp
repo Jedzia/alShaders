@@ -145,7 +145,7 @@ node_finish // static void Finish(AtNode* node)
 
 shader_evaluate // static void Evaluate(AtNode* node, AtShaderGlobals* sg)
 {
-    sg->out.RGB = AiShaderEvalParamRGB(p_passthrough);
+    sg->out.RGB() = AiShaderEvalParamRGB(p_passthrough);
     if (!(sg->Rt & AI_RAY_CAMERA)) { return; }
     ShaderData* data = reinterpret_cast<ShaderData*>(AiNodeGetLocalData(node));
     writeIdsToFloatAOVs(sg, data);
