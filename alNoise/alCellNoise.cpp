@@ -190,7 +190,7 @@ shader_evaluate
 	AtRGB chipColor4 = AiShaderEvalParamRGB(p_chipColor4);
 	AtRGB chipColor5 = AiShaderEvalParamRGB(p_chipColor5);
 
-	AtPoint Pin = AiShaderEvalParamPnt(p_P);
+	AtPoint Pin = AiShaderEvalParamVec(p_P);
 
 	// choose what space we want to calculate in
 	AtPoint P;
@@ -211,7 +211,7 @@ shader_evaluate
 			P.z = 0.0f;
 			break;
 		case NS_PREF:
-			if (!AiUDataGetPnt("Pref", &P))
+			if (!AiUDataGetVec(AtString("Pref"), P))
 				P = sg->Po;
 			break;
 		default:

@@ -611,7 +611,7 @@ shader_evaluate
     AtPoint P;
     if (AiNodeIsLinked(node, "P"))
     {
-        AtPoint Pin = AiShaderEvalParamPnt(p_P);
+        AtPoint Pin = AiShaderEvalParamVec(p_P);
         P = Pin;
     }
     else
@@ -627,7 +627,7 @@ shader_evaluate
             P.z = 0.0f;
             break;
         case NS_PREF:
-            if (!AiUDataGetPnt("Pref", &P))
+            if (!AiUDataGetVec(AtString("Pref"), P))
                 P = sg->Po;
             break;
         default:

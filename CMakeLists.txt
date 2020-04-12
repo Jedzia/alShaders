@@ -92,8 +92,8 @@ set(SUBDIRECTORIES
         alRemap
         alCombine
 #        alNoise
-# NEXT #        alLayer
-#        alPattern
+#        alLayer
+        alPattern
 #        alCurvature
 #        alBlackbody
         alInputVector

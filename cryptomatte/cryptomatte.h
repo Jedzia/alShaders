@@ -943,6 +943,9 @@ private:
         }
         AtColor nsp_hash_clr, obj_hash_clr, mat_hash_clr;
 
+        /* exchange? (jed) AtString nsp_override = (p_override_asset > -1) ? AiShaderEvalParamStr(p_override_asset) : "";
+        AtString obj_override = (p_override_object > -1) ? AiShaderEvalParamStr(p_override_object) : "";
+        AtString mat_override = (p_override_material > -1) ? AiShaderEvalParamStr(p_override_material) : "";*/
         const char * nsp_override = (p_override_asset > -1) ? AiShaderEvalParamStr(p_override_asset) : "";
         const char * obj_override = (p_override_object > -1) ? AiShaderEvalParamStr(p_override_object) : "";
         const char * mat_override = (p_override_material > -1) ? AiShaderEvalParamStr(p_override_material) : "";

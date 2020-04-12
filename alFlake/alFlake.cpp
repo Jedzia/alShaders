@@ -74,7 +74,7 @@ shader_evaluate
    AtPoint P = sg->P;
    if (AiNodeIsLinked(node, "P"))
    {
-      P = AiShaderEvalParamPnt(p_P);
+      P = AiShaderEvalParamVec(p_P);
    }
 
    P /= size;
