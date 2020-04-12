@@ -62,9 +62,9 @@ struct ShaderData
     AtArray* diffuseColors;
     RampInterpolationType      diffuseInterp;
     */
-    std::string aov_direct_diffuse_cel;
-    std::string aov_direct_diffuse_raw_cel;
-    std::string aov_indirect_diffuse_cel;
+    AtString aov_direct_diffuse_cel;
+    AtString aov_direct_diffuse_raw_cel;
+    AtString aov_indirect_diffuse_cel;
 };
 
 node_initialize
@@ -389,9 +389,9 @@ shader_evaluate
 
             indirect_diffuse *= diffuseIndirectStrength * diffuseIndirectTint;
 
-            AiAOVSetRGB(sg, shaderData->aov_direct_diffuse_cel.c_str(), direct_diffuse);
-            AiAOVSetRGB(sg, shaderData->aov_direct_diffuse_raw_cel.c_str(), direct_diffuse_raw);
-            AiAOVSetRGB(sg, shaderData->aov_indirect_diffuse_cel.c_str(), indirect_diffuse);
+            AiAOVSetRGB(sg, shaderData->aov_direct_diffuse_cel, direct_diffuse);
+            AiAOVSetRGB(sg, shaderData->aov_direct_diffuse_raw_cel, direct_diffuse_raw);
+            AiAOVSetRGB(sg, shaderData->aov_indirect_diffuse_cel, indirect_diffuse);
 
             result = direct_diffuse + indirect_diffuse + direct_specular;
         }
