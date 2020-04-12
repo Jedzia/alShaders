@@ -232,7 +232,7 @@ shader_evaluate
 
    if (debug == kMixer)
    {
-      result = AiColorCreate(mix, mix, mix);
+      result = AtRGB(mix, mix, mix);
    }
    else
    {

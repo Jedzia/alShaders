@@ -1621,9 +1621,9 @@ shader_evaluate
             }
 
             // write data AOVs
-            AtRGB uv = AiColorCreate(sg->u, sg->v, 0.0f);
+            AtRGB uv = AtRGB(sg->u, sg->v, 0.0f);
             AiAOVSetRGB(sg, data->aovs[k_uv].c_str(), uv);
-            AtRGB depth = AiColorCreate(float(sg->Rl), AiV3Dot(sg->Nf, wo), 0.0f);
+            AtRGB depth = AtRGB(float(sg->Rl), AiV3Dot(sg->Nf, wo), 0.0f);
             AiAOVSetRGB(sg, data->aovs[k_depth].c_str(), depth);
         }
     }

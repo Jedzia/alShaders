@@ -10,15 +10,17 @@
 #include <cfloat>
 
 #include <ai.h>
+#include <ai_deprecated.h>
 
 #define IMPORTANCE_EPS 1e-5f
 
-/*inline void AiV3Create(AtVector& vout, float x, float y, float z)
+// ToDoJed: check this change, maybe with the new api we should create AtVector per ctor.
+inline void AiV3Create(AtVector& vout, float x, float y, float z)
 {
     vout.x = x;
     vout.y = y;
     vout.z = z;
-}*/
+}
 
 inline AtRGB rgb(float f)
 {
@@ -269,11 +271,11 @@ inline AtVector uniformSampleSphere(float u1, float u2)
 
 inline AtVector uniformSampleHemisphere(float u1, float u2) {
     float y = u1;
-    float r = sqrtf(MAX(0.f, 1.f - y*y));
+    float r = sqrtf(std::max(0.f, 1.f - y*y));
     float phi = 2 * AI_PI * u2;
     float x = r * cosf(phi);
     float z = r * sinf(phi);
-    return AiVector(x, y, z);
+    return AtVector(x, y, z);
 }
 
 inline float uniformConePdf(float cosThetaMax) 
@@ -347,7 +349,7 @@ inline float fresnel(float cosi, float etai)
 
 inline float powerHeuristic(float fp, float gp)
 {
-    return SQR(fp) / (SQR(fp)+SQR(gp));
+    return std::sqrt(fp) / (std::sqrt(fp)+std::sqrt(gp));
 }
 
 // Stolen wholesale from OSL:
@@ -436,9 +438,9 @@ inline AtRGB exp(AtRGB c)
 
 inline AtRGB fast_exp(AtRGB c)
 {
-    c.r = fast_exp(c.r);
-    c.g = fast_exp(c.g);
-    c.b = fast_exp(c.b);
+    c.r = AiFastExp(c.r);
+    c.g = AiFastExp(c.g);
+    c.b = AiFastExp(c.b);
     return c;
 }
 
@@ -478,12 +480,9 @@ inline float contrast(float input, float contrast, float pivot)
 inline AtRGB contrast(const AtRGB& input, float contrast, float pivot)
 {
     if (contrast == 1.0f) return input;
-
-    return AiColorCreate(
-        (input.r-pivot)*contrast + pivot,
-        (input.g-pivot)*contrast + pivot,
-        (input.b-pivot)*contrast + pivot
-    );
+    return AtRGB((input.r-pivot)*contrast + pivot,
+            (input.g-pivot)*contrast + pivot,
+            (input.b-pivot)*contrast + pivot);
 }
 
 inline float bias(float f, float b)
@@ -531,7 +530,7 @@ inline AtRGB rgb2hsv (AtRGB rgb)
         if (h < 0)
             h += 1;
     }
-    return AiColorCreate(h, s, v);
+    return AtRGB(h, s, v);
 }
 
 // Adapted from OSL. See copyright notice above.
@@ -543,7 +542,7 @@ inline AtRGB hsv2rgb (const AtRGB& hsv)
 
     if (s < 0.0001f)
     {
-        return AiColorCreate(v, v, v);
+        return AtRGB(v, v, v);
     }
     else
     {
@@ -555,12 +554,12 @@ inline AtRGB hsv2rgb (const AtRGB& hsv)
         float t = v * (1.0f-s*(1.0f-f));
         switch (hi)
         {
-        case 0 : return AiColorCreate (v, t, p);
-        case 1 : return AiColorCreate (q, v, p);
-        case 2 : return AiColorCreate (p, v, t);
-        case 3 : return AiColorCreate (p, q, v);
-        case 4 : return AiColorCreate (t, p, v);
-        default: return AiColorCreate (v, p, q);
+        case 0 : return AtRGB (v, t, p);
+        case 1 : return AtRGB (q, v, p);
+        case 2 : return AtRGB (p, v, t);
+        case 3 : return AtRGB (p, q, v);
+        case 4 : return AtRGB (t, p, v);
+        default: return AtRGB (v, p, q);
         }
     }
 }

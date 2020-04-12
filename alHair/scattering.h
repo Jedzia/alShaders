@@ -43,7 +43,7 @@ inline float g(float beta, float alpha, float theta_h)
 
 inline AtRGB g(AtRGB beta, AtRGB alpha, AtRGB theta_h)
 {
-    return AiColorCreate(
+    return AtRGB(
         g(beta.r, alpha.r, theta_h.r),
         g(beta.g, alpha.g, theta_h.g),
         g(beta.b, alpha.b, theta_h.b)
