@@ -91,7 +91,7 @@ shader_evaluate
 	if (data->ok)
 	{
 		AtVector U, V;
-		AiBuildLocalFramePolar(&U, &V, &sg->Nf);
+        AiV3BuildLocalFramePolar(U, V, sg->Nf);
 		AtVector wo = -sg->Rd;
 		float theta_out = acosf(AiV3Dot(wo, sg->Nf));
 		float phi_out = sphericalPhi(wo, U, V);

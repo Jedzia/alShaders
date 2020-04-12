@@ -1260,7 +1260,7 @@ shader_evaluate
 
    // build a local frame for sampling
    AtVector U, V;
-   if (!AiV3IsSmall(sg->dPdu) && AiV3Exists(sg->dPdu))
+   if (!AiV3IsSmall(sg->dPdu) && AiV3IsFinite(sg->dPdu))
    {
       // we have valid a valid dPdu derivative, construct V
       AtVector Utmp = AiV3Normalize(sg->dPdu);
@@ -1269,7 +1269,7 @@ shader_evaluate
    }
    else
    {
-      AiBuildLocalFramePolar(&U, &V, &sg->Nf);
+      AiV3BuildLocalFramePolar(U, V, sg->Nf);
    }
 
    // if this is a camera ray, prepare the temporary storage for deep groups
@@ -1584,7 +1584,7 @@ shader_evaluate
 
    if (specular1Normal != sg->Nf)
    {
-      if (!AiV3IsSmall(sg->dPdu) && AiV3Exists(sg->dPdu))
+      if (!AiV3IsSmall(sg->dPdu) && AiV3IsFinite(sg->dPdu))
       {
          // we have valid a valid dPdu derivative, construct V
          AtVector Utmp = AiV3Normalize(sg->dPdu);
@@ -1593,13 +1593,13 @@ shader_evaluate
       }
       else
       {
-         AiBuildLocalFramePolar(&U1, &V1, &specular1Normal);
+         AiV3BuildLocalFramePolar(U1, V1, specular1Normal);
       }
    }
 
    if (specular2Normal != sg->Nf)
    {
-      if (!AiV3IsSmall(sg->dPdu) && AiV3Exists(sg->dPdu))
+      if (!AiV3IsSmall(sg->dPdu) && AiV3IsFinite(sg->dPdu))
       {
          // we have valid a valid dPdu derivative, construct V
          AtVector Utmp = AiV3Normalize(sg->dPdu);
@@ -1608,7 +1608,7 @@ shader_evaluate
       }
       else
       {
-         AiBuildLocalFramePolar(&U2, &V2, &specular2Normal);
+         AiV3BuildLocalFramePolar(U2, V2, specular2Normal);
       }
    }
 
@@ -2841,7 +2841,7 @@ shader_evaluate
          tir = false;
          if (AiV3Dot(sg->N, sg->Rd) > 0.0f) t_eta = 1.0f / t_eta;
          AtVector U, V;
-         AiBuildLocalFramePolar(&U, &V, &sg->N);
+         AiV3BuildLocalFramePolar(U, V, sg->N);
          MicrofacetTransmission* mft = MicrofacetTransmission::create(
              sg, transmissionRoughness, transmissionRoughness, t_eta, sg->Nf, U,
              V);

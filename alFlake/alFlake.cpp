@@ -103,7 +103,7 @@ shader_evaluate
    {
       // build a local tangent frame to transform the normals
       AtVector U, V;
-      if (!AiV3IsSmall(sg->dPdu) && AiV3Exists(sg->dPdu))
+      if (!AiV3IsSmall(sg->dPdu) && AiV3IsFinite(sg->dPdu))
       {
         // we have valid a valid dPdu derivative, construct V 
         AtVector Utmp = AiV3Normalize(sg->dPdu);
@@ -112,7 +112,7 @@ shader_evaluate
       }
       else
       {
-        AiBuildLocalFramePolar(&U, &V, &sg->Nf);
+          AiV3BuildLocalFramePolar(U, V, sg->Nf);
       }
 
       sg->out.VEC() = U * result.x + V * result.y + sg->Nf * result.z;

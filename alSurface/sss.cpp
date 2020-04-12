@@ -293,7 +293,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
 
 {
     AtVector U, V;
-    AiBuildLocalFrameShirley(&U, &V, &sg->Ng);
+    AiV3BuildLocalFrame(U, V, sg->Ng);
 
     numComponents = std::min(numComponents, SSS_MAX_PROFILES);
     float l = 0.0f;

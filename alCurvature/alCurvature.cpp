@@ -116,7 +116,7 @@ shader_evaluate
 	
 	// build a local frame for sampling
 	AtVector U, V;
-	AiBuildLocalFrameShirley(&U, &V, &sg->N);
+	AiV3BuildLocalFrame(U, V, sg->N);
 	
 	AtSamplerIterator* sampit = AiSamplerIterator(data->sampler, sg);
 	AtRay ray;

@@ -104,7 +104,7 @@ set(SUBDIRECTORIES
         alJitterColor
         alCache
         alCel
-#        alFlake
+        alFlake
 #        cryptomatte
         common
 )

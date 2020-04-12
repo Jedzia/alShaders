@@ -679,7 +679,7 @@ shader_evaluate
 
     // build a local frame for sampling
     AtVector U, V;
-    AiBuildLocalFramePolar(&U, &V, &sg->N);
+    AiV3BuildLocalFramePolar(U, V, sg->N);
 
     // View direction, omega_o
     AtVector wo = -sg->Rd;
