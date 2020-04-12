@@ -67,7 +67,7 @@ node_update
 shader_evaluate
 {
    int input = AiShaderEvalParamInt(p_input);
-   const char* userName = AiShaderEvalParamStr(p_userName);
+   AtString userName = AiShaderEvalParamStr(p_userName);
    float result = 0.0f;
 
    // first select the input vector to use
@@ -89,7 +89,7 @@ shader_evaluate
        result = float(sg->bounces);
       break;
    case IN_USER:
-      AiUDataGetFlt(userName, &result);
+      AiUDataGetFlt(userName, result);
       break;
    default:
       break;
