@@ -17,7 +17,7 @@ struct ShaderData
     WriteIdsForAtStringsToFloatAOVsFunc writeIdsFunc;
 };
 
-void writeAtUInt64IdForAtStringToFloatAOVs(AtUInt64 id64,
+void writeAtUInt64IdForAtStringToFloatAOVs(uint64_t id64,
                                            const AtString str,
                                            AtShaderGlobals* sg,
                                            const ShaderData* data)
@@ -50,8 +50,8 @@ void writeIdsFromShaderNodeNameAtStringHashes(AtShaderGlobals* sg, const ShaderD
         if (AiNodeEntryGetType(AiNodeGetNodeEntry(shaderNode)) == AI_NODE_SHADER)
         {
             const AtString shaderName = AiNodeGetStr(shaderNode, nameParamName);
-            assert(sizeof(AtUInt64) == sizeof(size_t));
-            AtUInt64 id = (AtUInt64) shaderName.hash();
+            assert(sizeof(uint64_t) == sizeof(size_t));
+            uint64_t id = (uint64_t) shaderName.hash();
             writeAtUInt64IdForAtStringToFloatAOVs(id, shaderName, sg, data);
         }
     }
@@ -60,8 +60,8 @@ void writeIdsFromShaderNodeNameAtStringHashes(AtShaderGlobals* sg, const ShaderD
 void writeIdFromShapeNodeNameAtStringHash(AtShaderGlobals* sg,const ShaderData* data)
 {
     const AtString shapeName = AiNodeGetStr(sg->Op, nameParamName);
-    assert(sizeof(AtUInt64) == sizeof(size_t));
-    AtUInt64 id = (AtUInt64) shapeName.hash();
+    assert(sizeof(uint64_t) == sizeof(size_t));
+    uint64_t id = (uint64_t) shapeName.hash();
     writeAtUInt64IdForAtStringToFloatAOVs(id, shapeName, sg, data);
 }
 
@@ -69,8 +69,8 @@ void writeIdFromProceduralNodeNameAtStringHash(AtShaderGlobals* sg, const Shader
 {
     if (sg->proc == NULL) { return; } // There may or may not be a procedural node
     const AtString procName = AiNodeGetStr(sg->proc, nameParamName);
-    assert(sizeof(AtUInt64) == sizeof(size_t));
-    AtUInt64 id = (AtUInt64) procName.hash();
+    assert(sizeof(uint64_t) == sizeof(size_t));
+    uint64_t id = (uint64_t) procName.hash();
     writeAtUInt64IdForAtStringToFloatAOVs(id, procName, sg, data);
 }
 

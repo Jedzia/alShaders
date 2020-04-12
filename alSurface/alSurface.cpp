@@ -1388,9 +1388,9 @@ shader_evaluate
                   if (doExtinction)
                   {
                      float z = AiV3Dist(sg->P, alsPreviousIntersection);
-                     outOpacity.r = fast_exp(-z * als_sigma_t.r);
-                     outOpacity.g = fast_exp(-z * als_sigma_t.g);
-                     outOpacity.b = fast_exp(-z * als_sigma_t.b);
+                     outOpacity.r = AiFastExp(-z * als_sigma_t.r);
+                     outOpacity.g = AiFastExp(-z * als_sigma_t.g);
+                     outOpacity.b = AiFastExp(-z * als_sigma_t.b);
                      outOpacity = -log(outOpacity);
                   }
 
@@ -2732,9 +2732,9 @@ shader_evaluate
 
                   if (maxh(sigma_t) > 0.0f && !inside)
                   {
-                     transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                     transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                     transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                     transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                     transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                     transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                   }
 
                   AtRGB f = transmittance;
@@ -2798,9 +2798,9 @@ shader_evaluate
                 AtRGB transmittance = AI_RGB_WHITE;
                 if (maxh(sigma_t) > 0.0f && !inside)
                 {
-                  transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                  transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                  transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                  transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                  transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                  transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                 }
                 result_transmission +=
                     min(sample.color * transmittance, rgb(data->transmissionClamp));
@@ -2880,9 +2880,9 @@ shader_evaluate
                   AtRGB transmittance = AI_RGB_WHITE;
                   if (maxh(sigma_t) > 0.0f && !inside)
                   {
-                     transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                     transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                     transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                     transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                     transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                     transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                      f *= transmittance;
                   }
 

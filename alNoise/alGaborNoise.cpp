@@ -97,7 +97,7 @@ struct GaborParams
 /// @param x the position being sampled
 inline float gaborKernel(float weight, const AtVector& omega, float phi, float bandwidth, const AtVector& x)
 {
-    float g = fast_exp(-AI_PI * SQR(bandwidth) * AiV3Dot(x, x));
+    float g = AiFastExp(-AI_PI * SQR(bandwidth) * AiV3Dot(x, x));
     float h = cosf(AI_PITIMES2 * AiV3Dot(omega, x) + phi);
     return weight * g * h;
 }
@@ -105,7 +105,7 @@ inline float gaborKernel(float weight, const AtVector& omega, float phi, float b
 inline void sliceGaborKernel3d(float d, float w, float a, const AtVector& omega, float phi, float& w_s, AtVector& omega_s, float& phi_s)
 {
     // [1] eq. (6)
-    w_s = w * fast_exp(-AI_PI * SQR(a) * SQR(d));
+    w_s = w * AiFastExp(-AI_PI * SQR(a) * SQR(d));
     omega_s.x = omega.x;
     omega_s.y = omega.y;
     phi_s = phi - AI_PITIMES2 * d * omega.z;

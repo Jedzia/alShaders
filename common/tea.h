@@ -33,7 +33,7 @@ inline uint64_t sampleTEA(uint32_t v0, uint32_t v1, int rounds = 64) {
         v1 += ((v0 << 4) + 0xAD90777D) ^ (v0 + sum) ^ ((v0 >> 5) + 0x7E95761E);
     }
 
-    return ((AtUInt64) v1 << 32) + v0;
+    return ((uint64_t) v1 << 32) + v0;
 }
 
 inline float sampleTEAFloat(uint32_t v0, uint32_t v1, int rounds = 64) {

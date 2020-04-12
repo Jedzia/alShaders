@@ -23,8 +23,8 @@
 void hairAttenuation(float ior, float theta_d, float phi, float absorption, float& kfr0, float& kfr1, float& kfr2)
 {   
     kfr0 = 0.05f;
-    kfr1 = .8f * fast_exp(-absorption * HAIR_RADIUS);
-    kfr2 = .3f * fast_exp(-absorption * 2.0f * HAIR_RADIUS);
+    kfr1 = .8f * AiFastExp(-absorption * HAIR_RADIUS);
+    kfr2 = .3f * AiFastExp(-absorption * 2.0f * HAIR_RADIUS);
 }
 
 void hairAttenuation(float ior, float theta_d, float phi, const AtRGB& absorption, AtRGB kfr[3])
@@ -38,7 +38,7 @@ void hairAttenuation(float ior, float theta_d, float phi, const AtRGB& absorptio
 inline float g(float beta, float alpha, float theta_h)
 {
     float n = theta_h-alpha;
-    return fast_exp(-(n*n)/(2.0f*beta))/sqrtf(2.0f*AI_PI*beta);
+    return AiFastExp(-(n*n)/(2.0f*beta))/sqrtf(2.0f*AI_PI*beta);
 }
 
 inline AtRGB g(AtRGB beta, AtRGB alpha, AtRGB theta_h)
@@ -52,7 +52,7 @@ inline AtRGB g(AtRGB beta, AtRGB alpha, AtRGB theta_h)
 
 inline float g(float x, float v)
 {
-    return fast_exp(-SQR(x) / (2.0f*v)) / sqrtf(2.0f*AI_PI*v);
+    return AiFastExp(-SQR(x) / (2.0f*v)) / sqrtf(2.0f*AI_PI*v);
 }
 
 inline AtRGB g(AtRGB x, AtRGB v)

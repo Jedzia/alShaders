@@ -502,9 +502,9 @@ shader_evaluate
                         if (doExtinction)
                         {
                             float z = AiV3Dist(sg->P, alsPreviousIntersection);
-                            outOpacity.r = fast_exp(-z * als_sigma_t.r);
-                            outOpacity.g = fast_exp(-z * als_sigma_t.g);
-                            outOpacity.b = fast_exp(-z * als_sigma_t.b);
+                            outOpacity.r = AiFastExp(-z * als_sigma_t.r);
+                            outOpacity.g = AiFastExp(-z * als_sigma_t.g);
+                            outOpacity.b = AiFastExp(-z * als_sigma_t.b);
                             outOpacity = 1.0f - (outOpacity*kt);
                         }
 
@@ -1203,9 +1203,9 @@ shader_evaluate
                     AtRGB transmittance = AI_RGB_WHITE;
                     if (maxh(sigma_t) > 0.0f && !inside)
                     {
-                        transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                        transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                        transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                        transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                        transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                        transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                     }
                     AtRGB f = transmittance;
                     result_transmission += min(sample.color, rgb(data->transmissionClamp)) * f;
@@ -1246,9 +1246,9 @@ shader_evaluate
                     AtRGB transmittance = AI_RGB_WHITE;
                     if (maxh(sigma_t) > 0.0f && !inside)
                     {
-                        transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                        transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                        transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                        transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                        transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                        transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                     }
                     result_transmission += min(sample.color, rgb(data->transmissionClamp)) * transmittance;
                     // accumulate the lightgroup contributions calculated by the child shader
@@ -1307,7 +1307,7 @@ shader_evaluate
                     float cosThetaM2 = cosThetaM * cosThetaM;
                     float tanThetaM2 = tanThetaM * tanThetaM;
                     float cosThetaM4 = cosThetaM2 * cosThetaM2;
-                    float D = fast_exp(-tanThetaM2 / alpha2) / (float(AI_PI) * alpha2 *  cosThetaM4);
+                    float D = AiFastExp(-tanThetaM2 / alpha2) / (float(AI_PI) * alpha2 *  cosThetaM4);
                     // eq. 24
                     float pm = D * cosThetaM;
                     // eval BRDF*cosNI
@@ -1333,9 +1333,9 @@ shader_evaluate
                         AtRGB transmittance = AI_RGB_WHITE;
                         if (maxh(sigma_t) > 0.0f && !inside)
                         {
-                            transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                            transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                            transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                            transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                            transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                            transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                         }
                         AtRGB f = brdf/pdf * transmittance;
                         result_transmission += sample.color * f;
@@ -1379,9 +1379,9 @@ shader_evaluate
                         AtRGB transmittance = AI_RGB_WHITE;
                         if (maxh(sigma_t) > 0.0f && !inside)
                         {
-                            transmittance.r = fast_exp(float(-sample.z) * sigma_t.r);
-                            transmittance.g = fast_exp(float(-sample.z) * sigma_t.g);
-                            transmittance.b = fast_exp(float(-sample.z) * sigma_t.b);
+                            transmittance.r = AiFastExp(float(-sample.z) * sigma_t.r);
+                            transmittance.g = AiFastExp(float(-sample.z) * sigma_t.g);
+                            transmittance.b = AiFastExp(float(-sample.z) * sigma_t.b);
                         }
                         result_transmission += sample.color * transmittance;
                         // accumulate the lightgroup contributions calculated by the child shader

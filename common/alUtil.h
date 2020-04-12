@@ -40,6 +40,14 @@ inline AtRGBA AiRGBtoRGBA(const AtColor& c)
     return out;
 }
 
+/**
+ * Square of 'a'
+ */
+template <typename T>
+inline T SQR(T a)
+{
+    return (a * a);
+}
 // ToDoJed: end of modifications.
 
 inline AtRGB rgb(float f)
@@ -455,7 +463,7 @@ inline AtRGB exp(AtRGB c)
     c.b = expf(c.b);
     return c;
 }
-
+// ToDoJed: Fix for Porting->v5, maybe removed, as fast_exp is replaced with AiFastExp in code
 inline AtRGB fast_exp(AtRGB c)
 {
     c.r = AiFastExp(c.r);

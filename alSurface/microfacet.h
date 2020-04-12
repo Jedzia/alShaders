@@ -113,18 +113,18 @@ struct MicrofacetTransmission
       float c = erff(cot_theta);
       float k = tan_theta * INV_SQRT_PI;
       float y_approx = u1 * (1.0f + c + k * (1.0f - SQR(c)));
-      float y_exact  = u1 * (1.0f + c + k * fast_exp(-SQR(cot_theta)));
+      float y_exact  = u1 * (1.0f + c + k * AiFastExp(-SQR(cot_theta)));
       float b = k > 0.0f ? (0.5f - sqrtf(k * (k - y_approx + 1.0f) + 0.25f)) / k : y_approx - 1.0f;
 
       float inv_erf = fast_ierf(b);
-      float value = 1.0f + b + k * fast_exp(-SQR(inv_erf)) - y_exact;
+      float value = 1.0f + b + k * AiFastExp(-SQR(inv_erf)) - y_exact;
 
       AtVector2 slope;
       if (fabsf(value) > 1e-6f)
       {
          b -= value / (1.0f - inv_erf * tan_theta);
          inv_erf = fast_ierf(b);
-         value = 1.0f + b + k * fast_exp(-SQR(inv_erf)) - y_exact;
+         value = 1.0f + b + k * AiFastExp(-SQR(inv_erf)) - y_exact;
          b -= value / (1.0f - inv_erf * tan_theta);
 
          slope.x = fast_ierf(b);
@@ -185,7 +185,7 @@ struct MicrofacetTransmission
          const float sy = AiV3Dot(M, V) / (cos_theta * alpha_y);
          const float tan_theta2 = SQR(sx) + SQR(sy);
 
-         d = fast_exp(-tan_theta2) / (AI_PI * alpha_x * alpha_y * cos_theta4);
+         d = AiFastExp(-tan_theta2) / (AI_PI * alpha_x * alpha_y * cos_theta4);
          assert(AiIsFinite(d));
       }
 
