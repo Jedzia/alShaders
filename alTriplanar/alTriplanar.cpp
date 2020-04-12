@@ -354,7 +354,7 @@ bool lookupCellNoise(float u, float v, float dudx, float dudy, float dvdx, float
     float weights[3];
     float f[3];
     AtVector delta[3];
-    AtUInt32 id[3];
+    uint32_t id[3];
     AiCellular(P, samples, 1, 1.92, 1, f, delta, id);
 
     if(samples == 1){

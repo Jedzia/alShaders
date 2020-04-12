@@ -23,8 +23,8 @@
  * \return
  *     A uniformly distributed 64-bit integer
  */
-inline AtUInt64 sampleTEA(AtUInt32 v0, AtUInt32 v1, int rounds = 64) {
-    AtUInt32 sum = 0;
+inline AtUInt64 sampleTEA(uint32_t v0, uint32_t v1, int rounds = 64) {
+    uint32_t sum = 0;
 
     for (int i=0; i<rounds; ++i)
     {
@@ -36,12 +36,12 @@ inline AtUInt64 sampleTEA(AtUInt32 v0, AtUInt32 v1, int rounds = 64) {
     return ((AtUInt64) v1 << 32) + v0;
 }
 
-inline float sampleTEAFloat(AtUInt32 v0, AtUInt32 v1, int rounds = 64) {
+inline float sampleTEAFloat(uint32_t v0, uint32_t v1, int rounds = 64) {
     /* Trick from MTGP: generate an uniformly distributed
        single precision number in [1,2) and subtract 1. */
     union
     {
-        AtUInt32 u;
+        uint32_t u;
         float f;
     } x;
     x.u = ((sampleTEA(v0, v1, rounds) & 0xFFFFFFFF) >> 9) | 0x3f800000UL;

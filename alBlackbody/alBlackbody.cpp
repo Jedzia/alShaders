@@ -1,6 +1,7 @@
 #include "Color.h"
 #include "alUtil.h"
 #include <ai.h>
+#include <ai_params.h>
 
 AI_SHADER_NODE_EXPORT_METHODS(alBlackbody)
 

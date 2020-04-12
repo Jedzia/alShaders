@@ -116,9 +116,9 @@ bool SortFloatIndexArray(AtArray *a, unsigned int *shuffle)
       int tmp;
 
       bool swapped = true;
-      AtUInt32 n = a->nelements;
+      uint32_t n = a->nelements;
 
-      for (AtUInt32 i = 0; (i < n); ++i)
+      for (uint32_t i = 0; (i < n); ++i)
       {
          shuffle[i] = i;
       }
@@ -127,7 +127,7 @@ bool SortFloatIndexArray(AtArray *a, unsigned int *shuffle)
       {
          swapped = false;
          n -= 1;
-         for (AtUInt32 i = 0; (i < n); ++i)
+         for (uint32_t i = 0; (i < n); ++i)
          {
             p0 = AiArrayGetFlt(a, shuffle[i]);
             p1 = AiArrayGetFlt(a, shuffle[i + 1]);

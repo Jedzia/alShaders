@@ -80,7 +80,7 @@ shader_evaluate
    P /= size;
 
    // get a cellular id
-   AtUInt32 id;
+    uint32_t id;
    AiCellular(P, 1, 1.0f, 2.0f, 1.0f, NULL, NULL, &id);
 
    // get two random numbers based on the id

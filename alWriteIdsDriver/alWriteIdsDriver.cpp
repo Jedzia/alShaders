@@ -226,7 +226,7 @@ driver_close
             idsOutFileStream  << it->first << " ";
             for(int i = 0; i < WI_NUM_FLT_AOVS; i++)
             {
-                idsOutFileStream << *reinterpret_cast<const AtUInt32*>(&it->second.values[i]) << " ";
+                idsOutFileStream << *reinterpret_cast<const uint32_t*>(&it->second.values[i]) << " ";
             }
             idsOutFileStream <<  std::endl;
         }

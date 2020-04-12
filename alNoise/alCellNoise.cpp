@@ -225,7 +225,7 @@ shader_evaluate
 	// get cellular result
 	float F[4];
 	AtVector delta[4];
-	AtUInt32 ID[4];
+	uint32_t ID[4];
 	AiCellular(P, 4, data->octaves, lacunarity, randomness, F, delta, ID);
 
 	if (data->mode == CN_FEATURES)

@@ -607,7 +607,7 @@ inline float modulo(float a, float b) {
 
 // TODO: make this better
 #define M_RAN_INVM32 2.32830643653869628906e-010
-inline double random(AtUInt32 ui) { return ui * M_RAN_INVM32; }
+inline double random(uint32_t ui) { return ui * M_RAN_INVM32; }
 
 /// Stolen from https://github.com/imageworks/OpenShadingLanguage/blob/master/src/liboslexec/noiseimpl.h
 /// hash an array of N 32 bit values into a pseudo-random value
@@ -678,14 +678,14 @@ inline int quickFloor(float x)
 class LCG
 {
 public:
-    LCG(const AtVector& P, AtUInt32 seed=0)
+    LCG(const AtVector& P, uint32_t seed=0)
     {
         // Seed based on cell P is in
-        AtUInt32 pi[4] = 
+        uint32_t pi[4] =
         {
-            AtUInt32(floorf(P.x)),
-            AtUInt32(floorf(P.y)),
-            AtUInt32(floorf(P.z)),
+                uint32_t(floorf(P.x)),
+                uint32_t(floorf(P.y)),
+                uint32_t(floorf(P.z)),
             seed
         };
         _seed = inthash<4>(pi);
@@ -702,8 +702,8 @@ public:
     /// poisson distribution
     float poisson(float mean)
     {
-        float g = fast_exp(-mean);
-        AtUInt32 em = 0;
+        float g = AiFastExp(-mean);
+        uint32_t em = 0;
         float t = (*this)();
         while (t > g)
         {
@@ -714,7 +714,7 @@ public:
     }
 
 private:
-    AtUInt32 _seed;
+    uint32_t _seed;
 };
 
 // Polynomial solvers below adapted from Cortex (which appear to themselves have been hoisted from Imath)
@@ -852,7 +852,7 @@ inline float solveCubic(float a, float b, float c, float d, float roots[3])
 inline void sincosf_(float x, float* sx, float* cx)
 {
     *sx = sinf(x);
-    *cx = sqrtf(1.0f - SQR(*sx));
+    *cx = sqrtf(1.0f - std::sqrt(*sx));
 }
 
 inline float wrap(float s, float period)

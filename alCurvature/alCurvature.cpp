@@ -127,7 +127,7 @@ shader_evaluate
 	int count = 0;
 	// float sampleRadius = sg->area * 10;
 	float sampleOffset = sg->area * 10;
-	AtUInt32 fi = sg->fi;
+    uint32_t fi = sg->fi;
 	sg->fi = UINT_MAX;
 
 	AtPoint& pi = sg->P;

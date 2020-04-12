@@ -24,7 +24,7 @@ void writeAtUInt64IdForAtStringToFloatAOVs(AtUInt64 id64,
 {
     void* string = const_cast<void*>(static_cast<const void*>(str.c_str()));
     AiAOVSetPtr(sg, data->aov_names[WI_AOV_STR_INDEX], string);
-    AtUInt32* id32 = reinterpret_cast<AtUInt32*>(&id64);
+    uint32_t* id32 = reinterpret_cast<uint32_t*>(&id64);
     for (int f = WI_AOV_FLT1_INDEX; f <= WI_AOV_FLT2_INDEX; f++)
     {
         AiAOVSetFlt(sg, data->aov_names[f], *reinterpret_cast<float*>(id32));
@@ -44,7 +44,7 @@ void writeIdsFromShaderNodeNameAtStringHashes(AtShaderGlobals* sg, const ShaderD
     const AtArray* shaderArray = AiNodeGetArray(sg->Op, shaderParamName);
     assert(shaderArray->type == AI_TYPE_NODE && "the shader array param should hold node types");
     assert(shaderArray->nelements >= 1 && "the shader array param should have one or more elements");
-    for(AtUInt32 i = 0; i < shaderArray->nelements; i++)
+    for(uint32_t i = 0; i < shaderArray->nelements; i++)
     {
         const AtNode *shaderNode = static_cast<AtNode *>(AiArrayGetPtr(shaderArray, i));
         if (AiNodeEntryGetType(AiNodeGetNodeEntry(shaderNode)) == AI_NODE_SHADER)

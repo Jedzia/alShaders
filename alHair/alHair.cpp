@@ -562,7 +562,7 @@ struct HairBsdf
         
 
         // Get a random value per curve
-        AtUInt32 curve_idi = 0;
+        uint32_t curve_idi = 0;
         int curve_idii = 0;
         float curve_id = 0.0f;
         cn = 1.0f;

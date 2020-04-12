@@ -159,7 +159,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     //void* brdf_data = AiOrenNayarMISCreateData(sg, 0.0f);
     AiLightsPrepare(sg);
     AtRGB result_direct = AI_RGB_BLACK;
-    AtUInt32 old_fi = sg->fi;
+    uint32_t old_fi = sg->fi;
 
     AtRGB Rnond = AI_RGB_BLACK;
     bool directional = dmd->directional;
@@ -335,7 +335,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
     }
 
     // trick Arnold into thinking we're shooting from a different face than we actually are so he doesn't ignore intersections
-    AtUInt32 old_fi = sg->fi;
+    uint32_t old_fi = sg->fi;
     sg->fi = UINT_MAX;
 
     AtRGB result_sss = AI_RGB_BLACK;
