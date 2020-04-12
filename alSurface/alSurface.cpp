@@ -1319,7 +1319,7 @@ shader_evaluate
 
    // get path throughput so far
    AtRGB path_throughput = AI_RGB_WHITE;
-   if (data->do_rr && sg->Rr > 0)
+   if (data->do_rr && sg->bounces > 0)
       AiStateGetMsgRGB("als_throughput", &path_throughput);
 
    DirectionalMessageData* diffusion_msgdata = NULL;
@@ -1554,7 +1554,7 @@ shader_evaluate
    // Grab the roughness from the previous surface and make sure we're slightly
    // rougher than it to avoid glossy-glossy fireflies
    float alsPreviousRoughness = 0.0f;
-   if (sg->Rr > 0)
+   if (sg->bounces > 0)
    {
       AiStateGetMsgFlt("alsPreviousRoughness", &alsPreviousRoughness);
       if (data->do_rr)
@@ -2133,7 +2133,7 @@ shader_evaluate
    AiMakeRay(&wi_ray, AI_RAY_REFRACTED, &sg->P, NULL, AI_BIG, sg);
    bool tir = (!AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg)) && inside;
    bool rr_transmission =
-       (do_glossy && do_transmission && sg->Rr >= data->rrTransmissionDepth &&
+       (do_glossy && do_transmission && sg->bounces >= data->rrTransmissionDepth &&
         !tir && roughness == 0.0f);
    bool rr_glossy = false;
    if (rr_transmission)
@@ -2141,8 +2141,8 @@ shader_evaluate
       kr = fresnel(AiV3Dot(-sg->Rd, sg->Nf), eta);
 
       // get a permuted, stratified random number
-      float u = (float(data->perm_table[sg->Rr * data->AA_samples + sg->si]) +
-                 sampleTEAFloat(sg->Rr * data->AA_samples + sg->si,
+      float u = (float(data->perm_table[sg->bounces * data->AA_samples + sg->si]) +
+                 sampleTEAFloat(sg->bounces * data->AA_samples + sg->si,
                                 TEA_STREAM_ALSURFACE_RR_JITTER)) *
                 data->AA_samples_inv;
       // offset based on pixel
@@ -2167,8 +2167,8 @@ shader_evaluate
    if (rr_backlight)
    {
       // get a permuted, stratified random number
-      float u = (float(data->perm_table[sg->Rr * data->AA_samples + sg->si]) +
-                 sampleTEAFloat(sg->Rr * data->AA_samples + sg->si,
+      float u = (float(data->perm_table[sg->bounces * data->AA_samples + sg->si]) +
+                 sampleTEAFloat(sg->bounces * data->AA_samples + sg->si,
                                 TEA_STREAM_ALSURFACE_RR_JITTER)) *
                 data->AA_samples_inv;
       // offset based on pixel
@@ -2242,15 +2242,15 @@ shader_evaluate
 #ifdef RR_BOUNCES
             rr_p =
                 std::min(1.0f, sqrtf(maxh(throughput) / maxh(path_throughput)));
-            if (data->do_rr && sg->Rr > 0)
+            if (data->do_rr && sg->bounces > 0)
             {
                cont = false;
                // get a permuted, stratified random number
                int pb = data->AA_samples * data->glossy_samples2;
                int pi = data->glossy_samples2 * sg->si;
                float u =
-                   (float(data->perm_table_spec1[sg->Rr * pb + pi]) +
-                    sampleTEAFloat(sg->Rr * data->AA_samples + sg->si,
+                   (float(data->perm_table_spec1[sg->bounces * pb + pi]) +
+                    sampleTEAFloat(sg->bounces * data->AA_samples + sg->si,
                                    TEA_STREAM_ALSURFACE_RR_SPEC1_JITTER)) /
                    float(pb);
                // offset based on pixel
@@ -2325,13 +2325,13 @@ shader_evaluate
 #ifdef RR_BOUNCES
                   rr_p = std::min(
                       1.0f, sqrtf(maxh(throughput) / maxh(path_throughput)));
-                  if (data->do_rr && sg->Rr > 0)
+                  if (data->do_rr && sg->bounces > 0)
                   {
                      cont = false;
                      // get a permuted, stratified random number
                      int pb = data->AA_samples * data->glossy_samples2;
                      int pi = data->glossy_samples2 * sg->si + ssi;
-                     int idx = sg->Rr * pb + pi;
+                     int idx = sg->bounces * pb + pi;
                      float u =
                          (float(data->perm_table_spec1[idx]) +
                           sampleTEAFloat(
@@ -2450,13 +2450,13 @@ shader_evaluate
 #ifdef RR_BOUNCES
             rr_p =
                 std::min(1.0f, sqrtf(maxh(throughput) / maxh(path_throughput)));
-            if (data->do_rr && sg->Rr > 0)
+            if (data->do_rr && sg->bounces > 0)
             {
                cont = false;
                // get a permuted, stratified random number
                int pb = data->AA_samples * data->glossy2_samples2;
                int pi = data->glossy2_samples2 * sg->si + ssi;
-               int idx = sg->Rr * pb + pi;
+               int idx = sg->bounces * pb + pi;
                float u =
                    (float(data->perm_table_spec2[idx]) +
                     sampleTEAFloat(idx, TEA_STREAM_ALSURFACE_RR_SPEC2_JITTER)) /
@@ -2573,13 +2573,13 @@ shader_evaluate
          float rr_p = 1.0f;
          bool cont = true;
 #ifdef RR_BOUNCES
-         if (data->do_rr && sg->Rr > 0)
+         if (data->do_rr && sg->bounces > 0)
          {
             cont = false;
             // get a permuted, stratified random number
             int pb = data->AA_samples * data->diffuse_samples2;
             int pi = data->diffuse_samples2 * sg->si + ssi;
-            int idx = sg->Rr * pb + pi;
+            int idx = sg->bounces * pb + pi;
             float u =
                 (float(data->perm_table_diffuse[idx]) +
                  sampleTEAFloat(idx, TEA_STREAM_ALSURFACE_RR_DIFF_JITTER)) /
@@ -3041,7 +3041,7 @@ shader_evaluate
             // get a permuted, stratified random number
             int pb = data->AA_samples * data->diffuse_samples2;
             int pi = data->diffuse_samples2 * sg->si + ssi;
-            int idx = sg->Rr * pb + pi;
+            int idx = sg->bounces * pb + pi;
             float u = (float(data->perm_table_backlight[idx]) +
                        sampleTEAFloat(
                            idx, TEA_STREAM_ALSURFACE_RR_BACKLIGHT_JITTER)) /

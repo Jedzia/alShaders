@@ -77,7 +77,7 @@ shader_evaluate
       result = AiV3Dot(sg->Nf, -sg->Rd);
       break;
    case IN_area:
-      result = sg->area;
+      result = AiShaderGlobalsArea(sg);
       break;
    case IN_fi:
       result = float(sg->fi);
@@ -86,7 +86,7 @@ shader_evaluate
       result = sg->Rl;
       break;
    case IN_Rr:
-      result = float(sg->Rr);
+       result = float(sg->bounces);
       break;
    case IN_USER:
       AiUDataGetFlt(userName, &result);

@@ -508,7 +508,7 @@ struct HairBsdf
     HairBsdf(AtNode* n, AtShaderGlobals* sg, ShaderData* d) :
     numBlendHairs(2), density_front(0.7f), density_back(0.7f), node(n), data(d), _sg(sg)
     {
-        depth = sg->Rr;
+        depth = sg->bounces;
 
         result_R_direct = AI_RGB_BLACK;
         result_R_indirect = AI_RGB_BLACK;
@@ -1357,7 +1357,7 @@ struct HairBsdf
         float weight;
 
         bool do_glossy = true;
-        if (sg->Rt & AI_RAY_DIFFUSE || sg->Rr > 0) do_glossy = false;
+        if (sg->Rt & AI_RAY_DIFFUSE || sg->bounces > 0) do_glossy = false;
 
         if (do_glossy && glossyIndirectStrength > 0.0f)
         {
@@ -1812,7 +1812,7 @@ shader_evaluate
     float als_hairNumIntersections = 0;
     AtRGB als_sigma_bar_f = AI_RGB_BLACK;
     bool do_dual = false;
-    if (sg->Rr >= data->dual_depth) do_dual = true;
+    if (sg->bounces >= data->dual_depth) do_dual = true;
 
     int als_raytype = ALS_RAY_UNDEFINED;
     AiStateGetMsgInt("als_raytype", &als_raytype);
