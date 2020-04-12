@@ -241,8 +241,8 @@ inline AtRGB integrateDirectional(const ScatteringParamsDirectional& sp, float r
 	float rstep = 1.0f / float(steps);
 
     float ns = 0.0f;
-    AtPoint Po = AiPoint(0.0f, 0.0f, 0.0f);
-    AtVector up = AiVector(0.0f, 1.0f, 0.0f);
+    AtPoint Po(0.0f, 0.0f, 0.0f);
+    AtVector up(0.0f, 1.0f, 0.0f);
     
 	AtRGB result = AI_RGB_BLACK;
 	/*
@@ -277,8 +277,8 @@ inline AtRGB integrateDirectionalHemi(const ScatteringParamsDirectional& sp, flo
     float rstep = 1.0f / float(steps);
 
     float ns = 0.0f;
-    AtPoint Po = AiPoint(0.0f, 0.0f, 0.0f);
-    AtVector up = AiVector(0.0f, 1.0f, 0.0f);
+    AtPoint Po(0.0f, 0.0f, 0.0f);
+    AtVector up(0.0f, 1.0f, 0.0f);
     AtRGB result = AI_RGB_BLACK;
 	/*
     float sigma = minh(sp.sigma_tr);

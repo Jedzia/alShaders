@@ -73,7 +73,7 @@ AtVector AiMicrofacetMISSample_wrap(const void* brdf_data, float randx,
        reinterpret_cast<const BrdfData_wrap*>(brdf_data);
    brdfw->ibs = true;
    AtVector indir = AiMicrofacetMISSample(brdfw->brdf_data, randx, randy);
-   if (!AiV3IsZero(indir))
+   if (!AiV3IsSmall(indir))
    {
       AtVector H;
       AiV3Normalize(H, (indir) + brdfw->V);
@@ -132,7 +132,7 @@ AtVector AiCookTorranceMISSample_wrap(const void* brdf_data, float randx,
        reinterpret_cast<const BrdfData_wrap*>(brdf_data);
    brdfw->ibs = true;
    AtVector indir = AiCookTorranceMISSample(brdfw->brdf_data, randx, randy);
-   if (!AiV3IsZero(indir))
+   if (!AiV3IsSmall(indir))
    {
       AtVector H;
       AiV3Normalize(H, (indir) + brdfw->V);

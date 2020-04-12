@@ -141,7 +141,7 @@ struct MicrofacetTransmission
 
    inline AtVector sampleMicrofacetNormal(float u1, float u2) const
    {
-      AtVector s_omega_o = AiVector(AiV3Dot(U, omega_o), AiV3Dot(V, omega_o), AiV3Dot(N, omega_o));
+      AtVector s_omega_o(AiV3Dot(U, omega_o), AiV3Dot(V, omega_o), AiV3Dot(N, omega_o));
       s_omega_o.x *= alpha_x;
       s_omega_o.y *= alpha_y;
       s_omega_o = AiV3Normalize(s_omega_o);
@@ -159,7 +159,7 @@ struct MicrofacetTransmission
 
       AtVector2 slope = sampleSlope(cos_theta, u1, u2);
 
-      AtVector2 s = AiVector2(cos_phi * slope.x - sin_phi * slope.y, sin_phi * slope.x + cos_phi * slope.y);
+      AtVector2 s = AtVector2(cos_phi * slope.x - sin_phi * slope.y, sin_phi * slope.x + cos_phi * slope.y);
       s.x *= alpha_x;
       s.y *= alpha_y;
 
@@ -223,7 +223,7 @@ struct MicrofacetTransmission
    {
       AtRGB result = AI_RGB_BLACK;
 
-      if (cos_N_o > 0 && AiV3Dot(omega_i, omega_o) <= 0.0f && !AiV3IsZero(omega_i))
+      if (cos_N_o > 0 && AiV3Dot(omega_i, omega_o) <= 0.0f && !AiV3IsSmall(omega_i))
       {
          AtVector H = -(eta * omega_i + omega_o);
          if (eta < 1.0f) H = -H;
@@ -258,7 +258,7 @@ struct MicrofacetTransmission
    {
       float result = 0.0f;
 
-      if (cos_N_o > 0 && AiV3Dot(omega_i, omega_o) <= 0.0f && !AiV3IsZero(omega_i))
+      if (cos_N_o > 0 && AiV3Dot(omega_i, omega_o) <= 0.0f && !AiV3IsSmall(omega_i))
       {
          AtVector H = -(eta * omega_i + omega_o);
          if (eta < 1.0f) H = -H;
@@ -314,7 +314,7 @@ struct MicrofacetTransmission
       }
       else
       {
-         return AiVector(0.0f, 0.0f, 0.0f);
+         return AtVector(0.0f, 0.0f, 0.0f);
       }
    }
 

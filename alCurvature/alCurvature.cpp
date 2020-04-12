@@ -1,5 +1,6 @@
 #include "Remap.h"
 #include <ai.h>
+#include "alUtil.h"
 #include <cassert>
 #include <string>
 
@@ -160,7 +161,7 @@ shader_evaluate
 			Sample& s = psamp[count];
 			// set qi to be relative to the shading point to avoid weirdness close to the origin
 			// for that same reason move the whole calculation away from the origin
-			s.qi = hitpoint->P - pi + AiVector(10,10,10);
+			s.qi = hitpoint->P - pi + AtVector(10,10,10);
 			s.wi = SQR(dist2 / t2 - 1.0f);
 			s.ni = hitpoint->N;
 			assert(AiIsFinite(s.wi));

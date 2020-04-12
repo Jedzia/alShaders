@@ -64,7 +64,7 @@ node_update
 
 shader_evaluate
 {
-   AtVector result = AiVector(0.0f, 0.0f, 1.0f);
+   AtVector result(0.0f, 0.0f, 1.0f);
 
    float amount = clamp(AiShaderEvalParamFlt(p_amount), 0.0f, 1.0f);
    float size = AiShaderEvalParamFlt(p_size);
@@ -103,7 +103,7 @@ shader_evaluate
    {
       // build a local tangent frame to transform the normals
       AtVector U, V;
-      if (!AiV3isZero(sg->dPdu) && AiV3Exists(sg->dPdu))
+      if (!AiV3IsSmall(sg->dPdu) && AiV3Exists(sg->dPdu))
       {
         // we have valid a valid dPdu derivative, construct V 
         AtVector Utmp = AiV3Normalize(sg->dPdu);
@@ -119,7 +119,7 @@ shader_evaluate
    }
    else
    {
-      sg->out.VEC = result * .5f + AiVector(0.5f, 0.5f, 0.5f);
+      sg->out.VEC = result * .5f + AtVector(0.5f, 0.5f, 0.5f);
    }
 }
 

@@ -1372,7 +1372,7 @@ shader_evaluate
                         result_transmission += sample.color * f;
                     }
                 }
-                else if (AiV3IsZero(wi)) // total internal reflection
+                else if (AiV3IsSmall(wi)) // total internal reflection
                 {
                     if (AiTrace(&wi_ray, &sample))
                     {
