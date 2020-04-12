@@ -118,7 +118,7 @@ shader_evaluate
 {
 	int input = AiShaderEvalParamInt(p_input);
 	int type = AiShaderEvalParamInt(p_type);
-	const char* userName = AiShaderEvalParamStr(p_userName);
+	AtString userName = AiShaderEvalParamStr(p_userName);
 	AtVector vector = AiShaderEvalParamVec(p_vector);
 	AtMatrix& mtx = *(AiShaderEvalParamMtx(p_matrix));
 	int coordinates = AiShaderEvalParamInt(p_coordinates);
@@ -155,9 +155,11 @@ shader_evaluate
 		vector = sg->dPdv;
 		break;
 	case IN_Ld:
-		AtLightSample ls;
-		AiLightsGetSample(sg, ls);
-		vector = ls.Ld;
+		{
+			AtLightSample ls;
+			AiLightsGetSample(sg, ls);
+			vector = ls.Ld;
+		}
 		break;
 	case IN_Rd:
 		vector = sg->Rd;
@@ -166,7 +168,7 @@ shader_evaluate
 		vector = AtVector(sg->u, sg->v, 0);
 		break;
 	case IN_USER:
-		AiUDataGetPnt(userName, &vector);
+		AiUDataGetVec(userName, vector);
 		break;
 	default:
 		break;
@@ -175,11 +177,11 @@ shader_evaluate
 	// now perform the appropriate xform based on the type
 	if (type == T_POINT)
 	{
-		AiM4PointByMatrixMult(&result, mtx, &vector);
+		result = AiM4PointByMatrixMult(mtx, vector);
 	}
 	else
 	{
-		AiM4VectorByMatrixMult(&result, mtx, &vector);
+		result = AiM4VectorByMatrixMult(mtx, vector);
 	}
 
 	// convert to spherical coordinates
@@ -199,7 +201,7 @@ shader_evaluate
 		result.z = 0.0f;
 	}
 
-	sg->out.VEC = result;
+	sg->out.VEC() = result;
 }
 
 

@@ -115,11 +115,11 @@ shader_evaluate
         AiBuildLocalFramePolar(&U, &V, &sg->Nf);
       }
 
-      sg->out.VEC = U * result.x + V * result.y + sg->Nf * result.z;
+      sg->out.VEC() = U * result.x + V * result.y + sg->Nf * result.z;
    }
    else
    {
-      sg->out.VEC = result * .5f + AtVector(0.5f, 0.5f, 0.5f);
+      sg->out.VEC() = result * .5f + AtVector(0.5f, 0.5f, 0.5f);
    }
 }
 
