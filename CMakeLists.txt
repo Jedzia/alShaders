@@ -91,7 +91,7 @@ set(SUBDIRECTORIES
 #        alSurface
         alRemap
         alCombine
-        alNoise
+#        alNoise
 #        alLayer
         alPattern
 #        alCurvature

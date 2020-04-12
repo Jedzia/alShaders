@@ -2,6 +2,23 @@
 nominator for things to look at again:
 > ToDoJed: Fix for Porting->v6, 
 
+# ToDo List #
+
+* make the dist folder result more descriptive  
+
+       cmake-build-debug-visual-c-2015-x64/dist/1.0.0rc20/ai/bin
+
+    better is with the arnold API version in the designation/folder:
+    
+       cmake-build-debug-visual-c-2015-x64/dist/alShaders-1.0.0rc20_Arnold-6.0.1.0/ai/bin
+    
+    This helps when using something like 
+        
+        ARNOLD_PLUGIN_PATH = "${ARNOLD_PLUGIN_PATH};D:/Users/Jedzia.pubsiX/htoa/alShaders-1.0.0rc20_Arnold-6.0.1.0/ai/bin"
+    in Houdini.   
+    
+
+
 # Notes on Actions done
  
 - what is #ifdef AI_GPU_COMPILER ? this disables AtString in some definitions?
