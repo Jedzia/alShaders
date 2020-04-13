@@ -833,12 +833,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_all")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_all"));
+        AtString tmp(AiNodeGetStr(node, "trace_set_all"));
       data->trace_set_all_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_all_inclusive = false;
-         data->trace_set_all = tmp.substr(1);
+         data->trace_set_all = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -849,12 +849,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_shadows")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_shadows"));
+        auto tmp(AiNodeGetStr(node, "trace_set_shadows"));
         data->trace_set_shadows_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_shadows_inclusive = false;
-         data->trace_set_shadows = tmp.substr(1);
+         data->trace_set_shadows = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -865,12 +865,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_diffuse")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_diffuse"));
+        auto tmp(AiNodeGetStr(node, "trace_set_diffuse"));
       data->trace_set_diffuse_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_diffuse_inclusive = false;
-         data->trace_set_diffuse = tmp.substr(1);
+         data->trace_set_diffuse = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -881,12 +881,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_backlight")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_backlight"));
+        auto tmp(AiNodeGetStr(node, "trace_set_backlight"));
       data->trace_set_backlight_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_backlight_inclusive = false;
-         data->trace_set_backlight = tmp.substr(1);
+         data->trace_set_backlight = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -897,12 +897,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_specular1")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_specular1"));
+        auto tmp(AiNodeGetStr(node, "trace_set_specular1"));
       data->trace_set_specular1_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_specular1_inclusive = false;
-         data->trace_set_specular1 = tmp.substr(1);
+         data->trace_set_specular1 = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -913,12 +913,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_specular2")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_specular2"));
+        auto tmp(AiNodeGetStr(node, "trace_set_specular2"));
         data->trace_set_specular2_enabled = true;
         if (tmp[0] == '-')
         {
             data->trace_set_specular2_inclusive = false;
-         data->trace_set_specular2 = tmp.substr(1);
+         data->trace_set_specular2 = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -929,12 +929,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "trace_set_transmission")))
     {
-        std::string tmp(AiNodeGetStr(node, "trace_set_transmission"));
+        auto tmp(AiNodeGetStr(node, "trace_set_transmission"));
         data->trace_set_transmission_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_transmission_inclusive = false;
-         data->trace_set_transmission = tmp.substr(1);
+         data->trace_set_transmission = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -945,12 +945,12 @@ node_update
 
     if (strlen(AiNodeGetStr(node, "sssTraceSet")))
     {
-        std::string tmp(AiNodeGetStr(node, "sssTraceSet"));
+        auto tmp(AiNodeGetStr(node, "sssTraceSet"));
       data->trace_set_sss_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_sss_inclusive = false;
-         data->trace_set_sss = tmp.substr(1);
+         data->trace_set_sss = AtString(std::string(tmp.c_str()).substr(1).c_str());
       }
       else
       {
@@ -1336,7 +1336,7 @@ shader_evaluate
       assert(diffusion_msgdata);
       alsIrradiateSample(
           sg, diffusion_msgdata, data->diffuse_sampler, U, V, data->lightGroups,
-          path_throughput, data->trace_set_sss.c_str(),
+          path_throughput, data->trace_set_sss,
           data->trace_set_sss_enabled, data->trace_set_sss_inclusive, sssMix);
        // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
        //sg->out_opacity = AI_RGB_WHITE;
@@ -1714,7 +1714,7 @@ shader_evaluate
        maxh(specular1Color) <
            IMPORTANCE_EPS  // disable glossy if contribution is small
        ||
-       (sg->Rr_refr > 0 &&
+       (AiShaderGlobalsGetRayRefraction(sg) > 0 &&
         !transmissionEnableCaustics)  // disable glossy->transmitted caustics
        ||
        roughness > 1.0f || als_raytype == ALS_RAY_HAIR ||
@@ -1735,7 +1735,7 @@ shader_evaluate
        maxh(specular2Color) <
            IMPORTANCE_EPS  // disable glossy2 if contribution is small
        ||
-       (sg->Rr_refr > 0 &&
+       (AiShaderGlobalsGetRayRefraction(sg) > 0 &&
         !transmissionEnableCaustics)  // disable glossy->transmitted caustics
        ||
        roughness2 > 1.0f ||
@@ -1861,9 +1861,12 @@ shader_evaluate
 
    //sg->Nf = sg->Nf = diffuseNormal;
    sg->Nf = diffuseNormal; // or should that be: sg->N = sg->Nf = diffuseNormal?
-   void* dmis = AiOrenNayarMISCreateData(sg, diffuseRoughness);
+    void* dmis = AiOrenNayarMISCreateData(sg, diffuseRoughness);
+    // ToDoJed: Fix for Porting->v6, see porting guide and #include "ai_shader_closure.h"
+    //AtBSDF *bsdf = AiOrenNayarBSDF(sg, sg->Nf);
+    //sg->out.CLOSURE() = AtClosure(diffuse_color, bsdf);
 
-   if (do_backlight) sg->fhemi = false;
+    if (do_backlight) sg->fhemi = false;
    flipNormals(sg);
    void* bmis = AiOrenNayarMISCreateData(sg, diffuseRoughness);
    flipNormals(sg);
@@ -1880,14 +1883,14 @@ shader_evaluate
    // shader
    if (data->trace_set_all_enabled)
    {
-      AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+      AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                  data->trace_set_all_inclusive);
    }
 
    // set the shadows trace set if it's defined
    if (data->trace_set_shadows_enabled)
    {
-      AiShaderGlobalsSetTraceSet(sg, data->trace_set_shadows.c_str(),
+      AiShaderGlobalsSetTraceSet(sg, data->trace_set_shadows,
                                  data->trace_set_shadows_inclusive);
    }
 
@@ -1907,14 +1910,15 @@ shader_evaluate
        AtLightSample ls;
        while (AiLightsGetSample(sg, ls))
       {
-         if (AiLightGetAffectSpecular(sg->Lp))
+         if (AiLightGetAffectSpecular(ls.Lp))
          {
             // get the group assigned to this light from the hash table using
             // the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
+             // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+             int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
 
             // per-light specular and diffuse strength multipliers
-            float specular_strength = AiLightGetSpecular(sg->Lp);
+            float specular_strength = AiLightGetSpecular(ls.Lp);
 
             brdfw.ibs = false;
             /*LspecularDirect = ToDoJed: Fix for Porting >v5
@@ -1957,21 +1961,26 @@ shader_evaluate
        AtLightSample ls;
        while (AiLightsGetSample(sg, ls))
       {
-         if (AiLightGetAffectSpecular(sg->Lp))
+         if (AiLightGetAffectSpecular(ls.Lp))
          {
             // get the group assigned to this light from the hash table using
             // the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
+             // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+             int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
 
             // per-light specular and diffuse strength multipliers
-            float specular_strength = AiLightGetSpecular(sg->Lp);
+            float specular_strength = AiLightGetSpecular(ls.Lp);
 
             sg->Nf = specular2Normal;
             brdfw2.ibs = false;
-            Lspecular2Direct =
+
+             // ToDoJed: Fix for Porting->v6, skipped .. implement later
+/*            Lspecular2Direct =
                 AiEvaluateLightSample(sg, &brdfw2, GlossyMISSample_wrap,
                                       GlossyMISBRDF_wrap, GlossyMISPDF_wrap) *
-                kti * specular_strength * specular2Color;
+ */
+            Lspecular2Direct = AI_RGB_WHITE;
+            kti * specular_strength * specular2Color;
             if (lightGroup >= 0 && lightGroup < NUM_LIGHT_GROUPS)
             {
                lightGroupsDirect[lightGroup] += Lspecular2Direct;
@@ -1997,25 +2006,28 @@ shader_evaluate
        AtLightSample ls;
        while (AiLightsGetSample(sg, ls))
       {
-         if (AiLightGetAffectDiffuse(sg->Lp))
+         if (AiLightGetAffectDiffuse(ls.Lp))
          {
             // get the group assigned to this light from the hash table using
             // the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
+             // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+             int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
             // get diffuse strength multiplier
-            float diffuse_strength = AiLightGetDiffuse(sg->Lp);
+            float diffuse_strength = AiLightGetDiffuse(ls.Lp);
 
-            LdiffuseDirect =
+             // ToDoJed: Fix for Porting->v6, skipped .. implement later
+             /*LdiffuseDirect =
                 AiEvaluateLightSample(sg, dmis, AiOrenNayarMISSample,
                                       AiOrenNayarMISBRDF, AiOrenNayarMISPDF) *
-                diffuse_strength * kti * (1 - sssMix);
+                                                   diffuse_strength * kti * (1 - sssMix);*/
+            LdiffuseDirect = AI_RGB_WHITE;
             if (lightGroup >= 0 && lightGroup < NUM_LIGHT_GROUPS)
             {
                lightGroupsDirect[lightGroup] += LdiffuseDirect * diffuseColor;
                shadowGroups[lightGroup].rgb() +=
-                   sg->Liu * JedPortGetShaderWeight(sg) * std::max(0.0f, AiV3Dot(sg->Nf, sg->Ld)) *
-                   sg->Lo * kti * diffuseColor * AI_ONEOVERPI;
-               shadowGroups[lightGroup].a += maxh(sg->Lo) * JedPortGetShaderWeight(sg);
+                       ls.Liu * JedPortGetShaderWeight(sg) * std::max(0.0f, AiV3Dot(sg->Nf, ls.Ld)) *
+                               ls.Lo * kti * diffuseColor * AI_ONEOVERPI;
+               shadowGroups[lightGroup].a += maxh(ls.Lo) * JedPortGetShaderWeight(sg);
             }
             result_diffuseDirect += LdiffuseDirect;
             assert(AiIsFinite(result_diffuseDirect));
@@ -2034,17 +2046,21 @@ shader_evaluate
        AtLightSample ls;
        while (AiLightsGetSample(sg, ls))
       {
-         if (AiLightGetAffectDiffuse(sg->Lp))
+         if (AiLightGetAffectDiffuse(ls.Lp))
          {
             // get the group assigned to this light from the hash table using
             // the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
-            float diffuse_strength = AiLightGetDiffuse(sg->Lp);
+             // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+             int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
+             float diffuse_strength = AiLightGetDiffuse(ls.Lp);
 
-            LbacklightDirect =
+             // ToDoJed: Fix for Porting->v6, skipped .. implement later
+            /*LbacklightDirect =
                 AiEvaluateLightSample(sg, bmis, AiOrenNayarMISSample,
                                       AiOrenNayarMISBRDF, AiOrenNayarMISPDF) *
-                diffuse_strength * kti * backlightColor * (1 - sssMix);
+                diffuse_strength * kti * backlightColor * (1 - sssMix);*/
+
+             LbacklightDirect = AI_RGB_WHITE;
             if (doDeepGroups || sg->Rt & AI_RAY_CAMERA)
             {
                if (lightGroup >= 0 && lightGroup < NUM_LIGHT_GROUPS)
@@ -2076,12 +2092,13 @@ shader_evaluate
        AtLightSample ls;
        while (AiLightsGetSample(sg, ls))
       {
-         if (AiLightGetAffectSpecular(sg->Lp))
+         if (AiLightGetAffectSpecular(ls.Lp))
          {
             // get the group assigned to this light from the hash table using
             // the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
-            float specular_strength = AiLightGetSpecular(sg->Lp);
+             // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+             int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
+             float specular_strength = AiLightGetSpecular(ls.Lp);
 
             LtransmissionDirect =
                 AiEvaluateLightSample(sg, mft, MicrofacetTransmission::Sample,
@@ -2109,7 +2126,7 @@ shader_evaluate
       // if we defined a global trace set, re-set this, otherwise, unset
       if (data->trace_set_all_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                     data->trace_set_all_inclusive);
       }
       else
@@ -2144,7 +2161,7 @@ shader_evaluate
       n2 = 1.0f;
    }
    wi_ray = AiMakeRay(AI_RAY_SPECULAR_TRANSMIT, sg->P, NULL, AI_BIG, sg);
-   bool tir = (!AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg)) && inside;
+   bool tir = (!AiRefractRay(wi_ray, sg->Nf, n1, n2, sg)) && inside;
    bool rr_transmission =
        (do_glossy && do_transmission && sg->bounces >= data->rrTransmissionDepth &&
         !tir && roughness == 0.0f);
@@ -2212,7 +2229,7 @@ shader_evaluate
       // set the specular1 trace set if it's defined
       if (data->trace_set_specular1_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_specular1.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_specular1,
                                     data->trace_set_specular1_inclusive);
       }
 
@@ -2223,11 +2240,11 @@ shader_evaluate
       {
          if (!tir)
          {
-            AiStateSetMsgFlt("alsPreviousRoughness",
+            AiStateSetMsgFlt(AtString("alsPreviousRoughness"),
                              std::max(roughness_x, roughness_y));
             sg->Nf = specular1Normal;
             wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
-            AiReflectRay(&wi_ray, &sg->Nf, sg);
+            AiReflectRay(wi_ray, sg->Nf, sg);
             AtRGB kr;
             if (!rr_transmission)
             {
@@ -2283,7 +2300,7 @@ shader_evaluate
 #endif
             if (cont)
             {
-               AiStateSetMsgRGB("als_throughput", throughput);
+               AiStateSetMsgRGB(AtString("als_throughput"), throughput);
                if (maxh(kr) > IMPORTANCE_EPS)
                {
                   bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
@@ -2309,7 +2326,7 @@ shader_evaluate
       {
          wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
          kti = 0.0f;
-         AiStateSetMsgFlt("alsPreviousRoughness",
+         AiStateSetMsgFlt(AtString("alsPreviousRoughness"),
                           std::max(roughness_x, roughness_y));
          sg->Nf = specular1Normal;
          AtRGB kr;
@@ -2365,7 +2382,7 @@ shader_evaluate
                      }
                   }
 #endif
-                  AiStateSetMsgRGB("als_throughput", throughput);
+                  AiStateSetMsgRGB(AtString("als_throughput"), throughput);
                   // if we're in a camera ray, pass the sample index down to the
                   // child SG
                   if (cont)
@@ -2412,7 +2429,7 @@ shader_evaluate
          // if we defined a global trace set, re-set this, otherwise, unset
          if (data->trace_set_all_enabled)
          {
-            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                        data->trace_set_all_inclusive);
          }
          else
@@ -2429,7 +2446,7 @@ shader_evaluate
       // set the specular2 trace set if it's defined
       if (data->trace_set_specular2_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_specular2.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_specular2,
                                     data->trace_set_specular2_inclusive);
       }
 
@@ -2437,7 +2454,7 @@ shader_evaluate
       wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
       kti2 = 0.0f;
       AtRGB kr;
-      AiStateSetMsgFlt("alsPreviousRoughness",
+      AiStateSetMsgFlt(AtString("alsPreviousRoughness"),
                        std::max(roughness2_x, roughness2_y));
       sg->Nf = specular2Normal;
       int ssi = 0;
@@ -2457,7 +2474,7 @@ shader_evaluate
             AtRGB f = brdf / pdf * kr * kti;
             AtRGB throughput = path_throughput * f * specular2Color *
                                specular2IndirectStrength;
-            AiStateSetMsgRGB("als_throughput", throughput);
+            AiStateSetMsgRGB(AtString("als_throughput"), throughput);
             bool cont = true;
             float rr_p = 1.0f;
 #ifdef RR_BOUNCES
@@ -2534,7 +2551,7 @@ shader_evaluate
          // if we defined a global trace set, re-set this, otherwise, unset
          if (data->trace_set_all_enabled)
          {
-            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                        data->trace_set_all_inclusive);
          }
          else
@@ -2554,7 +2571,7 @@ shader_evaluate
       // set the diffuse trace set if it's defined
       if (data->trace_set_diffuse_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_diffuse.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_diffuse,
                                     data->trace_set_diffuse_inclusive);
       }
 
@@ -2615,7 +2632,7 @@ shader_evaluate
 #endif
          if (cont)
          {
-            AiStateSetMsgRGB("als_throughput", throughput);
+            AiStateSetMsgRGB(AtString("als_throughput"), throughput);
             bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
 
             result_diffuseIndirectRaw +=
@@ -2655,7 +2672,7 @@ shader_evaluate
          // if we defined a global trace set, re-set this, otherwise, unset
          if (data->trace_set_all_enabled)
          {
-            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                        data->trace_set_all_inclusive);
          }
          else
@@ -2696,7 +2713,7 @@ shader_evaluate
       // set the transmission trace set if it's defined
       if (data->trace_set_transmission_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_transmission.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_transmission,
                                     data->trace_set_transmission_inclusive);
       }
 
@@ -2724,7 +2741,7 @@ shader_evaluate
             n1 = 1.0f;
             n2 = transmissionIor;
          }
-         bool refraction = AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg);
+         bool refraction = AiRefractRay(wi_ray, sg->Nf, n1, n2, sg);
          if (refraction)
          {
             // commented this sampler pull out to match the spec. This will make
@@ -2732,13 +2749,13 @@ shader_evaluate
             // release.
             // AiSamplerGetSample(sampit, samples);
             AtRGB throughput = path_throughput * kti;
-            AiStateSetMsgRGB("als_throughput", throughput);
+            AiStateSetMsgRGB(AtString("als_throughput"), throughput);
 
-            if (sg->Rr_refr < data->GI_refraction_depth)
+            if (AiShaderGlobalsGetRayRefraction(sg) < data->GI_refraction_depth)
             {
                if (kti * kti2 > IMPORTANCE_EPS)
                {
-                  AiStateSetMsgFlt("alsPreviousRoughness", 0.0f);
+                  AiStateSetMsgFlt(AtString("alsPreviousRoughness"), 0.0f);
                   AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
                   AtRGB transmittance = AI_RGB_WHITE;
                   bool hit = !AiColorIsSmall(sample.opacity);
@@ -2802,10 +2819,10 @@ shader_evaluate
          }
          else  // total internal reflection
          {
-            if (sg->Rr_refr < data->GI_refraction_depth)
+            if (AiShaderGlobalsGetRayRefraction(sg) < data->GI_refraction_depth)
             {
                 AtRGB throughput = path_throughput * kti;
-                AiStateSetMsgRGB("als_throughput", throughput);
+                AiStateSetMsgRGB(AtString("als_throughput"), throughput);
                 bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
 
                 AtRGB transmittance = AI_RGB_WHITE;
@@ -2883,10 +2900,10 @@ shader_evaluate
                AtRGB f = brdf / pdf;
 
                AtRGB throughput = path_throughput * kti * f;
-               AiStateSetMsgRGB("als_throughput", throughput);
-               if (sg->Rr_refr < data->GI_refraction_depth)
+               AiStateSetMsgRGB(AtString("als_throughput"), throughput);
+               if (AiShaderGlobalsGetRayRefraction(sg) < data->GI_refraction_depth)
                {
-                  AiStateSetMsgFlt("alsPreviousRoughness",
+                  AiStateSetMsgFlt(AtString("alsPreviousRoughness"),
                                    transmissionRoughness);
                   AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
                   bool hit = !AiColorIsSmall(sample.opacity);
@@ -2987,7 +3004,7 @@ shader_evaluate
          // if we defined a global trace set, re-set this, otherwise, unset
          if (data->trace_set_all_enabled)
          {
-            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                        data->trace_set_all_inclusive);
          }
          else
@@ -3013,7 +3030,7 @@ shader_evaluate
       // set the backlight trace set if it's defined
       if (data->trace_set_backlight_enabled)
       {
-         AiShaderGlobalsSetTraceSet(sg, data->trace_set_backlight.c_str(),
+         AiShaderGlobalsSetTraceSet(sg, data->trace_set_backlight,
                                     data->trace_set_backlight_inclusive);
       }
 
@@ -3043,7 +3060,7 @@ shader_evaluate
          wi_ray.dir = wi;
          AtRGB f = kr * AiOrenNayarMISBRDF(bmis, &wi) * bd_prob / p;
          AtRGB throughput = path_throughput * f;
-         AiStateSetMsgRGB("als_throughput", throughput);
+         AiStateSetMsgRGB(AtString("als_throughput"), throughput);
          bool cont = true;
          float rr_p = 1.0f;
 #ifdef RR_BOUNCES
@@ -3113,7 +3130,7 @@ shader_evaluate
          // if we defined a global trace set, re-set this, otherwise, unset
          if (data->trace_set_all_enabled)
          {
-            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all.c_str(),
+            AiShaderGlobalsSetTraceSet(sg, data->trace_set_all,
                                        data->trace_set_all_inclusive);
          }
          else
@@ -3255,7 +3272,7 @@ shader_evaluate
              sg, diffusion_msgdata, data->sss_sampler,
              data->sssMode == SSSMODE_DIRECTIONAL, nc, result_sss_direct,
              result_sss_indirect, lightGroupsSss, deepGroupsSss, deepGroupPtr,
-             data->trace_set_sss.c_str(), data->trace_set_sss_enabled,
+             data->trace_set_sss, data->trace_set_sss_enabled,
              data->trace_set_sss_inclusive);
          for (int i = 0; i < NUM_LIGHT_GROUPS; ++i)
          {
@@ -3277,34 +3294,34 @@ shader_evaluate
    if (sg->Rt & AI_RAY_CAMERA)
    {
       // stick some AOVs in the state for an alCel to pick up
-      AiStateSetMsgRGB("als_diffuse_color", diffuseColor);
-      AiStateSetMsgRGB("als_direct_diffuse_raw", result_diffuseDirectRaw);
-      AiStateSetMsgRGB("als_direct_specular", result_glossyDirect);
-      AiStateSetMsgRGB("als_indirect_diffuse", result_diffuseIndirect);
+      AiStateSetMsgRGB(AtString("als_diffuse_color"), diffuseColor);
+      AiStateSetMsgRGB(AtString("als_direct_diffuse_raw"), result_diffuseDirectRaw);
+      AiStateSetMsgRGB(AtString("als_direct_specular"), result_glossyDirect);
+      AiStateSetMsgRGB(AtString("als_indirect_diffuse"), result_diffuseIndirect);
 
       if (data->standardAovs)
       {
          AtRGB tmp;
          tmp = result_diffuseDirect + result_backlightDirect;
          if (tmp != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse].c_str(), tmp);
+            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse], tmp);
          tmp = result_diffuseIndirect + result_backlightIndirect;
          if (tmp != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse].c_str(), tmp);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse], tmp);
          tmp = result_glossyDirect + result_glossy2Direct;
          if (tmp != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_specular].c_str(), tmp);
+            AiAOVSetRGB(sg, data->aovs[k_direct_specular], tmp);
          tmp = result_glossyIndirect + result_glossy2Indirect;
          if (tmp != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_specular].c_str(), tmp);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_specular], tmp);
          tmp = result_transmission + result_ss;
          if (tmp != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_refraction].c_str(), tmp);
+            AiAOVSetRGB(sg, data->aovs[k_refraction], tmp);
 
          if (result_sss != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_sss].c_str(), result_sss);
+            AiAOVSetRGB(sg, data->aovs[k_sss], result_sss);
          if (result_emission != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_emission].c_str(), result_emission);
+            AiAOVSetRGB(sg, data->aovs[k_emission], result_emission);
       }
       else if (transmitAovs && do_transmission)
       {
@@ -3314,7 +3331,7 @@ shader_evaluate
             {
                if (result_transmission != AI_RGB_BLACK)
                {
-                  AiAOVSetRGB(sg, data->aovs[k_refraction].c_str(),
+                  AiAOVSetRGB(sg, data->aovs[k_refraction],
                               result_transmission);
                }
                continue;
@@ -3325,7 +3342,7 @@ shader_evaluate
                    result_glossyDirect + transmittedAovPtr[k_direct_specular];
                if (tmp != AI_RGB_BLACK)
                {
-                  AiAOVSetRGB(sg, data->aovs[k_direct_specular].c_str(), tmp);
+                  AiAOVSetRGB(sg, data->aovs[k_direct_specular], tmp);
                }
                continue;
             }
@@ -3335,13 +3352,13 @@ shader_evaluate
                            transmittedAovPtr[k_indirect_specular];
                if (tmp != AI_RGB_BLACK)
                {
-                  AiAOVSetRGB(sg, data->aovs[k_indirect_specular].c_str(), tmp);
+                  AiAOVSetRGB(sg, data->aovs[k_indirect_specular], tmp);
                }
                continue;
             }
 
             if (transmittedAovPtr[i] != AI_RGB_BLACK)
-               AiAOVSetRGB(sg, data->aovs[i].c_str(), transmittedAovPtr[i]);
+               AiAOVSetRGB(sg, data->aovs[i], transmittedAovPtr[i]);
          }
          if (doDeepGroups)
            {
@@ -3359,7 +3376,7 @@ shader_evaluate
                    {
                      deepGroups[i] =
                        min(deepGroups[i], rgb(data->aov_light_group_clamp[i]));
-                     AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i].c_str(),
+                     AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i],
                                  deepGroups[i]);
                    }
                }
@@ -3383,7 +3400,7 @@ shader_evaluate
                {
                   deepGroups[i] =
                       min(deepGroups[i], rgb(data->aov_light_group_clamp[i]));
-                  AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i].c_str(),
+                  AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i],
                               deepGroups[i]);
                }
             }
@@ -3397,7 +3414,7 @@ shader_evaluate
                   lightGroupsDirect[i] =
                       min(lightGroupsDirect[i],
                           rgb(data->aov_light_group_clamp[i]));
-                  AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i].c_str(),
+                  AiAOVSetRGB(sg, data->aovs[k_light_group_1 + i],
                               lightGroupsDirect[i]);
                }
             }
@@ -3406,7 +3423,7 @@ shader_evaluate
          for (int i = 0; i < NUM_LIGHT_GROUPS; ++i)
          {
             if (shadowGroups[i] !=  AI_RGBA_ZERO)
-               AiAOVSetRGBA(sg, data->aovs_rgba[k_shadow_group_1 + i].c_str(),
+               AiAOVSetRGBA(sg, data->aovs_rgba[k_shadow_group_1 + i],
                             shadowGroups[i]);
          }
 
@@ -3439,46 +3456,46 @@ shader_evaluate
          result_emission = min(result_emission, rgb(data->aov_emission_clamp));
 
          if (diffuseColor != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_diffuse_color].c_str(), diffuseColor);
+            AiAOVSetRGB(sg, data->aovs[k_diffuse_color], diffuseColor);
          if (result_diffuseDirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse],
                         result_diffuseDirect);
          if (result_diffuseDirectRaw != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse_raw].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse_raw],
                         result_diffuseDirectRaw);
          if (result_backlightDirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_backlight].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_direct_backlight],
                         result_backlightDirect);
          if (result_sss != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_sss].c_str(), result_sss);
+            AiAOVSetRGB(sg, data->aovs[k_sss], result_sss);
          if (result_glossyDirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_specular].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_direct_specular],
                         result_glossyDirect);
          if (result_glossy2Direct != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_direct_specular_2].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_direct_specular_2],
                         result_glossy2Direct);
          if (result_diffuseIndirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse],
                         result_diffuseIndirect);
          if (result_diffuseIndirectRaw != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse_raw].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse_raw],
                         result_diffuseIndirectRaw);
          if (result_backlightIndirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_backlight].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_indirect_backlight],
                         result_backlightIndirect);
          if (result_glossyIndirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_specular].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_indirect_specular],
                         result_glossyIndirect);
          if (result_glossy2Indirect != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_indirect_specular_2].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_indirect_specular_2],
                         result_glossy2Indirect);
          if (result_ss != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_single_scatter].c_str(), result_ss);
+            AiAOVSetRGB(sg, data->aovs[k_single_scatter], result_ss);
          if (result_transmission != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_refraction].c_str(),
+            AiAOVSetRGB(sg, data->aovs[k_refraction],
                         result_transmission);
          if (result_emission != AI_RGB_BLACK)
-            AiAOVSetRGB(sg, data->aovs[k_emission].c_str(), result_emission);
+            AiAOVSetRGB(sg, data->aovs[k_emission], result_emission);
 
          // write IDs
          for (int i = 0; i < NUM_ID_AOVS; ++i)
@@ -3486,7 +3503,7 @@ shader_evaluate
             AtRGB tmp;
             // check if output is enabled first in case we have an expensive
             // network upstream
-            if (AiAOVEnabled(data->aovs[k_id_1 + i].c_str(), AI_TYPE_RGB))
+            if (AiAOVEnabled(data->aovs[k_id_1 + i], AI_TYPE_RGB))
             {
                tmp = AiShaderEvalParamRGB(p_id1 + i);
 
@@ -3497,16 +3514,16 @@ shader_evaluate
                }
 
                if (tmp != AI_RGB_BLACK)
-                  AiAOVSetRGB(sg, data->aovs[k_id_1 + i].c_str(), tmp);
+                  AiAOVSetRGB(sg, data->aovs[k_id_1 + i], tmp);
             }
          }
 
          // write data AOVs
          AtRGB uv = AtRGB(sg->u, sg->v, 0.0f);
-         AiAOVSetRGB(sg, data->aovs[k_uv].c_str(), uv);
+         AiAOVSetRGB(sg, data->aovs[k_uv], uv);
          AtRGB depth =
                  AtRGB(float(sg->Rl), AiV3Dot(sg->Nf, wo), sg->P.y);
-         AiAOVSetRGB(sg, data->aovs[k_depth].c_str(), depth);
+         AiAOVSetRGB(sg, data->aovs[k_depth], depth);
       }
    }
    else  // we're in a secondary ray //

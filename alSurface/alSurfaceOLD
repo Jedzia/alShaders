@@ -789,7 +789,8 @@ shader_evaluate
         while (AiLightsGetSample(sg, ls))
         {
             // get the group assigned to this light from the hash table using the light's pointer
-            int lightGroup = data->lightGroups[sg->Lp];
+            // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+            int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
             // per-light specular and diffuse strength multipliers
             float specular_strength = AiLightGetSpecular(sg->Lp);
             float diffuse_strength = AiLightGetDiffuse(sg->Lp);
@@ -960,7 +961,7 @@ shader_evaluate
                 AiStateSetMsgFlt("alsPreviousRoughness", roughness);
                 sg->Nf = specular1Normal;
                 wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
-                AiReflectRay(&wi_ray, &sg->Nf, sg);
+                AiReflectRay(wi_ray, sg->Nf, sg);
                 if (!rr_transmission)
                 {
                     kr = fresnel(std::max(0.0f,AiV3Dot(wi_ray.dir, sg->Nf)),eta);

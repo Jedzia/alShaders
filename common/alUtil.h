@@ -38,13 +38,90 @@ typedef AtColor (*AtBRDFEvalBrdfFunc)(const void* brdf_data, const AtVector* ind
 typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indir);
 /* \}*/
 
-/** \name BRDF Integration
+/** \name fake BRDF Integration
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiMicrofacetMISSample!
+ */
+inline AtVector AiMicrofacetMISSample(const void* brdf_data, float randx, float randy){
+    return { 1.0f, 1.0f, 1.0f};
+}
+
+/** \name fake BRDF Integration
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiMicrofacetMISBRDF!
+ */
+inline AtColor AiMicrofacetMISBRDF(const void* brdf_data, const AtVector* indir){
+    return AI_RGB_WHITE;
+}
+
+/** \name fake BRDF Integration
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiMicrofacetMISPDF!
+ */
+inline float AiMicrofacetMISPDF(const void* brdf_data, const AtVector* indir){
+    return 1.0f;
+}
+
+/** \name fake BRDF Integration
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiMicrofacetMISPDF!
+ */
+inline AtColor  AiOrenNayarMISBRDF(const void* brdf_data, const AtVector* indir){
+    return AI_RGB_WHITE;
+}
+
+/** \name fake BRDF Integration
  * \{
  * ToDoJed: Fix for Porting->v6, there is no AiEvaluateLightSample!
- * ../common/alUtil.cpp was added to the alHair target because of this
  */
 inline /*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf) {
     return AI_RGB_WHITE;
+}
+
+/** \name fake Sub-Surface Scattering API
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiSSSTraceSingleScatter!
+ */
+inline         AtColor AiSSSTraceSingleScatter(AtShaderGlobals* sg, AtColor Rd, AtColor mfp, float g, float eta){
+    return AI_RGB_WHITE;
+}
+
+/** \name fake Sub-Surface Scattering API
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiBSSRDFCubic!
+ */
+inline AtColor AiBSSRDFCubic(const AtShaderGlobals* sg, const float* radius, const AtColor* weight, unsigned int num = 1){
+    return AI_RGB_WHITE;
+}
+
+
+/** \name fake ray API
+ * \{
+ * ToDoJed: Fix for Porting->v6, there is no AiTraceBackground!
+ */
+inline void AiTraceBackground(const AtRay* ray, AtScrSample* sample) {
+
+}
+
+/** What a botch
+ * ToDoJed: Fix for Porting->v6, there is no AiMicrofacetMISCreateData!
+ * @param sg
+ * @param distribution
+ * @param u
+ * @param eta
+ * @param rx
+ * @param ry
+ * @return
+ */
+inline /*AI_API*/ void*    AiMicrofacetMISCreateData(const AtShaderGlobals* sg, int distribution, const AtVector* u, float eta, float rx, float ry)
+{
+    // see Volume Shader porting
+    return nullptr;
+}
+
+inline /*AI_API*/         void*    AiOrenNayarMISCreateData(const AtShaderGlobals* sg, float r) {
+    // see Volume Shader porting
+    return nullptr;
 }
 
 /** Overwrite the obsolete sg->we
@@ -91,6 +168,28 @@ inline uint8_t AiShaderGlobalsApplyRayGloss(AtShaderGlobals* sg, uint8_t Rr_glos
 {
     // ->Rr_gloss
     return 0;
+}
+
+/** Get ray refraction depth level
+ *
+ * ToDoJed: Fix for Porting->v6, there is no ray refraction depth level!
+ * @param sg shader globals
+ * @return a fake ray refraction depth level.
+ */
+inline uint8_t AiShaderGlobalsGetRayRefraction(AtShaderGlobals* sg)
+{
+    // ->AtByte           Rr_refr;                 ray refraction depth level
+    return 0;
+}
+
+inline bool  AiLightGetAffectSpecular(const AtNode* node){
+    // use AI_API AI_PURE float AiLightGetSpecular(const AtNode* node); ?
+    return false;
+}
+
+inline bool  AiLightGetAffectDiffuse(const AtNode* node){
+    // use AI_API AI_PURE float AiLightGetDiffuse(const AtNode* node); ?
+    return false;
 }
 
 inline void AiV3Normalize(AtVector& out, const AtVector& in)

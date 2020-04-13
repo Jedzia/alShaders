@@ -44,8 +44,8 @@ struct ShaderData
    int sss_bssrdf_samples;
    int sss_bssrdf_samples2;
    AtCritSec cs;
-   std::map<AtNode*, int> lightGroups;
-   std::map<AtNode*, float> shadowDensities;
+   std::map<const AtNode*, int> lightGroups;
+   std::map<const AtNode*, float> shadowDensities;
    bool specular1NormalConnected;
    bool specular2NormalConnected;
    bool diffuseNormalConnected;
@@ -82,35 +82,35 @@ struct ShaderData
    int specular1FresnelMode;
    int specular2FresnelMode;
 
-   std::string trace_set_all;
+   AtString trace_set_all;
    bool trace_set_all_enabled;
    bool trace_set_all_inclusive;
 
-   std::string trace_set_shadows;
+    AtString trace_set_shadows;
    bool trace_set_shadows_enabled;
    bool trace_set_shadows_inclusive;
 
-   std::string trace_set_diffuse;
+    AtString trace_set_diffuse;
    bool trace_set_diffuse_enabled;
    bool trace_set_diffuse_inclusive;
 
-   std::string trace_set_backlight;
+    AtString trace_set_backlight;
    bool trace_set_backlight_enabled;
    bool trace_set_backlight_inclusive;
 
-   std::string trace_set_specular1;
+    AtString trace_set_specular1;
    bool trace_set_specular1_enabled;
    bool trace_set_specular1_inclusive;
 
-   std::string trace_set_specular2;
+    AtString trace_set_specular2;
    bool trace_set_specular2_enabled;
    bool trace_set_specular2_inclusive;
 
-   std::string trace_set_transmission;
+    AtString trace_set_transmission;
    bool trace_set_transmission_enabled;
    bool trace_set_transmission_inclusive;
 
-   std::string trace_set_sss;
+    AtString trace_set_sss;
    bool trace_set_sss_enabled;
    bool trace_set_sss_inclusive;
 

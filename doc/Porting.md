@@ -2,6 +2,35 @@
 nominator for things to look at again:
 > // ToDoJed: Fix for Porting->v6, 
 
+state of the art and current progress in porting.
+
+|               |       |                 |              |       |         |
+|---------------|-------|-----------------|--------------|-------|---------| 
+|shader         | ready | quality of port | improvements | C++11 | -Werror |
+|---------------|-------|-----------------|--------------|-------|---------| 
+|alSurface      |       |                 |              |       |         |             
+|alRemap        |       |                 |              |       |         |           
+|alCombine      |       |                 |              |       |         |             
+|alNoise        |       |                 |              |       |         |           
+|alLayer        |       |                 |              |       |         |           
+|alPattern      |       |                 |              |       |         |             
+|alCurvature    |       |                 |              |       |         |               
+|alBlackbody    |       |                 |              |       |         |               
+|alInputVector  |       |                 |              |       |         |                 
+|alHair         |       |                 |              |       |         |          
+|alColorSpace   |       |                 |              |       |         |                
+|alTriplanar    |       |                 |              |       |         |               
+|alSwitch       |       |                 |              |       |         |            
+|alJitterColor  |       |                 |              |       |         |                 
+|alCache        |       |                 |              |       |         |           
+|alCel          |       |                 |              |       |         |         
+|alFlake        |       |                 |              |       |         |           
+|cryptomatte    |       |                 |              |       |         |               
+|               |       |                 |              |       |         |    
+|common         |       |                 |              |       |         |          
+-----------------------------------------------------------------------------
+
+
 ## ToDo List ##
 
 - make the dist folder result more descriptive  

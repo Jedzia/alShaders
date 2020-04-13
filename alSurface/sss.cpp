@@ -7,7 +7,7 @@ const float ScatteringProfileDirectional::C_phi_inv(1.03668f);
 const float ScatteringProfileDirectional::C_E(0.27735f);
 const float ScatteringProfileDirectional::_3C2(0.0611156f);
 const float ScatteringProfileDirectional::A(2.05736f);
-const float ScatteringProfileDirectional::_albedo_lut[SSS_ALBEDO_LUT_SZ] = {0.004660, 0.005024, 0.005285, 0.005503, 0.005697, 0.005875, 0.006041, 0.006197, 0.006345, 0.006488, 0.006625, 0.006758, 0.006887, 0.007013, 0.007136, 0.007256, 0.007374, 0.007490, 0.007604, 0.007716, 0.007826, 0.007935, 0.008043, 0.008149, 0.008255, 0.008358, 0.008461, 0.008564, 0.008665, 0.008765, 0.008865, 0.008964, 0.009063, 0.009160, 0.009257, 0.009354, 0.009450, 0.009546, 0.009641, 0.009735, 0.009829, 0.009923, 0.010016, 0.010110, 0.010203, 0.010295, 0.010387, 0.010479, 0.010571, 0.010662, 0.010754, 0.010845, 0.010935, 0.011026, 0.011116, 0.011207, 0.011297, 0.011387, 0.011477, 0.011566, 0.011656, 0.011746, 0.011835, 0.011925, 0.012014, 0.012103, 0.012192, 0.012281, 0.012370, 0.012459, 0.012548, 0.012637, 0.012726, 0.012815, 0.012904, 0.012993, 0.013082, 0.013171, 0.013260, 0.013349, 0.013438, 0.013527, 0.013616, 0.013705, 0.013794, 0.013883, 0.013972, 0.014061, 0.014150, 0.014240, 0.014329, 0.014418, 0.014508, 0.014597, 0.014687, 0.014777, 0.014866, 0.014956, 0.015046, 0.015136, 0.015226, 0.015317, 0.015407, 0.015497, 0.015588, 0.015678, 0.015769, 0.015860, 0.015951, 0.016042, 0.016133, 0.016224, 0.016315, 0.016407, 0.016498, 0.016590, 0.016682, 0.016774, 0.016866, 0.016958, 0.017051, 0.017143, 0.017236, 0.017329, 0.017421, 0.017514, 0.017608, 0.017701, 0.017794, 0.017888, 0.017982, 0.018076, 0.018170, 0.018264, 0.018359, 0.018453, 0.018548, 0.018643, 0.018738, 0.018833, 0.018928, 0.019024, 0.019120, 0.019215, 0.019311, 0.019408, 0.019504, 0.019601, 0.019698, 0.019795, 0.019892, 0.019990, 0.020087, 0.020185, 0.020283, 0.020381, 0.020479, 0.020577, 0.020676, 0.020774, 0.020873, 0.020973, 0.021072, 0.021172, 0.021272, 0.021372, 0.021472, 0.021573, 0.021673, 0.021774, 0.021875, 0.021976, 0.022078, 0.022180, 0.022282, 0.022383, 0.022486, 0.022588, 0.022690, 0.022794, 0.022897, 0.023001, 0.023104, 0.023208, 0.023311, 0.023417, 0.023521, 0.023626, 0.023730, 0.023837, 0.023942, 0.024047, 0.024153, 0.024260, 0.024366, 0.024472, 0.024579, 0.024687, 0.024794, 0.024901, 0.025010, 0.025118, 0.025226, 0.025335, 0.025444, 0.025554, 0.025663, 0.025773, 0.025883, 0.025992, 0.026104, 0.026214, 0.026326, 0.026436, 0.026548, 0.026661, 0.026772, 0.026886, 0.026997, 0.027111, 0.027225, 0.027338, 0.027452, 0.027567, 0.027682, 0.027795, 0.027911, 0.028027, 0.028143, 0.028259, 0.028376, 0.028491, 0.028609, 0.028726, 0.028844, 0.028962, 0.029082, 0.029201, 0.029320, 0.029439, 0.029559, 0.029678, 0.029800, 0.029921, 0.030041, 0.030164, 0.030286, 0.030409, 0.030531, 0.030655, 0.030778, 0.030903, 0.031028, 0.031151, 0.031277, 0.031403};
+const float ScatteringProfileDirectional::_albedo_lut[SSS_ALBEDO_LUT_SZ] = {0.004660f, 0.005024f, 0.005285f, 0.005503f, 0.005697f, 0.005875f, 0.006041f, 0.006197f, 0.006345f, 0.006488f, 0.006625f, 0.006758f, 0.006887f, 0.007013f, 0.007136f, 0.007256f, 0.007374f, 0.007490f, 0.007604f, 0.007716f, 0.007826f, 0.007935f, 0.008043f, 0.008149f, 0.008255f, 0.008358f, 0.008461f, 0.008564f, 0.008665f, 0.008765f, 0.008865f, 0.008964f, 0.009063f, 0.009160f, 0.009257f, 0.009354f, 0.009450f, 0.009546f, 0.009641f, 0.009735f, 0.009829f, 0.009923f, 0.010016f, 0.010110f, 0.010203f, 0.010295f, 0.010387f, 0.010479f, 0.010571f, 0.010662f, 0.010754f, 0.010845f, 0.010935f, 0.011026f, 0.011116f, 0.011207f, 0.011297f, 0.011387f, 0.011477f, 0.011566f, 0.011656f, 0.011746f, 0.011835f, 0.011925f, 0.012014f, 0.012103f, 0.012192f, 0.012281f, 0.012370f, 0.012459f, 0.012548f, 0.012637f, 0.012726f, 0.012815f, 0.012904f, 0.012993f, 0.013082f, 0.013171f, 0.013260f, 0.013349f, 0.013438f, 0.013527f, 0.013616f, 0.013705f, 0.013794f, 0.013883f, 0.013972f, 0.014061f, 0.014150f, 0.014240f, 0.014329f, 0.014418f, 0.014508f, 0.014597f, 0.014687f, 0.014777f, 0.014866f, 0.014956f, 0.015046f, 0.015136f, 0.015226f, 0.015317f, 0.015407f, 0.015497f, 0.015588f, 0.015678f, 0.015769f, 0.015860f, 0.015951f, 0.016042f, 0.016133f, 0.016224f, 0.016315f, 0.016407f, 0.016498f, 0.016590f, 0.016682f, 0.016774f, 0.016866f, 0.016958f, 0.017051f, 0.017143f, 0.017236f, 0.017329f, 0.017421f, 0.017514f, 0.017608f, 0.017701f, 0.017794f, 0.017888f, 0.017982f, 0.018076f, 0.018170f, 0.018264f, 0.018359f, 0.018453f, 0.018548f, 0.018643f, 0.018738f, 0.018833f, 0.018928f, 0.019024f, 0.019120f, 0.019215f, 0.019311f, 0.019408f, 0.019504f, 0.019601f, 0.019698f, 0.019795f, 0.019892f, 0.019990f, 0.020087f, 0.020185f, 0.020283f, 0.020381f, 0.020479f, 0.020577f, 0.020676f, 0.020774f, 0.020873f, 0.020973f, 0.021072f, 0.021172f, 0.021272f, 0.021372f, 0.021472f, 0.021573f, 0.021673f, 0.021774f, 0.021875f, 0.021976f, 0.022078f, 0.022180f, 0.022282f, 0.022383f, 0.022486f, 0.022588f, 0.022690f, 0.022794f, 0.022897f, 0.023001f, 0.023104f, 0.023208f, 0.023311f, 0.023417f, 0.023521f, 0.023626f, 0.023730f, 0.023837f, 0.023942f, 0.024047f, 0.024153f, 0.024260f, 0.024366f, 0.024472f, 0.024579f, 0.024687f, 0.024794f, 0.024901f, 0.025010f, 0.025118f, 0.025226f, 0.025335f, 0.025444f, 0.025554f, 0.025663f, 0.025773f, 0.025883f, 0.025992f, 0.026104f, 0.026214f, 0.026326f, 0.026436f, 0.026548f, 0.026661f, 0.026772f, 0.026886f, 0.026997f, 0.027111f, 0.027225f, 0.027338f, 0.027452f, 0.027567f, 0.027682f, 0.027795f, 0.027911f, 0.028027f, 0.028143f, 0.028259f, 0.028376f, 0.028491f, 0.028609f, 0.028726f, 0.028844f, 0.028962f, 0.029082f, 0.029201f, 0.029320f, 0.029439f, 0.029559f, 0.029678f, 0.029800f, 0.029921f, 0.030041f, 0.030164f, 0.030286f, 0.030409f, 0.030531f, 0.030655f, 0.030778f, 0.030903f, 0.031028f, 0.031151f, 0.031277f, 0.031403f};
 
 ScatteringProfileDirectional::ScatteringProfileDirectional(float Rd, float scale)
 {
@@ -92,16 +92,16 @@ void matchNormals(const AtVector Nref, AtVector& Nmatch)
 }
 
 void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* diffuse_sampler, 
-                        AtVector U, AtVector V, std::map<AtNode*, int>& lightGroupMap, AtRGB path_throughput,
-                        const char* trace_set, bool trace_set_enabled, bool trace_set_inclusive, float sssMix)
+                        AtVector U, AtVector V, std::map<const AtNode*, int>& lightGroupMap, AtRGB path_throughput,
+                        const AtString& trace_set, bool trace_set_enabled, bool trace_set_inclusive, float sssMix)
 {
     if (dmd->sss_depth >= SSS_MAX_SAMPLES) return;
     
     void* orig_op;
-    AiStateGetMsgPtr("als_sss_op", &orig_op);
+    AiStateGetMsgPtr(AtString("als_sss_op"), &orig_op);
     
     int als_context = ALS_CONTEXT_NONE;
-    AiStateGetMsgInt("als_context", &als_context);
+    AiStateGetMsgInt(AtString("als_context"), &als_context);
 
     AtRay ray;
     AtScrSample scrs;
@@ -141,12 +141,12 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
         if (dmd->sss_depth < SSS_MAX_SAMPLES && dmd->maxdist > 0.0f)
         {
             ray = AiMakeRay(AI_RAY_SUBSURFACE, sg->P, &sg->Rd, dmd->maxdist, sg);
-            AiTrace(&ray, &scrs);
+            AiTrace(ray, JedPortGetAiTraceWeight(sg), scrs);
         }
         return;
     }
 
-    AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+    AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
     
     // assert(sg->P != dmd->Po);
     // put normals the right way round
@@ -177,12 +177,12 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     while (AiLightsGetSample(sg, ls))
     {
         // get the group assigned to this light from the hash table using the light's pointer
-        int lightGroup = lightGroupMap[sg->Lp];
-        float diffuse_strength = AiLightGetDiffuse(sg->Lp);
+        int lightGroup = lightGroupMap[ls.Lp];
+        float diffuse_strength = AiLightGetDiffuse(ls.Lp);
 
         // Does not using MIS here get us anything?
         // AtRGB L = AiEvaluateLightSample(sg, brdf_data, AiOrenNayarMISSample, AiOrenNayarMISBRDF, AiOrenNayarMISPDF);
-        AtRGB L = sg->Li * AiMax(AiV3Dot(sg->Ld, sg->N), 0.0f) * AI_ONEOVERPI * JedPortGetShaderWeight(sg) * diffuse_strength;
+        AtRGB L = ls.Li * AiMax(AiV3Dot(ls.Ld, sg->N), 0.0f) * AI_ONEOVERPI * JedPortGetShaderWeight(sg) * diffuse_strength;
         if (AiColorIsSmall(L)) continue;
         if (directional)
         {
@@ -192,7 +192,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
                 if (samp.r < dmd->sp[c].safe_radius)
                     R += directionalDipole(sg->P, sg->N, dmd->Po, dmd->No, sg->N, dmd->No, dmd->sp[c]) * dmd->weights[c];
                 else
-                    R += directionalDipole(sg->P, sg->N, dmd->Po, dmd->No, sg->Ld, dmd->wo, dmd->sp[c]) * dmd->weights[c]; 
+                    R += directionalDipole(sg->P, sg->N, dmd->Po, dmd->No, ls.Ld, dmd->wo, dmd->sp[c]) * dmd->weights[c];
             }
             L *= R;
             result_direct += L;
@@ -228,7 +228,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
         ray.dir.z = sqrtf(1.0f - float(samples[0]));
         AiV3RotateToFrame(ray.dir, U, V, sg->N);
 
-        bool hit = AiTrace(&ray, &scrs);
+        bool hit = AiTrace(ray, JedPortGetAiTraceWeight(sg), scrs);
 
         AtRGB f;
         if (directional)
@@ -272,7 +272,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
 
     dmd->sss_depth++;
 
-    AiStateSetMsgInt("als_raytype", ALS_RAY_SSS);
+    AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_SSS);
     
     if (dmd->sss_depth < SSS_MAX_SAMPLES && dmd->maxdist > 0.0f)
     {
@@ -282,7 +282,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
             AiShaderGlobalsSetTraceSet(sg, trace_set, trace_set_inclusive);
         }
         ray = AiMakeRay(AI_RAY_SUBSURFACE, sg->P, &sg->Rd, dmd->maxdist, sg);
-        AiTrace(&ray, &scrs);
+        AiTrace(ray, JedPortGetAiTraceWeight(sg), scrs);
     }
 }
 
@@ -290,7 +290,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
                    bool directional, int numComponents,
                    AtRGB& result_direct, AtRGB& result_indirect, AtRGB* lightGroupsDirect, AtRGB* lightGroupsIndirect,
                    AtRGB* deepGroupPtr,
-                   const char* trace_set, bool trace_set_enabled, bool trace_set_inclusive)
+                   const AtString& trace_set, bool trace_set_enabled, bool trace_set_inclusive)
 
 {
     AtVector U, V;
@@ -443,8 +443,8 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
 
         wi_ray = AiMakeRay(AI_RAY_SUBSURFACE, origin, &dir, maxdist, sg);
 
-        AiStateSetMsgInt("als_raytype", ALS_RAY_SSS);
-        AiStateSetMsgPtr("als_sss_op", sg->Op);
+        AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_SSS);
+        AiStateSetMsgPtr(AtString("als_sss_op"), sg->Op);
         dmd->sss_depth = 0;
         dmd->maxdist = R_max;
         dmd->Po = sg->P;
@@ -531,7 +531,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
         result_sss += result_sss_indirect;
     }
     */
-    AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+    AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
 
     return result_sss;
 }

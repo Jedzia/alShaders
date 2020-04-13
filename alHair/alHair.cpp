@@ -1125,7 +1125,8 @@ struct HairBsdf
                 if (diffuse_strength < IMPORTANCE_EPS) continue;
 
                 // get the group assigned to this light from the hash table using the light's pointer
-                int lightGroup = data->lightGroups[ls.Lp];
+                // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+                int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
 
                 float cos_theta_i = AiV3Dot(U, ls.Ld);
                 float sin_theta_i = sqrtf(AiMax(1.0f - SQR(cos_theta_i), 0.0f));
@@ -1176,7 +1177,8 @@ struct HairBsdf
                 if (specular_strength < IMPORTANCE_EPS) continue;
 
                 // get the group assigned to this light from the hash table using the light's pointer
-                int lightGroup = data->lightGroups[ls.Lp];
+                // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+                int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
 
                 is_bsdf_sample = false;
                 pdf_bb = pdf_lb = 0.0f;
@@ -1213,7 +1215,8 @@ struct HairBsdf
                 if (diffuse_strength < IMPORTANCE_EPS) continue;
 
                 // get the group assigned to this light from the hash table using the light's pointer
-                int lightGroup = data->lightGroups[ls.Lp];
+                // ToDoJed: Fix for Porting->v6, is the "const AtNode*" of the map appropriate?
+                int lightGroup = data->lightGroups[static_cast<const AtNode*>(ls.Lp)];
                 SctGeo geo_l(ls.Ld, theta_r, phi_r, U, V, W);
 
                 AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_DUAL);
