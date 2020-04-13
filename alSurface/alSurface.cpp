@@ -1684,7 +1684,7 @@ shader_evaluate
        AiShaderEvalParamBool(p_specular2InternalDirect);
 
    float dummy;
-   if (sg->bounces_diffuse > 0 || sg->Rr_gloss > 1 || sssMix < 0.01f ||
+   if (sg->bounces_diffuse > 0 || AiShaderGlobalsApplyRayGloss(sg) > 1 || sssMix < 0.01f ||
        AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &dummy) ||
        als_raytype == ALS_RAY_HAIR)
    {

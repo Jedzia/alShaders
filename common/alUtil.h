@@ -40,7 +40,7 @@ typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indi
 
 /** \name BRDF Integration
  * \{
- * ToDoJed: Fix for Porting->v6, the is no AiEvaluateLightSample!
+ * ToDoJed: Fix for Porting->v6, there is no AiEvaluateLightSample!
  */
 /*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf)
 {
@@ -49,7 +49,7 @@ typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indi
 
 /** Overwrite the obsolete sg->we
  *
- * ToDoJed: Fix for Porting->v6, the is no sg->we!
+ * ToDoJed: Fix for Porting->v6, there is no sg->we!
  * @param sg shader globals
  * @return the fake shader weight
  */
@@ -69,7 +69,7 @@ inline AtColor JedPortGetAiTraceWeight(AtShaderGlobals* sg) {
 
 /** Apply Global Opacity
  *
- * ToDoJed: Fix for Porting->v6, the is no AiShaderGlobalsApplyOpacity!
+ * ToDoJed: Fix for Porting->v6, there is no AiShaderGlobalsApplyOpacity!
  * @param sg shader globals
  * @param opacity Opacity to apply.
  * @return ?
@@ -77,6 +77,20 @@ inline AtColor JedPortGetAiTraceWeight(AtShaderGlobals* sg) {
 inline bool AiShaderGlobalsApplyOpacity(AtShaderGlobals* sg, AtRGB opacity)
 {
     return true;
+}
+
+/** Apply ray glossy depth level
+ *
+ * ToDoJed: Fix for Porting->v6, there is no ray glossy depth level!
+ * @param sg shader globals
+ * @param Rr_gloss Ray glossy depth level (was originally AtByte) to apply.
+ *        Seems to be not needed, as only the return value is used.
+ * @return a fake ray glossy depth level.
+ */
+inline uint8_t AiShaderGlobalsApplyRayGloss(AtShaderGlobals* sg, uint8_t Rr_gloss = 0)
+{
+    // ->Rr_gloss
+    return 0;
 }
 
 inline void AiV3Normalize(AtVector& out, const AtVector& in)

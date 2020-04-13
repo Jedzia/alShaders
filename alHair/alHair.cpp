@@ -1858,7 +1858,7 @@ shader_evaluate
     if (sg->Rt & AI_RAY_SHADOW || AiColorIsSmall(hb.opacity)) return;
 #endif
     // early out if we're a hair-hair glossy ray and the ray depth says we should be calculating dual scattering only
-    if (sg->Rr_gloss > data->dual_depth && als_raytype == ALS_RAY_HAIR)
+    if (AiShaderGlobalsApplyRayGloss(sg) > data->dual_depth && als_raytype == ALS_RAY_HAIR)
     {
         sg->out.RGB() = AI_RGB_BLACK;
         return;
