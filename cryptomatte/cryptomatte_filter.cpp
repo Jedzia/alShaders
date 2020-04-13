@@ -121,7 +121,7 @@ filter_pixel {
 	float width =     AiShaderEvalParamFlt (p_width);
 	int main_filter = AiShaderEvalParamEnum(p_filter);
 	
-	float (*filter)(AtPoint2, float);
+	float (*filter)(AtVector2, float);
 
 	///////////////////////////////////////////////
 	//
@@ -190,7 +190,7 @@ filter_pixel {
 	int total_samples = 0;
 	float total_weight = 0.0f;
 	float sample_weight;
-	AtPoint2 offset;
+	AtVector2 offset;
 
 	///////////////////////////////////////////////
 	//

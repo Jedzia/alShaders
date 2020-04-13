@@ -72,7 +72,7 @@ shader_evaluate
     AtRGB result = input;
 
     // float saturation = fmodf((signal + 0.9311) * 51731.13215, 1.f);
-    float saturation = AiCellNoise2(AtPoint2(signal, 51731.132151));
+    float saturation = AiCellNoise2(AtVector2(signal, 51731.132151));
     saturation = lerp(minSat, maxSat, saturation);
     if (saturation != 1.0f)
     {
@@ -82,7 +82,7 @@ shader_evaluate
 
     // hue
     // float hueOffset = fmodf((signal + 1.3311) * 173.1231, 1.f);
-    float hueOffset = AiCellNoise2(AtPoint2(signal, 173.1231));
+    float hueOffset = AiCellNoise2(AtVector2(signal, 173.1231));
     hueOffset = lerp(minHue, maxHue, hueOffset);
     if (hueOffset != 0.0f)
     {
@@ -92,7 +92,7 @@ shader_evaluate
     }
 
     // float gain = fmodf((signal + 0.65416) * 413.7254, 1.f);
-    float gain = AiCellNoise2(AtPoint2(signal, 413.7254));
+    float gain = AiCellNoise2(AtVector2(signal, 413.7254));
     gain = lerp(minGain, maxGain, gain);
     result *= gain;
 

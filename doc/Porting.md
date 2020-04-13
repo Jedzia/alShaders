@@ -63,7 +63,9 @@ nominator for things to look at again:
 ## ToDo's about porting steps done
 
 - Check everywhere `#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4` is if that 
-makes sense.
+  makes sense.
+- ../common/alUtil.cpp was added to the alHair target because of AiEvaluateLightSample(...) proxy.
+  Remove it, after cleanup.
  
 
 ## Hints for compilation

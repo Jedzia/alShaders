@@ -139,14 +139,17 @@ unsigned char g_pointcloud_instance_verbosity = 0;  // to do: remove this.
 
 #if _MSC_VER >= 1700
   #include <algorithm>
+#include <ai_deprecated.h>
+#include <alUtil.h>
+
 #endif
 
 struct CACHE_ALIGN CryptomatteCache {
     AtNode * object;        //       8 bytes
-    AtColor nsp_hash_clr;   //      16 bytes
-    AtColor obj_hash_clr;   //      16 bytes
+    AtRGB nsp_hash_clr;   //      16 bytes
+    AtRGB obj_hash_clr;   //      16 bytes
     AtNode * shader_object; //       8 bytes
-    AtColor mat_hash_clr;   //      16 bytes
+    AtRGB mat_hash_clr;   //      16 bytes
                             //  +_______
                             //      64 bytes
     CryptomatteCache() {

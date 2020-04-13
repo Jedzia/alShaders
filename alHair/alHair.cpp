@@ -550,7 +550,7 @@ struct HairBsdf
         if (AiUDataGetFlt(data->uparam, s) && AiUDataGetFlt(data->vparam, t))
         {
             // set the hair u, v coords so other shaders (e.g. ramp) can use them
-        AtPoint2 hair_uv(sg->u, sg->v);
+        AtVector2 hair_uv(sg->u, sg->v);
 #if AI_VERSION_MINOR_NUM >= 6
         AiStateSetMsgVec2(maya_ramp_uv_override, hair_uv);
 #else
@@ -572,7 +572,7 @@ struct HairBsdf
         float randomTangent = AiShaderEvalParamFlt(p_randomTangent) * 0.3f;
         if (AiUDataGetUInt(AtString("curve_id"), curve_idi))
         {
-            AtPoint2 p; p.x = float(curve_idi); p.y = 0.0f;
+            AtVector2 p; p.x = float(curve_idi); p.y = 0.0f;
             cn = AiCellNoise2(p);
 
             AtPoint p2 = aivec(float(curve_idi)+17.0f, 0.0f, 0.0f);
@@ -580,7 +580,7 @@ struct HairBsdf
         }
         else if (AiUDataGetFlt(AtString("curve_id"), curve_id))
         {
-            AtPoint2 p; p.x = curve_id; p.y = 0.0f;
+            AtVector2 p; p.x = curve_id; p.y = 0.0f;
             cn = AiCellNoise2(p);
 
             AtPoint p2 = aivec(curve_id+17.0f, 0.0f, 0.0f);
@@ -589,7 +589,7 @@ struct HairBsdf
         }
         else if (AiUDataGetInt(AtString("curve_id"), curve_idii))
         {
-            AtPoint2 p; p.x = float(curve_idii); p.y = 0.0f;
+            AtVector2 p; p.x = float(curve_idii); p.y = 0.0f;
             cn = AiCellNoise2(p);
 
             AtPoint p2 = aivec(float(curve_idii)+17.0f, 0.0f, 0.0f);

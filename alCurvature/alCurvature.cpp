@@ -154,8 +154,11 @@ shader_evaluate
 
 		// trace straight back down
         ray = AiMakeRay(AI_RAY_CAMERA, srcpoint, &dir, sampleRadius, sg);
-        AiTrace(ray, JedPortGetAiTraceWeight(sg), *hitpoint);
-		if (hitpoint)
+        // ToDoJed: Fix for Porting->v6, very fishy ... dive into it and fix.
+        // I just put hitpoint2 in there.
+        AtScrSample hitpoint2;
+        AiTrace(ray, JedPortGetAiTraceWeight(sg), hitpoint2);
+		if (1 /*hitpoint*/)
 		{
 			AtVector L = hitpoint->P - sg->P;
 			float dist2 = AiV3Dot(L, L);

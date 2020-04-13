@@ -8,21 +8,21 @@
 /// A structure representing a color coordinate system
 struct ColorSystem
 {
-	ColorSystem(const std::string& name_, const AtPoint2& r, const AtPoint2& g, const AtPoint2& b, const AtPoint2& w):
+	ColorSystem(const std::string& name_, const AtVector2& r, const AtVector2& g, const AtVector2& b, const AtVector2& w):
 		name(name_), red(r), green(g), blue(b), white(w)
 	{}
 
 	std::string name;	/// name of the system, e.g. rec709, ACES etc
-	AtPoint2 red;		/// chromaticity of the red primary
-	AtPoint2 green;		/// chromaticity of the green primary
-	AtPoint2 blue;		/// chromticity of the blue primary
-	AtPoint2 white;		/// chromaticity of the white point
+	AtVector2 red;		/// chromaticity of the red primary
+	AtVector2 green;		/// chromaticity of the green primary
+	AtVector2 blue;		/// chromticity of the blue primary
+	AtVector2 white;		/// chromaticity of the white point
 };
 
 /// White points for common illuminants
-extern  AtPoint2 illumC;
-extern  AtPoint2 illumD65;
-extern  AtPoint2 illumE;
+extern  AtVector2 illumC;
+extern  AtVector2 illumD65;
+extern  AtVector2 illumE;
 
 /// Color system definitions for common color spaces
 extern  ColorSystem CsNTSC;

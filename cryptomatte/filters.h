@@ -27,7 +27,7 @@ static const char* filterEnumNames[] =
 };
 
 
-float gaussian(AtPoint2 p, float width) {
+float gaussian(AtVector2 p, float width) {
 	p /= (width * 0.5f);
 	float dist_squared = (p.x * p.x + p.y * p.y) ;
 	if (dist_squared >  (1.0f)) {
@@ -43,7 +43,7 @@ float gaussian(AtPoint2 p, float width) {
 }
 
 
-float blackman_harris(AtPoint2 p, float width) {
+float blackman_harris(AtVector2 p, float width) {
 	// Close to matching Arnolds, but not exact. 
 	p /= (width * 0.5f);
 
@@ -64,12 +64,12 @@ float blackman_harris(AtPoint2 p, float width) {
 }
 
 
-float box(AtPoint2 p, float width) {
+float box(AtVector2 p, float width) {
 	// The trick with matching arnold's filter here is making sure you give a value of 1.0 in the filter update . 
 	return 1.0f;
 }
 
-float box_strict(AtPoint2 p, float width) {
+float box_strict(AtVector2 p, float width) {
 	// The trick with matching arnold's filter here is making sure you give a value of 1.0 in the filter update.
 	if (std::abs(p.x) > 1.0 || std::abs(p.y) > 1.0)
 		return 1.0f;
@@ -78,7 +78,7 @@ float box_strict(AtPoint2 p, float width) {
 }
 
 
-float triangle(AtPoint2 p, float width) {
+float triangle(AtVector2 p, float width) {
 	// Still does not match arnold's
 	p /= (width * 0.5f);
 	float weight = std::abs(p.x) + std::abs(p.y);
@@ -86,7 +86,7 @@ float triangle(AtPoint2 p, float width) {
 }
 
 
-float disk(AtPoint2 p, float width) {
+float disk(AtVector2 p, float width) {
 	// Is now extremely close to arnold's
 
 	p /= (width * 0.5f);
@@ -99,7 +99,7 @@ float disk(AtPoint2 p, float width) {
 }
 
 
-float cone(AtPoint2 p, float width) {
+float cone(AtVector2 p, float width) {
 	// Is now extremely close to arnold's
 
 	p /= (width * 0.5f);

@@ -1,16 +1,16 @@
 #include "Color.h"
 
-inline AtPoint2 point2(float x, float y)
+inline AtVector2 point2(float x, float y)
 {
-	AtPoint2 r;
+	AtVector2 r;
 	r.x = x;
 	r.y = y;
 	return r;
 }
 
-AtPoint2 illumC(point2(0.3101, 0.3162));
-AtPoint2 illumD65(point2(0.3127, 0.3291));
-AtPoint2 illumE(point2(0.33333333, 0.33333333));
+AtVector2 illumC(point2(0.3101, 0.3162));
+AtVector2 illumD65(point2(0.3127, 0.3291));
+AtVector2 illumE(point2(0.33333333, 0.33333333));
 
 ColorSystem CsNTSC("NTSC", point2(0.67, 0.33), point2(0.21, 0.71), point2(0.14, 0.08), illumC);
 ColorSystem CsSMPTE("SMPTE", point2(0.630, 0.340), point2(0.31, 0.595), point2(0.155, 0.07), illumD65);
