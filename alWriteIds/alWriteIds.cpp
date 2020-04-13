@@ -93,14 +93,14 @@ enum WriteIdsParams
     p_aov_idFloat2,
 };
 
-node_parameters // static void Parameters(AtList* params, AtMetaDataStore* mds)
+node_parameters // static void Parameters(AtList* params, AtMetaDataStore* nentry)
 {
     AiParameterRGB("passthrough", 0.0f, 0.0f, 0.0f);
     AiParameterEnum("string", WI_SHAPE_NAME, stringOptionsNames);
     for (int i = 0; i < WI_NUM_AOVS; i++)
     {
         AiParameterStr(aov_paramNames[i], aov_namesDefaultValues[i]);
-        AiMetaDataSetBool(mds, aov_paramNames[i], "linkable", false);
+        AiMetaDataSetBool(nentry, aov_paramNames[i], "linkable", false);
     }
 }
 

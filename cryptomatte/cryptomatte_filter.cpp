@@ -33,9 +33,9 @@ static const char* modeEnumNames[] = {
 };
 
 node_parameters {
-	AiMetaDataSetStr(mds, NULL, "maya.attr_prefix", "filter_");
-	AiMetaDataSetStr(mds, NULL, "maya.translator", "cryptomatteFilter");
-	AiMetaDataSetInt(mds, NULL, "maya.id", 0x00116420);
+	AiMetaDataSetStr(nentry, NULL, "maya.attr_prefix", "filter_");
+	AiMetaDataSetStr(nentry, NULL, "maya.translator", "cryptomatteFilter");
+	AiMetaDataSetInt(nentry, NULL, "maya.id", 0x00116420);
 
 	AiParameterFlt("width", 2.0);
 	AiParameterInt("rank", 0);
@@ -59,7 +59,7 @@ node_initialize {
 		"FLOAT Z", 
 		NULL 
 	}; 
-	AiFilterInitialize(node, true, necessary_aovs, NULL);
+	AiFilterInitialize(node, true, necessary_aovs);
 }
 
 node_finish {

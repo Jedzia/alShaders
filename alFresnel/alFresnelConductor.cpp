@@ -42,9 +42,9 @@ node_parameters
 	AiParameterEnum("material", 0, alFresnelConductorMaterialNames);
 	AiParameterBool("normalize", false);
 	AiParameterRGB("reflectivity", .94, .78, .37);
-    AiMetaDataSetBool(mds, "reflectivity", "always_linear", true);  // no inverse-gamma correction
+    AiMetaDataSetBool(nentry, "reflectivity", "always_linear", true);  // no inverse-gamma correction
 	AiParameterRGB("edgetint", 1.0, 0.98, 0.73);
-    AiMetaDataSetBool(mds, "edgetint", "always_linear", true);  // no inverse-gamma correction
+    AiMetaDataSetBool(nentry, "edgetint", "always_linear", true);  // no inverse-gamma correction
 }
 
 node_initialize

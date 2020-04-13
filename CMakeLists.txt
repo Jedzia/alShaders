@@ -105,7 +105,7 @@ set(SUBDIRECTORIES
         alCache
         alCel
         alFlake
-#        cryptomatte
+        cryptomatte
         common
 )
 
