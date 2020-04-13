@@ -63,7 +63,6 @@ node_initialize {
 }
 
 node_finish {
-	AiFilterDestroy(node);
 }
 
 node_update {

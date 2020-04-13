@@ -240,5 +240,4 @@ node_finish
     DriverData * data = reinterpret_cast<DriverData *>(AiDriverGetLocalData(node));
     // Free local data
     delete data;
-    AiDriverDestroy(node);
 }
