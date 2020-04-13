@@ -92,7 +92,7 @@ set(SUBDIRECTORIES
         alRemap
         alCombine
         alNoise
-#        alLayer
+        alLayer
         alPattern
         alCurvature
         alBlackbody

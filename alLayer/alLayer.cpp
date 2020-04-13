@@ -12,8 +12,8 @@ AI_SHADER_NODE_EXPORT_METHODS(alLayer)
 struct ShaderData
 {
    // AOV names
-   std::vector<std::string> aovs;
-   std::vector<std::string> aovs_rgba;
+   std::vector<AtString> aovs;
+   std::vector<AtString> aovs_rgba;
    bool standardAovs;
    CryptomatteData* cryptomatte;
 };
@@ -215,7 +215,8 @@ node_update
 
    // set up AOVs
    REGISTER_AOVS
-   data->standardAovs = params[p_standardAovs].BOOL;
+
+    data->standardAovs =AiNodeGetBool(node, "standardAovs");
    data->cryptomatte->setup_all(AiNodeGetStr(node, "aov_crypto_asset"), 
       AiNodeGetStr(node, "aov_crypto_object"), AiNodeGetStr(node, "aov_crypto_material"));
 }
@@ -242,35 +243,38 @@ shader_evaluate
          mix = 1.0f;
 
       int als_raytype = ALS_RAY_UNDEFINED;
-      AiStateGetMsgInt("als_raytype", &als_raytype);
+      AiStateGetMsgInt(AtString("als_raytype"), &als_raytype);
 
       if (als_raytype != ALS_RAY_SSS && mix >= (1.0f - IMPORTANCE_EPS))
       {
          result = AiShaderEvalParamRGB(p_layer2);
-         result_opacity = sg->out_opacity;
+          // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+          // result_opacity = sg->out_opacity;
       }
       else if (als_raytype != ALS_RAY_SSS && mix <= IMPORTANCE_EPS)
       {
          result = AiShaderEvalParamRGB(p_layer1);
-         result_opacity = sg->out_opacity;
+          // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+          // result_opacity = sg->out_opacity;
       }
       else
       {
          if (sg->Rt & AI_RAY_CAMERA)  // handle aovs
          {
-            AiStateSetMsgInt("als_context", ALS_CONTEXT_LAYER);
+            AiStateSetMsgInt(AtString("als_context"), ALS_CONTEXT_LAYER);
             // RGB AOVs
             AtRGB tmp[NUM_AOVs];
             memset(tmp, 0, sizeof(AtRGB) * NUM_AOVs);
             AtRGB layer1 = AiShaderEvalParamRGB(p_layer1);
-            AtRGB layer1_opacity = sg->out_opacity;
+             // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+             // AtRGB layer1_opacity = sg->out_opacity;
             for (size_t i = 0; i < data->aovs.size(); ++i)
             {
-               if (!AiAOVGetRGB(sg, data->aovs[i].c_str(), tmp[i]))
+               if (!AiAOVGetRGB(sg, data->aovs[i], tmp[i]))
                {
                   tmp[i] = AI_RGB_BLACK;
                }
-               AiAOVSetRGB(sg, data->aovs[i].c_str(), AI_RGB_BLACK);
+               AiAOVSetRGB(sg, data->aovs[i], AI_RGB_BLACK);
             }
 
             // RGBA AOVs
@@ -278,57 +282,60 @@ shader_evaluate
             memset(tmp_rgba, 0, sizeof(AtRGBA) * NUM_AOVs_RGBA);
             for (size_t i = 0; i < data->aovs_rgba.size(); ++i)
             {
-               if (!AiAOVGetRGBA(sg, data->aovs_rgba[i].c_str(), tmp_rgba[i]))
+               if (!AiAOVGetRGBA(sg, data->aovs_rgba[i], tmp_rgba[i]))
                {
                   tmp_rgba[i] =  AI_RGBA_ZERO;
                }
-               AiAOVSetRGBA(sg, data->aovs_rgba[i].c_str(),  AI_RGBA_ZERO);
+               AiAOVSetRGBA(sg, data->aovs_rgba[i],  AI_RGBA_ZERO);
             }
 
             AtRGB layer2 = AiShaderEvalParamRGB(p_layer2);
             result = lerp(layer1, layer2, mix);
-            result_opacity = lerp(layer1_opacity, sg->out_opacity, mix);
+             // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+             // result_opacity = lerp(layer1_opacity, sg->out_opacity, mix);
             for (size_t i = 0; i < data->aovs.size(); ++i)
             {
                AtRGB tmp2;
-               if (!AiAOVGetRGB(sg, data->aovs[i].c_str(), tmp2))
+               if (!AiAOVGetRGB(sg, data->aovs[i], tmp2))
                {
                   tmp2 = AI_RGB_BLACK;
                }
-               AiAOVSetRGB(sg, data->aovs[i].c_str(), lerp(tmp[i], tmp2, mix));
+               AiAOVSetRGB(sg, data->aovs[i], lerp(tmp[i], tmp2, mix));
             }
 
             for (size_t i = 0; i < data->aovs_rgba.size(); ++i)
             {
                AtRGBA tmp_rgba2;
-               if (!AiAOVGetRGBA(sg, data->aovs_rgba[i].c_str(), tmp_rgba2))
+               if (!AiAOVGetRGBA(sg, data->aovs_rgba[i], tmp_rgba2))
                {
                   tmp_rgba2 =  AI_RGBA_ZERO;
                }
-               AiAOVSetRGBA(sg, data->aovs_rgba[i].c_str(),
+               AiAOVSetRGBA(sg, data->aovs_rgba[i],
                             lerp(tmp_rgba[i], tmp_rgba2, mix));
             }
-            AiStateSetMsgInt("als_context", ALS_CONTEXT_NONE);
+            AiStateSetMsgInt(AtString("als_context"), ALS_CONTEXT_NONE);
          }
          else  // just layer the results
          {
-            AiStateSetMsgInt("als_context", ALS_CONTEXT_LAYER);
+            AiStateSetMsgInt(AtString("als_context"), ALS_CONTEXT_LAYER);
             AtRGB deepGroupTmp1[NUM_LIGHT_GROUPS];
             AtRGB deepGroupTmp2[NUM_LIGHT_GROUPS];
             memset(deepGroupTmp1, 0, sizeof(AtRGB) * NUM_LIGHT_GROUPS);
             memset(deepGroupTmp2, 0, sizeof(AtRGB) * NUM_LIGHT_GROUPS);
             AtRGB* deepGroupPtr = NULL;
             AtRGB layer1 = AiShaderEvalParamRGB(p_layer1);
-            AtRGB layer1_opacity = sg->out_opacity;
-            if (AiStateGetMsgPtr("als_deepGroupPtr", (void**)&deepGroupPtr))
+             // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+             // AtRGB layer1_opacity = sg->out_opacity;
+            if (AiStateGetMsgPtr(AtString("als_deepGroupPtr"), (void**)&deepGroupPtr))
             {
                memcpy(deepGroupTmp1, deepGroupPtr,
                       sizeof(AtRGB) * NUM_LIGHT_GROUPS);
             }
             AtRGB layer2 = AiShaderEvalParamRGB(p_layer2);
             result = lerp(layer1, layer2, mix);
-            result_opacity = lerp(layer1_opacity, sg->out_opacity, mix);
-            if (AiStateGetMsgPtr("als_deepGroupPtr", (void**)&deepGroupPtr))
+             // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+             // result_opacity = lerp(layer1_opacity, sg->out_opacity, mix);
+            if (AiStateGetMsgPtr(AtString("als_deepGroupPtr"), (void**)&deepGroupPtr))
             {
                memcpy(deepGroupTmp2, deepGroupPtr,
                       sizeof(AtRGB) * NUM_LIGHT_GROUPS);
@@ -338,13 +345,14 @@ shader_evaluate
                       lerp(deepGroupTmp1[i], deepGroupTmp2[i], mix);
                }
             }
-            AiStateSetMsgInt("als_context", ALS_CONTEXT_NONE);
+            AiStateSetMsgInt(AtString("als_context"), ALS_CONTEXT_NONE);
          }
       }
    }
 
    sg->out.RGB() = result;
-   sg->out_opacity = result_opacity;
+    // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+    // sg->out_opacity = result_opacity;
 
    data->cryptomatte->do_cryptomattes(sg, node, -1, -1, -1);
 }

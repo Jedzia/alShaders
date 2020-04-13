@@ -1570,7 +1570,8 @@ struct HairBsdf
                         result_Pl_direct +
                         result_Pg_indirect +
                         result_Pl_indirect;
-        sg->out_opacity = AI_RGB_WHITE;
+        // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+        // sg->out_opacity = AI_RGB_WHITE;
     }
 
     AtVector U, V, W;   //< local coordinate frame
@@ -1805,7 +1806,8 @@ shader_evaluate
     if (transp_early_out)
       return;
 
-    hb.opacity = sg->out_opacity;
+    // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+    // hb.opacity = sg->out_opacity;
 
     AiStateSetMsgBool("als_hitHair", true);
 
@@ -1830,11 +1832,13 @@ shader_evaluate
             als_hairNumIntersections+=minh(hb.opacity);
             AiStateSetMsgFlt("als_hairNumIntersections", als_hairNumIntersections);
 
-            sg->out_opacity = AI_RGB_BLACK;
+            // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+            // sg->out_opacity = AI_RGB_BLACK;
         }
         else
         {
-            sg->out_opacity = AI_RGB_WHITE;
+            // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+            // sg->out_opacity = AI_RGB_WHITE;
         }
 
         return; // early out
@@ -1868,7 +1872,8 @@ shader_evaluate
 
     // Write shader result
     hb.writeResult(sg);
-    sg->out_opacity = hb.opacity;
+    // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+    // sg->out_opacity = hb.opacity;
 }
 
 

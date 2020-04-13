@@ -528,7 +528,8 @@ shader_evaluate
 
         // store intersection position
         AiStateSetMsgPnt("alsPreviousIntersection", sg->P);
-        sg->out_opacity = outOpacity * opacity;
+        // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+        // sg->out_opacity = outOpacity * opacity;
         return;
     }
 

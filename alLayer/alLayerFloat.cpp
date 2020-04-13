@@ -118,7 +118,7 @@ node_update
 	{
 		// if the alpha is either linked or non-zero, layer is active
 		if (AiNodeIsLinked(node, param_names[i*PARAMS_PER_LAYER+1]) ||
-			params[i*PARAMS_PER_LAYER+1].FLT != 0.0f)
+                AiNodeGetFlt(node, param_names[i*PARAMS_PER_LAYER+1]) != 0.0f)
 		{
 			data->max_layer = i;
 		}
