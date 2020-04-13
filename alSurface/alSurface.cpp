@@ -1684,7 +1684,7 @@ shader_evaluate
        AiShaderEvalParamBool(p_specular2InternalDirect);
 
    float dummy;
-   if (sg->Rr_diff > 0 || sg->Rr_gloss > 1 || sssMix < 0.01f ||
+   if (sg->bounces_diffuse > 0 || sg->Rr_gloss > 1 || sssMix < 0.01f ||
        AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &dummy) ||
        als_raytype == ALS_RAY_HAIR)
    {
@@ -1708,7 +1708,7 @@ shader_evaluate
       do_backlight = false;
    }
 
-   if ((sg->Rr_diff > 0 &&
+   if ((sg->bounces_diffuse > 0 &&
         !data->specular1CausticPaths)  // disable glossy->diffuse caustics
        ||
        maxh(specular1Color) <
@@ -1729,7 +1729,7 @@ shader_evaluate
    bool do_glossy_direct =
        do_glossy && ((AiV3Dot(sg->Nf, sg->Ng) > 0) || specular1InternalDirect);
 
-   if ((sg->Rr_diff > 0 &&
+   if ((sg->bounces_diffuse > 0 &&
         !data->specular2CausticPaths)  // disable glossy->diffuse caustics
        ||
        maxh(specular2Color) <
@@ -1749,7 +1749,7 @@ shader_evaluate
    bool do_glossy2_direct =
        do_glossy2 && (AiV3Dot(sg->Nf, sg->Ng) > 0 || specular2InternalDirect);
 
-   if ((sg->Rr_diff > 0 &&
+   if ((sg->bounces_diffuse > 0 &&
         !data->transmissionCausticPaths)  // disable transmitted caustics
        ||
        maxh(transmissionColor) < IMPORTANCE_EPS ||
@@ -2170,7 +2170,7 @@ shader_evaluate
       }
    }
 
-   bool rr_backlight = do_diffuse && do_backlight && sg->Rr_diff >= 2;
+   bool rr_backlight = do_diffuse && do_backlight && sg->bounces_diffuse >= 2;
    float bd_prob = 1.0f;
    if (rr_backlight)
    {

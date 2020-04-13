@@ -338,16 +338,18 @@ struct HairBsdf
         void update(AtParamValue* params)
         {
             AtNode *options   = AiUniverseGetOptions();
-            int glossy_samples = std::max(0, AiNodeGetInt(options, "GI_glossy_samples") + params[p_extraSamplesGlossy].INT);
-            int diffuse_samples = std::max(0, AiNodeGetInt(options, "GI_diffuse_samples") + params[p_extraSamplesDiffuse].INT);
+            int glossy_samples = std::max(0, AiNodeGetInt(options, "GI_glossy_samples") +AiNodeGetInt(options, "extraSamplesGlossy"));
+            int diffuse_samples = std::max(0, AiNodeGetInt(options, "GI_diffuse_samples") +AiNodeGetInt(options, "extraSamplesDiffuse"));
 
+            static const uint32_t seed =
+                    static_cast<uint32_t>(AiNodeEntryGetNameAtString(AiNodeGetNodeEntry(options)).hash());
             AiSamplerDestroy(sampler_glossy);
-            sampler_glossy = AiSampler(glossy_samples, 2);
+            sampler_glossy = AiSampler(seed, glossy_samples, 2);
             AiSamplerDestroy(sampler_diffuse);
-            sampler_diffuse = AiSampler(diffuse_samples, 2);
+            sampler_diffuse = AiSampler(seed, diffuse_samples, 2);
 
-            alpha_R = -params[p_specularShift].FLT * AI_DTOR;
-            beta_R = params[p_specularWidth].FLT * AI_DTOR;
+            alpha_R = -AiNodeGetFlt(options, "specularShift") * AI_DTOR;
+            beta_R =AiNodeGetFlt(options, "specularWidth") * AI_DTOR;
             
             beta_TT = beta_R * 0.5f;
             
@@ -360,64 +362,64 @@ struct HairBsdf
             beta_TT2 = beta_TT*beta_TT;
             beta_TRT2 = beta_TRT*beta_TRT;
 
-            gamma_TT = params[p_transmissionRolloff].FLT * AI_DTOR;
-            gamma_g = params[p_glintRolloff].FLT * AI_DTOR;
+            gamma_TT =AiNodeGetFlt(options, "transmissionRolloff") * AI_DTOR;
+            gamma_g =AiNodeGetFlt(options, "glintRolloff") * AI_DTOR;
 
-            glintStrength = params[p_glintStrength].FLT;
+            glintStrength =AiNodeGetFlt(options, "glintStrength");
 
-            dual_depth = params[p_dualDepth].INT;
+            dual_depth =AiNodeGetInt(options, "dualDepth");
 
             sampleLobesIndividually = false;
 
-            uparam = params[p_uparam].STR;
-            vparam = params[p_vparam].STR;
+            uparam =AiNodeGetStr(options, "uparam");
+            vparam =AiNodeGetStr(options, "vparam");
 
-            aovs.clear(); 
-            aovs.push_back(params[p_aov_diffuse_color].STR); 
-            aovs.push_back(params[p_aov_direct_diffuse].STR); 
-            aovs.push_back(params[p_aov_indirect_diffuse].STR); 
-            aovs.push_back(params[p_aov_direct_local].STR); 
-            aovs.push_back(params[p_aov_indirect_local].STR); 
-            aovs.push_back(params[p_aov_direct_global].STR); 
-            aovs.push_back(params[p_aov_indirect_global].STR); 
-            aovs.push_back(params[p_aov_direct_specular].STR); 
-            aovs.push_back(params[p_aov_indirect_specular].STR); 
-            aovs.push_back(params[p_aov_direct_specular_2].STR); 
-            aovs.push_back(params[p_aov_indirect_specular_2].STR); 
-            aovs.push_back(params[p_aov_direct_glint].STR); 
-            aovs.push_back(params[p_aov_indirect_glint].STR); 
-            aovs.push_back(params[p_aov_direct_transmission].STR); 
-            aovs.push_back(params[p_aov_indirect_transmission].STR); 
-            aovs.push_back(params[p_aov_depth].STR); 
-            aovs.push_back(params[p_aov_light_group_1].STR); 
-            aovs.push_back(params[p_aov_light_group_2].STR); 
-            aovs.push_back(params[p_aov_light_group_3].STR); 
-            aovs.push_back(params[p_aov_light_group_4].STR); 
-            aovs.push_back(params[p_aov_light_group_5].STR); 
-            aovs.push_back(params[p_aov_light_group_6].STR); 
-            aovs.push_back(params[p_aov_light_group_7].STR); 
-            aovs.push_back(params[p_aov_light_group_8].STR); 
-            aovs.push_back(params[p_aov_light_group_9].STR); 
-            aovs.push_back(params[p_aov_light_group_10].STR); 
-            aovs.push_back(params[p_aov_light_group_11].STR); 
-            aovs.push_back(params[p_aov_light_group_12].STR); 
-            aovs.push_back(params[p_aov_light_group_13].STR); 
-            aovs.push_back(params[p_aov_light_group_14].STR); 
-            aovs.push_back(params[p_aov_light_group_15].STR); 
-            aovs.push_back(params[p_aov_light_group_16].STR); 
-            aovs.push_back(params[p_aov_id_1].STR); 
-            aovs.push_back(params[p_aov_id_2].STR); 
-            aovs.push_back(params[p_aov_id_3].STR); 
-            aovs.push_back(params[p_aov_id_4].STR); 
-            aovs.push_back(params[p_aov_id_5].STR); 
-            aovs.push_back(params[p_aov_id_6].STR); 
-            aovs.push_back(params[p_aov_id_7].STR); 
-            aovs.push_back(params[p_aov_id_8].STR);
+            aovs.clear();
+            aovs.push_back(AiNodeGetStr(options, "aov_diffuse_color"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_diffuse"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_diffuse"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_local"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_local"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_global"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_global"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_specular"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_specular"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_specular_2"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_specular_2"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_glint"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_glint"));
+            aovs.push_back(AiNodeGetStr(options, "aov_direct_transmission"));
+            aovs.push_back(AiNodeGetStr(options, "aov_indirect_transmission"));
+            aovs.push_back(AiNodeGetStr(options, "aov_depth"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_1"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_2"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_3"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_4"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_5"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_6"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_7"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_8"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_9"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_10"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_11"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_12"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_13"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_14"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_15"));
+            aovs.push_back(AiNodeGetStr(options, "aov_light_group_16"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_1"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_2"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_3"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_4"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_5"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_6"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_7"));
+            aovs.push_back(AiNodeGetStr(options, "aov_id_8"));
             for (size_t i=0; i < aovs.size(); ++i)
                 AiAOVRegister(aovs[i].c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
             
             // Only update dual scattering LUTs if we're actually using dual scattering
-            if (params[p_diffuseScatteringMode].INT == DUAL)
+            if (AiNodeGetInt(options, "diffuseScatteringMode") == DUAL)
             {
                 delete ds;
                 ds = new DualScattering;
@@ -496,10 +498,10 @@ struct HairBsdf
 
         DualScattering* ds;
 
-        std::vector<std::string> aovs;
+        std::vector<AtString> aovs;
         std::map<AtNode*, int> lightGroups;
 
-        std::string uparam, vparam;
+        AtString uparam, vparam;
 
         CryptomatteData* cryptomatte;
         ScatteringParams _last_sp;
@@ -545,14 +547,14 @@ struct HairBsdf
         // replace uvs
         float s, t;
         static const AtString maya_ramp_uv_override("maya_ramp_uv_override");
-        if (AiUDataGetFlt(data->uparam.c_str(), &s) && AiUDataGetFlt(data->vparam.c_str(), &t))
+        if (AiUDataGetFlt(data->uparam, s) && AiUDataGetFlt(data->vparam, t))
         {
             // set the hair u, v coords so other shaders (e.g. ramp) can use them
         AtPoint2 hair_uv(sg->u, sg->v);
 #if AI_VERSION_MINOR_NUM >= 6
-        AiStateSetMsgPnt2(maya_ramp_uv_override, hair_uv);
+        AiStateSetMsgVec2(maya_ramp_uv_override, hair_uv);
 #else
-        AiStateSetMsgPnt2("maya_ramp_uv_override", hair_uv);
+        AiStateSetMsgVec2(AtString("maya_ramp_uv_override"), hair_uv);
 #endif
 
         sg->u = s;
@@ -568,7 +570,7 @@ struct HairBsdf
         cn = 1.0f;
         AtVector cv = aivec(0.0f);
         float randomTangent = AiShaderEvalParamFlt(p_randomTangent) * 0.3f;
-        if (AiUDataGetUInt("curve_id", &curve_idi))
+        if (AiUDataGetUInt(AtString("curve_id"), curve_idi))
         {
             AtPoint2 p; p.x = float(curve_idi); p.y = 0.0f;
             cn = AiCellNoise2(p);
@@ -576,7 +578,7 @@ struct HairBsdf
             AtPoint p2 = aivec(float(curve_idi)+17.0f, 0.0f, 0.0f);
             cv = (AiVCellNoise3(p2)*2.0f - aivec(1.0f));
         }
-        else if (AiUDataGetFlt("curve_id", &curve_id))
+        else if (AiUDataGetFlt(AtString("curve_id"), curve_id))
         {
             AtPoint2 p; p.x = curve_id; p.y = 0.0f;
             cn = AiCellNoise2(p);
@@ -585,7 +587,7 @@ struct HairBsdf
             cv = (AiVCellNoise3(p2)*2.0f - aivec(1.0f));
 
         }
-        else if (AiUDataGetInt("curve_id", &curve_idii))
+        else if (AiUDataGetInt(AtString("curve_id"), curve_idii))
         {
             AtPoint2 p; p.x = float(curve_idii); p.y = 0.0f;
             cn = AiCellNoise2(p);
@@ -691,7 +693,7 @@ struct HairBsdf
             dualImportant = false;
 
         do_diffuse = do_glossy = true;
-        if (sg->Rr_diff > 0)
+        if (sg->bounces_diffuse > 0)
         {
             do_glossy = false;
         }
@@ -704,14 +706,14 @@ struct HairBsdf
             // if this is a camera ray allocate the group storage
             deepGroupPtr = (AtRGB*)AiShaderGlobalsQuickAlloc(sg, sizeof(AtRGB)*NUM_LIGHT_GROUPS);
             memset(deepGroupPtr, 0, sizeof(AtRGB)*NUM_LIGHT_GROUPS);
-            AiStateSetMsgPtr("als_deepGroupPtr", deepGroupPtr);
+            AiStateSetMsgPtr(AtString("als_deepGroupPtr"), deepGroupPtr);
         }
         else
         {
             // secondary ray hit - get the pointer from the state
             // if the pointer hasn't been set we're being called from a BSDF that doesn't have deep group support
             // so don't try and do it or we'll be in (crashy) trouble!
-            if (!AiStateGetMsgPtr("als_deepGroupPtr", (void**)&deepGroupPtr)) deepGroupPtr = NULL;
+            if (!AiStateGetMsgPtr(AtString("als_deepGroupPtr"), (void**)&deepGroupPtr)) deepGroupPtr = NULL;
         }
         if (deepGroupPtr)
         {
@@ -1209,17 +1211,17 @@ struct HairBsdf
                 int lightGroup = data->lightGroups[sg->Lp];
                 SctGeo geo_l(sg->Ld, theta_r, phi_r, U, V, W);
                 
-                AiStateSetMsgInt("als_raytype", ALS_RAY_DUAL);
-                AiStateSetMsgFlt("als_hairNumIntersections", 0);
-                AiStateSetMsgRGB("als_T_f", AI_RGB_WHITE);
-                AiStateSetMsgRGB("als_hairOpacity", AI_RGB_WHITE);
-                AiStateSetMsgRGB("als_sigma_bar_f", AI_RGB_BLACK);
+                AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_DUAL);
+                AiStateSetMsgFlt(AtString("als_hairNumIntersections"), 0);
+                AiStateSetMsgRGB(AtString("als_T_f"), AI_RGB_WHITE);
+                AiStateSetMsgRGB(AtString("als_hairOpacity"), AI_RGB_WHITE);
+                AiStateSetMsgRGB(AtString("als_sigma_bar_f"), AI_RGB_BLACK);
                 AiMakeRay(&ray, AI_RAY_SHADOW, &(sg->P), &sg->Ld, sg->Ldist, sg);
                 AiTrace(&ray, &scrs);
-                AiStateGetMsgFlt("als_hairNumIntersections", &als_hairNumIntersections);
-                AiStateGetMsgRGB("als_T_f", &T_f);
-                AiStateGetMsgRGB("als_hairOpacity", &als_hairOpacity);
-                AiStateGetMsgRGB("als_sigma_bar_f", &sigma_f);
+                AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &als_hairNumIntersections);
+                AiStateGetMsgRGB(AtString("als_T_f"), &T_f);
+                AiStateGetMsgRGB(AtString("als_hairOpacity"), &als_hairOpacity);
+                AiStateGetMsgRGB(AtString("als_sigma_bar_f"), &sigma_f);
                 
                 directFraction = 1.0f - std::min(als_hairNumIntersections, float(numBlendHairs))/float(numBlendHairs);
                 occlusion = AI_RGB_WHITE - scrs.opacity;
@@ -1500,25 +1502,25 @@ struct HairBsdf
 
         if (sg->Rt & AI_RAY_CAMERA)
         {
-            AiAOVSetRGB(sg, data->aovs[k_diffuse_color].c_str(), hairColor);
-            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse].c_str(), result_Pg_direct + result_Pl_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse].c_str(), result_Pg_indirect + result_Pl_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_direct_specular].c_str(), result_R_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_specular].c_str(), result_R_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_direct_specular_2].c_str(), result_TRT_direct + result_TRTg_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_specular_2].c_str(), result_TRT_indirect + result_TRTg_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_direct_glint].c_str(), result_TRTg_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_glint].c_str(), result_TRTg_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_direct_transmission].c_str(), result_TT_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_transmission].c_str(), result_TT_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_direct_global].c_str(), result_Pg_direct);
-            AiAOVSetRGB(sg, data->aovs[k_direct_local].c_str(), result_Pl_direct);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_global].c_str(), result_Pg_indirect);
-            AiAOVSetRGB(sg, data->aovs[k_indirect_local].c_str(), result_Pl_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_diffuse_color], hairColor);
+            AiAOVSetRGB(sg, data->aovs[k_direct_diffuse], result_Pg_direct + result_Pl_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_diffuse], result_Pg_indirect + result_Pl_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_direct_specular], result_R_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_specular], result_R_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_direct_specular_2], result_TRT_direct + result_TRTg_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_specular_2], result_TRT_indirect + result_TRTg_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_direct_glint], result_TRTg_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_glint], result_TRTg_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_direct_transmission], result_TT_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_transmission], result_TT_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_direct_global], result_Pg_direct);
+            AiAOVSetRGB(sg, data->aovs[k_direct_local], result_Pl_direct);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_global], result_Pg_indirect);
+            AiAOVSetRGB(sg, data->aovs[k_indirect_local], result_Pl_indirect);
 
             // write depth AOV
             AtRGB depth = AtRGB(float(sg->Rl), AiV3Dot(sg->Nf, wo), sg->P.y);
-            AiAOVSetRGB(sg, data->aovs[k_depth].c_str(), depth);
+            AiAOVSetRGB(sg, data->aovs[k_depth], depth);
 
             assert(isValidColor(result_Pg_direct));
             assert(isValidColor(result_Pg_indirect));
@@ -1537,7 +1539,7 @@ struct HairBsdf
             {
                 AtRGB tmp;
                 // check if output is enabled first in case we have an expensive network upstream
-                if (AiAOVEnabled(data->aovs[k_id_1+i].c_str(), AI_TYPE_RGB))
+                if (AiAOVEnabled(data->aovs[k_id_1+i], AI_TYPE_RGB))
                 {
                     tmp = AiShaderEvalParamRGB(p_id1 + i);
 
@@ -1548,13 +1550,13 @@ struct HairBsdf
                     }
 
                     
-                    AiAOVSetRGB(sg, data->aovs[k_id_1+i].c_str(), tmp);
+                    AiAOVSetRGB(sg, data->aovs[k_id_1+i], tmp);
                 }
             }
 
             for (int i = 0; i < NUM_LIGHT_GROUPS; ++i)
             {
-                AiAOVSetRGB(sg, data->aovs[k_light_group_1+i].c_str(), deepGroupPtr[i]);
+                AiAOVSetRGB(sg, data->aovs[k_light_group_1+i], deepGroupPtr[i]);
             }            
         }
 

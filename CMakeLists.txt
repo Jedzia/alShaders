@@ -97,7 +97,7 @@ set(SUBDIRECTORIES
         alCurvature
         alBlackbody
         alInputVector
-#        alHair
+        alHair
         alColorSpace
         alTriplanar
         alSwitch
