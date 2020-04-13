@@ -104,10 +104,14 @@ node_finish
 node_update
 {
 	ShaderData* data = (ShaderData*)AiNodeGetLocalData(node);
-	data->mode = params[p_mode].INT;
-	data->space = params[p_space].INT;
-	data->octaves = params[p_octaves].INT;
-	data->turbulent = params[p_turbulent].BOOL;
+	//data->mode = params[p_mode].INT;
+	data->mode = AiNodeGetInt(node, "mode");
+	//data->space = params[p_space].INT;
+	data->space = AiNodeGetInt(node, "space");
+	//data->octaves = params[p_octaves].INT;
+	data->octaves = AiNodeGetInt(node, "octaves");
+	//data->turbulent = params[p_turbulent].BOOL;
+	data->turbulent = AiNodeGetBool(node, "turbulent");;
 }
 
 shader_evaluate
@@ -142,7 +146,7 @@ shader_evaluate
 			P.z = 0.0f;
 			break;
 		case NS_PREF:
-			if (!AiUDataGetVec(AtString("Pref"), &P))
+			if (!AiUDataGetVec(AtString("Pref"), P))
 				P = sg->Po;
 			break;
 		default:
