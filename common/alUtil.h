@@ -41,9 +41,9 @@ typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indi
 /** \name BRDF Integration
  * \{
  * ToDoJed: Fix for Porting->v6, there is no AiEvaluateLightSample!
+ * ../common/alUtil.cpp was added to the alHair target because of this
  */
-/*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf)
-{
+inline /*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf) {
     return AI_RGB_WHITE;
 }
 
@@ -100,7 +100,8 @@ inline void AiV3Normalize(AtVector& out, const AtVector& in)
 
 /**
  * Convert a RGB color to a RGBA color (setting alpha to 1.0)
- */
+  * ToDoJed: Fix for Porting->v6, must be a native impl.
+*/
 inline AtRGBA AiRGBtoRGBA(const AtColor& c)
 {
     AtRGBA out;
