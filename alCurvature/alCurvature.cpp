@@ -154,7 +154,7 @@ shader_evaluate
 
 		// trace straight back down
         ray = AiMakeRay(AI_RAY_CAMERA, srcpoint, &dir, sampleRadius, sg);
-		AiTraceProbe(ray, hitpoint);
+        AiTrace(ray, JedPortGetAiTraceWeight(sg), *hitpoint);
 		if (hitpoint)
 		{
 			AtVector L = hitpoint->P - sg->P;

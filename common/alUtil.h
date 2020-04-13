@@ -40,6 +40,7 @@ typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indi
 
 /** \name BRDF Integration
  * \{
+ * ToDoJed: Fix for Porting->v6, the is no AiEvaluateLightSample!
  */
 /*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf)
 {
@@ -54,6 +55,16 @@ typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indi
  */
 inline float JedPortGetShaderWeight(AtShaderGlobals* sg) {
     return 1.0;
+}
+
+/** Get AiTrace weight
+ *
+ * ToDoJed: Fix for Porting->v6, AiTrace has a new weight parameter!
+ * @param sg shader globals
+ * @return the fake weight
+ */
+inline AtColor JedPortGetAiTraceWeight(AtShaderGlobals* sg) {
+    return AI_RGB_WHITE;
 }
 
 inline void AiV3Normalize(AtVector& out, const AtVector& in)

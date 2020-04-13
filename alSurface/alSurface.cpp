@@ -2286,7 +2286,7 @@ shader_evaluate
                AiStateSetMsgRGB("als_throughput", throughput);
                if (maxh(kr) > IMPORTANCE_EPS)
                {
-                  bool hit = AiTrace(&wi_ray, &scrs);
+                  bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                   result_glossyIndirect =
                       min(scrs.color * f, rgb(data->specular1IndirectClamp));
                   if (doDeepGroups && hit)
@@ -2370,7 +2370,7 @@ shader_evaluate
                   // child SG
                   if (cont)
                   {
-                     bool hit = AiTrace(&wi_ray, &scrs);
+                     bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                      f *= specular1Color * specular1IndirectStrength;
                      result_glossyIndirect +=
                          min(scrs.color * f, rgb(data->specular1IndirectClamp));
@@ -2493,7 +2493,7 @@ shader_evaluate
                 maxh(kr) >
                     IMPORTANCE_EPS)  // only trace a ray if it's going to matter
             {
-               bool hit = AiTrace(&wi_ray, &scrs);
+               bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
 
                f *= specular2Color * specular2IndirectStrength;
                result_glossy2Indirect +=
@@ -2616,7 +2616,7 @@ shader_evaluate
          if (cont)
          {
             AiStateSetMsgRGB("als_throughput", throughput);
-            bool hit = AiTrace(&wi_ray, &scrs);
+            bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
 
             result_diffuseIndirectRaw +=
                 min(scrs.color * f, rgb(data->diffuseIndirectClamp));
@@ -2739,7 +2739,7 @@ shader_evaluate
                if (kti * kti2 > IMPORTANCE_EPS)
                {
                   AiStateSetMsgFlt("alsPreviousRoughness", 0.0f);
-                  AiTrace(&wi_ray, &sample);
+                  AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
                   AtRGB transmittance = AI_RGB_WHITE;
                   bool hit = !AiColorIsSmall(sample.opacity);
 
@@ -2806,7 +2806,7 @@ shader_evaluate
             {
                 AtRGB throughput = path_throughput * kti;
                 AiStateSetMsgRGB("als_throughput", throughput);
-                bool hit = AiTrace(&wi_ray, &sample);
+                bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
 
                 AtRGB transmittance = AI_RGB_WHITE;
                 if (maxh(sigma_t) > 0.0f && !inside)
@@ -2888,7 +2888,7 @@ shader_evaluate
                {
                   AiStateSetMsgFlt("alsPreviousRoughness",
                                    transmissionRoughness);
-                  AiTrace(&wi_ray, &sample);
+                  AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), sample);
                   bool hit = !AiColorIsSmall(sample.opacity);
                   AtRGB transmittance = AI_RGB_WHITE;
                   if (maxh(sigma_t) > 0.0f && !inside)
@@ -3076,7 +3076,7 @@ shader_evaluate
 #endif
          if (cont)
          {
-            bool hit = AiTrace(&wi_ray, &scrs);
+            bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
             result_backlightIndirect += scrs.color * f;
 
             // accumulate the lightgroup contributions calculated by the child

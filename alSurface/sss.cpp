@@ -453,7 +453,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
         
         memset(dmd->samples, 0, sizeof(DiffusionSample)*SSS_MAX_SAMPLES);
         dmd->sss_depth = 0;
-        if (AiTrace(&wi_ray, &scrs))
+        if (AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs))
         {            
             for (int i=0; i < dmd->sss_depth; ++i)
             {                

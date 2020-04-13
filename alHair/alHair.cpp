@@ -1222,7 +1222,7 @@ struct HairBsdf
                 AiStateSetMsgRGB(AtString("als_hairOpacity"), AI_RGB_WHITE);
                 AiStateSetMsgRGB(AtString("als_sigma_bar_f"), AI_RGB_BLACK);
                 ray = AiMakeRay(AI_RAY_SHADOW, sg->P, &ls.Ld, ls.Ldist, sg);
-                AiTrace(&ray, &scrs);
+                AiTrace(ray, JedPortGetAiTraceWeight(sg), scrs);
                 AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &als_hairNumIntersections);
                 AiStateGetMsgRGB(AtString("als_T_f"), &T_f);
                 AiStateGetMsgRGB(AtString("als_hairOpacity"), &als_hairOpacity);
@@ -1254,7 +1254,7 @@ struct HairBsdf
             sg->skip_shadow = old_skipshadow;
         }
 
-        AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+        AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
 
 
         sg->fhemi = old_hemi;
@@ -1269,7 +1269,7 @@ struct HairBsdf
             wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
 
             sampit = AiSamplerIterator(data->sampler_glossy, sg);
-            AiStateSetMsgInt("als_raytype", ALS_RAY_HAIR);
+            AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_HAIR);
             while(AiSamplerGetSample(sampit, samples))
             {
                 wi_ray.dir = HairGlossySample(this, samples[0], samples[1]);
@@ -1277,7 +1277,7 @@ struct HairBsdf
                 AtScrSample scrs;
 
                 // trace our ray
-                bool hit = AiTrace(&wi_ray, &scrs);
+                bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                 // calculate result
                 const float p = HairGlossyPdf(this, &wi_ray.dir);
                 const AtRGB f_R = Hair_Bsdf_R(this, &wi_ray.dir) / p;
@@ -1334,7 +1334,7 @@ struct HairBsdf
                 // trace the ray
                 wi_ray.dir = wi;
 
-                bool hit = AiTrace(&wi_ray, &scrs);
+                bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
 
                 result_Pl_indirect += scrs.color * hairColor * diffuseIndirectStrength;
                 assert(isValidColor(result_Pl_indirect));
@@ -1379,7 +1379,7 @@ struct HairBsdf
                 // trace our ray
                 AiStateSetMsgFlt("alsPreviousRoughness", 1.0f);
                 // trace our ray
-                bool hit = AiTrace(&wi_ray, &scrs);
+                bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                 // calculate result
                 const float p = HairGlossyPdf(this, &wi_ray.dir);
                 const AtRGB f_R = Hair_Bsdf_R(this, &wi_ray.dir) / p;
@@ -1449,7 +1449,7 @@ struct HairBsdf
                 AiStateSetMsgFlt(AtString("alsPreviousRoughness"), 1.0f);
                 bool als_hitHair = false;
                 AiStateSetMsgBool(AtString("als_hitHair"), als_hitHair);
-                bool hit = AiTrace(&wi_ray, &scrs);
+                bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                 AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &als_hairNumIntersections);
                 AiStateGetMsgRGB(AtString("als_T_f"), &T_f);
                 AiStateGetMsgRGB(AtString("als_hairOpacity"), &als_hairOpacity);
