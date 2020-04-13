@@ -1803,7 +1803,7 @@ shader_evaluate
     hb.evaluateParameters(sg, data);
 
     float geo_opacity = 1.0f;
-    if (AiUDataGetFlt("geo_opacity", &geo_opacity))
+    if (AiUDataGetFlt(AtString("geo_opacity"), &geo_opacity))
     {
         hb.opacity *= geo_opacity;
     }
@@ -1816,7 +1816,7 @@ shader_evaluate
     // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
     // hb.opacity = sg->out_opacity;
 
-    AiStateSetMsgBool("als_hitHair", true);
+    AiStateSetMsgBool(AtString("als_hitHair"), true);
 
     float als_hairNumIntersections = 0;
     AtRGB als_sigma_bar_f = AI_RGB_BLACK;
@@ -1824,20 +1824,20 @@ shader_evaluate
     if (sg->bounces >= data->dual_depth) do_dual = true;
 
     int als_raytype = ALS_RAY_UNDEFINED;
-    AiStateGetMsgInt("als_raytype", &als_raytype);
+    AiStateGetMsgInt(AtString("als_raytype"), &als_raytype);
 
     if (do_dual && als_raytype == ALS_RAY_DUAL)
     {
-        if (AiStateGetMsgFlt("als_hairNumIntersections", &als_hairNumIntersections)
-            && AiStateGetMsgRGB("als_sigma_bar_f", &als_sigma_bar_f))
+        if (AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &als_hairNumIntersections)
+            && AiStateGetMsgRGB(AtString("als_sigma_bar_f"), &als_sigma_bar_f))
         {
             float theta_i = AI_PIOVER2 - sphericalTheta(sg->Rd, hb.U);
 
             als_sigma_bar_f += hb.sp.beta_R2 + hb.sp.beta_TRT2 + hb.sp.beta_TT2;
-            AiStateSetMsgRGB("als_sigma_bar_f", als_sigma_bar_f);
+            AiStateSetMsgRGB(AtString("als_sigma_bar_f"), als_sigma_bar_f);
 
             als_hairNumIntersections+=minh(hb.opacity);
-            AiStateSetMsgFlt("als_hairNumIntersections", als_hairNumIntersections);
+            AiStateSetMsgFlt(AtString("als_hairNumIntersections"), als_hairNumIntersections);
 
             // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
             // sg->out_opacity = AI_RGB_BLACK;
