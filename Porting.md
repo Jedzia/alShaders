@@ -45,6 +45,9 @@ nominator for things to look at again:
     
     alle 	result = sg->area;
     zu 		result = AiShaderGlobalsArea(sg);
+    
+    all     std::string / .c_str() 
+    to      AtString replacements 
 
 * sg->Rr becomes sg->bounces
 
@@ -54,6 +57,7 @@ nominator for things to look at again:
 * Replace	AiColorClamp()	with	the	templated	AiRGBClamp():	
 * Replace	AiV3Exists()	with	AiV3IsFinite():		
 
+* Replace	.c_str()	with	AtString replacements
 
 ## Hints for compilation
 #### Linux

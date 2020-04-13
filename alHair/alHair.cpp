@@ -1259,7 +1259,7 @@ struct HairBsdf
     {
         if (do_glossy && glossyIndirectStrength > 0.0f)
         {
-            AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+            wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
 
             sampit = AiSamplerIterator(data->sampler_glossy, sg);
             AiStateSetMsgInt("als_raytype", ALS_RAY_HAIR);
@@ -1353,7 +1353,7 @@ struct HairBsdf
 
     inline void integrateIndirectDual(AtShaderGlobals* sg)
     {
-        AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+        wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
         float weight;
 
         bool do_glossy = true;

@@ -2221,7 +2221,7 @@ shader_evaluate
             AiStateSetMsgFlt("alsPreviousRoughness",
                              std::max(roughness_x, roughness_y));
             sg->Nf = specular1Normal;
-            AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+            wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
             AiReflectRay(&wi_ray, &sg->Nf, sg);
             AtRGB kr;
             if (!rr_transmission)
@@ -2302,7 +2302,7 @@ shader_evaluate
       }
       else
       {
-         AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+         wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
          kti = 0.0f;
          AiStateSetMsgFlt("alsPreviousRoughness",
                           std::max(roughness_x, roughness_y));
@@ -2429,7 +2429,7 @@ shader_evaluate
       }
 
       AtSamplerIterator* sampit = AiSamplerIterator(data->glossy2_sampler, sg);
-      AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
       kti2 = 0.0f;
       AtRGB kr;
       AiStateSetMsgFlt("alsPreviousRoughness",

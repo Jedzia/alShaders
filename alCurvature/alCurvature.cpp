@@ -12,7 +12,7 @@ AI_SHADER_NODE_EXPORT_METHODS(alCurvatureMtd)
 struct ShaderData
 {
 	AtSampler* sampler;
-	std::string trace_set;
+	AtString trace_set;
 	int mode;
 };
 
@@ -92,10 +92,12 @@ node_update
 {
 	ShaderData *data = (ShaderData*)AiNodeGetLocalData(node);
 	AiSamplerDestroy(data->sampler);
-	data->sampler = AiSampler(std::min(params[p_samples].INT, MAX_SAMPLES), 2);
-	data->mode = params[p_mode].INT;
-	data->trace_set = std::string();
-	data->trace_set = params[p_traceSet].STR;
+    static const uint32_t seed =
+            static_cast<uint32_t>(AiNodeEntryGetNameAtString(AiNodeGetNodeEntry(node)).hash());
+    data->sampler = AiSampler(seed, std::min(AiNodeGetInt(node, "samples"), MAX_SAMPLES), 2);
+    data->mode =AiNodeGetInt(node, "mode");
+    data->trace_set = AtString();
+    data->trace_set = AiNodeGetStr(node, "traceSet");
 }
 
 struct Sample
@@ -110,7 +112,7 @@ shader_evaluate
 	float result = 0.0f;
 	ShaderData* data = (ShaderData*) AiNodeGetLocalData(node);
 	float pa = AiV3Length(AiV3Cross(sg->dPdx, sg->dPdy));
-	float sampleRadius = AiShaderEvalParamFlt(p_sampleRadius);// * sg->area * data->aas;
+	float sampleRadius = AiShaderEvalParamFlt(p_sampleRadius);// * AiShaderGlobalsArea(sg) * data->aas;
 	AtRGB color1 = AiShaderEvalParamRGB(p_color1);
 	AtRGB color2 = AiShaderEvalParamRGB(p_color2);
 	
@@ -126,8 +128,8 @@ shader_evaluate
 	// AtVector dir = -sg->N;
 	AtVector dir = sg->Rd;
 	int count = 0;
-	// float sampleRadius = sg->area * 10;
-	float sampleOffset = sg->area * 10;
+	// float sampleRadius = AiShaderGlobalsArea(sg) * 10;
+	float sampleOffset =  AiShaderGlobalsArea(sg)  * 10;
     uint32_t fi = sg->fi;
 	sg->fi = UINT_MAX;
 
@@ -138,7 +140,7 @@ shader_evaluate
 	
 	if (data->trace_set.length())
 	{
-		AiShaderGlobalsSetTraceSet(sg, data->trace_set.c_str(), true);
+		AiShaderGlobalsSetTraceSet(sg, data->trace_set, true);
 	}
 
 	Sample psamp[MAX_SAMPLES2];
@@ -151,8 +153,8 @@ shader_evaluate
 		// AtPoint srcpoint = sg->P + sg->N*sampleOffset + uniformSampleSphere(samples[0], samples[1]);
 
 		// trace straight back down
-		AiMakeRay(&ray, AI_RAY_CAMERA, &srcpoint, &dir, sampleRadius, sg);
-		AiTraceProbe(&ray, hitpoint);
+        ray = AiMakeRay(AI_RAY_CAMERA, srcpoint, &dir, sampleRadius, sg);
+		AiTraceProbe(ray, hitpoint);
 		if (hitpoint)
 		{
 			AtVector L = hitpoint->P - sg->P;

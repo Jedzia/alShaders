@@ -94,7 +94,7 @@ set(SUBDIRECTORIES
         alNoise
 #        alLayer
         alPattern
-#        alCurvature
+        alCurvature
         alBlackbody
         alInputVector
 #        alHair
