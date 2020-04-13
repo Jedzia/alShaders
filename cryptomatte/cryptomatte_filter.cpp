@@ -115,7 +115,7 @@ filter_pixel {
 	AtShaderGlobals shader_globals;
 	AtShaderGlobals *sg = &shader_globals;
 	AtRGBA *out_value = (AtRGBA *)data_out;
-	*out_value = AI_RGBA_BLACK;
+	*out_value =  AI_RGBA_ZERO;
 
 	int rank =        AiShaderEvalParamInt (p_rank);
 	float width =     AiShaderEvalParamFlt (p_width);
@@ -141,7 +141,7 @@ filter_pixel {
 	}
 
 	if (early_out) {
-		*out_value = AI_RGBA_BLACK;
+		*out_value =  AI_RGBA_ZERO;
 		if (rank == 0) {
 			out_value->g = 1.0f;					
 		}

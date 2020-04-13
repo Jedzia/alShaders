@@ -85,7 +85,7 @@ shader_evaluate
    ShaderData *data = (ShaderData*)AiNodeGetLocalData(node);
 
    bool success;
-   sg->out.RGB() = AiTextureHandleAccess(sg, data->texturehandle, data->textureparams, &success).rgb();
+   sg->out.RGB() = AiTextureHandleAccess(sg, data->texturehandle, *data->textureparams, &success).rgb();
 }
 
 

@@ -3400,7 +3400,7 @@ shader_evaluate
 
          for (int i = 0; i < NUM_LIGHT_GROUPS; ++i)
          {
-            if (shadowGroups[i] != AI_RGBA_BLACK)
+            if (shadowGroups[i] !=  AI_RGBA_ZERO)
                AiAOVSetRGBA(sg, data->aovs_rgba[k_shadow_group_1 + i].c_str(),
                             shadowGroups[i]);
          }

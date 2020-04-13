@@ -280,9 +280,9 @@ shader_evaluate
             {
                if (!AiAOVGetRGBA(sg, data->aovs_rgba[i].c_str(), tmp_rgba[i]))
                {
-                  tmp_rgba[i] = AI_RGBA_BLACK;
+                  tmp_rgba[i] =  AI_RGBA_ZERO;
                }
-               AiAOVSetRGBA(sg, data->aovs_rgba[i].c_str(), AI_RGBA_BLACK);
+               AiAOVSetRGBA(sg, data->aovs_rgba[i].c_str(),  AI_RGBA_ZERO);
             }
 
             AtRGB layer2 = AiShaderEvalParamRGB(p_layer2);
@@ -303,7 +303,7 @@ shader_evaluate
                AtRGBA tmp_rgba2;
                if (!AiAOVGetRGBA(sg, data->aovs_rgba[i].c_str(), tmp_rgba2))
                {
-                  tmp_rgba2 = AI_RGBA_BLACK;
+                  tmp_rgba2 =  AI_RGBA_ZERO;
                }
                AiAOVSetRGBA(sg, data->aovs_rgba[i].c_str(),
                             lerp(tmp_rgba[i], tmp_rgba2, mix));

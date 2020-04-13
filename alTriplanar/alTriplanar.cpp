@@ -116,10 +116,10 @@ struct ShaderData
 node_initialize
 {
     ShaderData *data = new ShaderData;
-    const char *texname = params[p_texture].STR;
+    const char *texname =AiNodeGetStr(node, "texture");
     data->texturehandle = AiTextureHandleCreate(texname);
     data->textureparams = new AtTextureParams;
-    AiTextureParamsSetDefaults(data->textureparams);
+    AiTextureParamsSetDefaults(*data->textureparams);
     AiNodeSetLocalData(node, data);
 }
 
@@ -134,7 +134,7 @@ node_finish
 node_update
 {
     ShaderData *data = (ShaderData*)AiNodeGetLocalData(node);
-    data->textureparams->mipmap_bias = params[p_mipMapBias].INT;
+    data->textureparams->mipmap_bias =AiNodeGetInt(node, "mipMapBias");
 
 }
 
@@ -199,7 +199,7 @@ void getProjectionGeometry(const AtNode* node, const AtShaderGlobals *sg, int sp
 		*dPdy = AiShaderGlobalsTransformVector(sg, sg->dPdy, AI_WORLD_TO_OBJECT);
         break;
     case NS_PREF:
-        if (!AiUDataGetVec(AtString("Pref"), P)){
+        if (!AiUDataGetVec(AtString("Pref"), *P)){
             AiMsgWarning("[alTriplanar] could not get Pref");
             // TODO: Output warning about not finding the correct data.
             *P = sg->Po;
@@ -208,7 +208,7 @@ void getProjectionGeometry(const AtNode* node, const AtShaderGlobals *sg, int sp
 			*dPdy = AiShaderGlobalsTransformVector(sg, sg->dPdy, AI_WORLD_TO_OBJECT);	
         } else {
             AiMsgWarning("[alTriplanar got Pref]");
-			AiUDataGetDxyDerivativesPnt("Pref", dPdx, dPdy);
+			AiUDataGetDxyDerivativesVec(AtString("Pref"), *dPdx, *dPdy);
             *N = AiV3Normalize(AiV3Cross(*dPdx, *dPdy));
 		}
         break;
@@ -280,9 +280,9 @@ AtRGBA tileRegular(const AtPoint &P, const AtVector &dPdx, const AtVector dPdy,
 	sg->dvdy = dPdy.y * scale.x;
 
     if(weights[0] > 0.){
-        textureResult[0] = AiTextureHandleAccess(sg, handle, params, &textureAccessX);
+        textureResult[0] = AiTextureHandleAccess(sg, handle, *params, &textureAccessX);
     } else {
-        textureResult[0] = AI_RGBA_BLACK;
+        textureResult[0] =  AI_RGBA_ZERO;
         textureAccessX = true;
     }
 
@@ -300,9 +300,9 @@ AtRGBA tileRegular(const AtPoint &P, const AtVector &dPdx, const AtVector dPdy,
 	sg->dvdy = dPdy.z * scale.y;
 
     if(weights[1] > 0.){
-        textureResult[1] = AiTextureHandleAccess(sg, handle, params, &textureAccessY);
+        textureResult[1] = AiTextureHandleAccess(sg, handle, *params, &textureAccessY);
     } else {
-        textureResult[1] = AI_RGBA_BLACK;
+        textureResult[1] =  AI_RGBA_ZERO;
         textureAccessY = true;
     }
 
@@ -320,14 +320,14 @@ AtRGBA tileRegular(const AtPoint &P, const AtVector &dPdx, const AtVector dPdy,
 	sg->dvdy = dPdy.y * scale.z;
 
     if(weights[2] > 0.){
-        textureResult[2] = AiTextureHandleAccess(sg, handle, params, &textureAccessZ);
+        textureResult[2] = AiTextureHandleAccess(sg, handle, *params, &textureAccessZ);
     } else {
-        textureResult[2] = AI_RGBA_BLACK;
+        textureResult[2] =  AI_RGBA_ZERO;
         textureAccessZ = true;
     }
 
     if(textureAccessX && textureAccessY && textureAccessZ){
-        AtRGBA result = AI_RGBA_BLACK;
+        AtRGBA result =  AI_RGBA_ZERO;
         result += textureResult[0] * weights[0];
         result += textureResult[1] * weights[1];
         result += textureResult[2] * weights[2];
@@ -365,7 +365,7 @@ bool lookupCellNoise(float u, float v, float dudx, float dudy, float dvdx, float
         float distances[3];
         for(int i=0; i<samples; ++i){
             distances[i] = AiV3Length(delta[i]);
-            closestDistance = MIN(distances[i], closestDistance);
+            closestDistance = AiMin(distances[i], closestDistance);
         }
 
         float weightsum = 0.f;
@@ -383,7 +383,7 @@ bool lookupCellNoise(float u, float v, float dudx, float dudy, float dvdx, float
     }
 
     bool success = false;
-    *textureResult = AI_RGBA_BLACK;
+    *textureResult =  AI_RGBA_ZERO;
 	sg->dudx = dudx;
 	sg->dudy = dudy;
 	sg->dvdx = dvdx;
@@ -413,7 +413,7 @@ bool lookupCellNoise(float u, float v, float dudx, float dudy, float dvdx, float
 
             // texture lookup
             bool currentSuccess = false;
-            *textureResult += AiTextureHandleAccess(sg, handle, params, &success) * weights[i];
+            *textureResult += AiTextureHandleAccess(sg, handle, *params, &success) * weights[i];
             success |= currentSuccess;
         }
     }
@@ -445,7 +445,7 @@ AtRGBA tileCellnoise(const AtPoint &P, const AtVector &dPdx, const AtVector &dPd
                                           &textureResult[0]
                                           );
     } else {
-        textureResult[0] = AI_RGBA_BLACK;
+        textureResult[0] =  AI_RGBA_ZERO;
     }
 
 
@@ -466,7 +466,7 @@ AtRGBA tileCellnoise(const AtPoint &P, const AtVector &dPdx, const AtVector &dPd
                                           &textureResult[1]
                                           );
     } else {
-        textureResult[1] = AI_RGBA_BLACK;
+        textureResult[1] =  AI_RGBA_ZERO;
     }
 
     bool textureAccessZ = true;
@@ -486,11 +486,11 @@ AtRGBA tileCellnoise(const AtPoint &P, const AtVector &dPdx, const AtVector &dPd
                                           &textureResult[2]
                                           );
     } else {
-        textureResult[2] = AI_RGBA_BLACK;
+        textureResult[2] =  AI_RGBA_ZERO;
     }
 
     if(textureAccessX && textureAccessY && textureAccessZ){
-        AtRGBA result = AI_RGBA_BLACK;
+        AtRGBA result =  AI_RGBA_ZERO;
         result += textureResult[0] * weights[0];
         result += textureResult[1] * weights[1];
         result += textureResult[2] * weights[2];
