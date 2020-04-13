@@ -181,8 +181,8 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
 
         // Does not using MIS here get us anything?
         // AtRGB L = AiEvaluateLightSample(sg, brdf_data, AiOrenNayarMISSample, AiOrenNayarMISBRDF, AiOrenNayarMISPDF);
-        AtRGB L = sg->Li * MAX(AiV3Dot(sg->Ld, sg->N), 0.0f) * AI_ONEOVERPI * sg->we * diffuse_strength;
-        if (AiColorIsZero(L)) continue;
+        AtRGB L = sg->Li * AiMax(AiV3Dot(sg->Ld, sg->N), 0.0f) * AI_ONEOVERPI * sg->we * diffuse_strength;
+        if (AiColorIsSmall(L)) continue;
         if (directional)
         {
             AtRGB R = AI_RGB_BLACK;
@@ -248,7 +248,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
             assert(AiIsFinite(result_indirect));
         }
 
-        if (hit && !AiColorIsZero(f) && dmd->deepGroupPtr)
+        if (hit && !AiColorIsSmall(f) && dmd->deepGroupPtr)
         {
             for (int i=0; i < NUM_LIGHT_GROUPS; ++i)
             {
@@ -456,7 +456,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
         {            
             for (int i=0; i < dmd->sss_depth; ++i)
             {                
-                if (AiColorIsZero(dmd->samples[i].Rd)) continue;
+                if (AiColorIsSmall(dmd->samples[i].Rd)) continue;
 
                 geom[0] = fabsf(AiV3Dot(dmd->samples[i].Ng, Wsss));
                 geom[1] = fabsf(AiV3Dot(dmd->samples[i].Ng, Usss));

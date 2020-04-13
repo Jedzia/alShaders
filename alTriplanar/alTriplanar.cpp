@@ -228,7 +228,7 @@ void computeBlendWeights(const AtVector N, int space, float blendSoftness, float
     float weightsum = 0.f;
     for(int i=0; i<3; ++i){
         weights[i] = weights[i] - (1.f-blendSoftness)/2.f;
-        weights[i] = MAX(weights[i], 0.00f);
+        weights[i] = AiMax(weights[i], 0.00f);
         weightsum += weights[i];
     }
     if(weightsum){
@@ -372,7 +372,7 @@ bool lookupCellNoise(float u, float v, float dudx, float dudy, float dvdx, float
         for(int i=0; i<samples; ++i){
             float diff = distances[i] - closestDistance;
             weights[i] = cellSoftness - diff;
-            weights[i] = MAX(0.f, weights[i]);
+            weights[i] = AiMax(0.f, weights[i]);
             weightsum += weights[i];
         }
         if(weightsum){
@@ -518,10 +518,10 @@ shader_evaluate
     float frequency = AiShaderEvalParamFlt(p_frequency);
 
     float blendSoftness = AiShaderEvalParamFlt(p_blendSoftness);
-    blendSoftness = CLAMP(blendSoftness, 0.f, 1.f);
+    blendSoftness = AiClamp(blendSoftness, 0.f, 1.f);
 
     float cellSoftness = AiShaderEvalParamFlt(p_cellSoftness);
-    cellSoftness = CLAMP(cellSoftness, 0.f, 1.f);
+    cellSoftness = AiClamp(cellSoftness, 0.f, 1.f);
 
     AtPoint scale;
     scale.x = 1.f/AiShaderEvalParamFlt(p_scalex);

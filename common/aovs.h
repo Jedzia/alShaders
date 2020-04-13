@@ -7,67 +7,67 @@
 
 #define REGISTER_AOVS \
 data->aovs.clear(); \
-data->aovs.push_back(params[p_aov_diffuse_color].STR); \
-data->aovs.push_back(params[p_aov_direct_diffuse].STR); \
-data->aovs.push_back(params[p_aov_direct_diffuse_raw].STR); \
-data->aovs.push_back(params[p_aov_indirect_diffuse].STR); \
-data->aovs.push_back(params[p_aov_indirect_diffuse_raw].STR); \
-data->aovs.push_back(params[p_aov_direct_backlight].STR); \
-data->aovs.push_back(params[p_aov_indirect_backlight].STR); \
-data->aovs.push_back(params[p_aov_direct_specular].STR); \
-data->aovs.push_back(params[p_aov_indirect_specular].STR); \
-data->aovs.push_back(params[p_aov_direct_specular_2].STR); \
-data->aovs.push_back(params[p_aov_indirect_specular_2].STR); \
-data->aovs.push_back(params[p_aov_single_scatter].STR); \
-data->aovs.push_back(params[p_aov_sss].STR); \
-data->aovs.push_back(params[p_aov_refraction].STR); \
-data->aovs.push_back(params[p_aov_emission].STR); \
-data->aovs.push_back(params[p_aov_uv].STR); \
-data->aovs.push_back(params[p_aov_depth].STR); \
-data->aovs.push_back(params[p_aov_light_group_1].STR); \
-data->aovs.push_back(params[p_aov_light_group_2].STR); \
-data->aovs.push_back(params[p_aov_light_group_3].STR); \
-data->aovs.push_back(params[p_aov_light_group_4].STR); \
-data->aovs.push_back(params[p_aov_light_group_5].STR); \
-data->aovs.push_back(params[p_aov_light_group_6].STR); \
-data->aovs.push_back(params[p_aov_light_group_7].STR); \
-data->aovs.push_back(params[p_aov_light_group_8].STR); \
-data->aovs.push_back(params[p_aov_light_group_9].STR); \
-data->aovs.push_back(params[p_aov_light_group_10].STR); \
-data->aovs.push_back(params[p_aov_light_group_11].STR); \
-data->aovs.push_back(params[p_aov_light_group_12].STR); \
-data->aovs.push_back(params[p_aov_light_group_13].STR); \
-data->aovs.push_back(params[p_aov_light_group_14].STR); \
-data->aovs.push_back(params[p_aov_light_group_15].STR); \
-data->aovs.push_back(params[p_aov_light_group_16].STR); \
-data->aovs.push_back(params[p_aov_id_1].STR); \
-data->aovs.push_back(params[p_aov_id_2].STR); \
-data->aovs.push_back(params[p_aov_id_3].STR); \
-data->aovs.push_back(params[p_aov_id_4].STR); \
-data->aovs.push_back(params[p_aov_id_5].STR); \
-data->aovs.push_back(params[p_aov_id_6].STR); \
-data->aovs.push_back(params[p_aov_id_7].STR); \
-data->aovs.push_back(params[p_aov_id_8].STR); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_diffuse_color")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_direct_diffuse")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_direct_diffuse_raw")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_indirect_diffuse")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_indirect_diffuse_raw")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_direct_backlight")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_indirect_backlight")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_direct_specular")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_indirect_specular")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_direct_specular_2")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_indirect_specular_2")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_single_scatter")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_sss")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_refraction")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_emission")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_uv")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_depth")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_1")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_2")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_3")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_4")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_5")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_6")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_7")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_8")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_9")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_10")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_11")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_12")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_13")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_14")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_15")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_light_group_16")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_1")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_2")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_3")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_4")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_5")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_6")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_7")); \
+data->aovs.push_back(AiNodeGetStr(node, "aov_id_8")); \
 assert(NUM_AOVs == data->aovs.size() && "NUM_AOVs does not match size of aovs array!"); \
 for (size_t i=0; i < data->aovs.size(); ++i) \
     	AiAOVRegister(data->aovs[i].c_str(), AI_TYPE_RGB, AI_AOV_BLEND_OPACITY); \
 data->aovs_rgba.clear(); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_1].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_2].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_3].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_4].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_5].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_6].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_7].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_8].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_9].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_10].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_11].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_12].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_13].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_14].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_15].STR); \
-data->aovs_rgba.push_back(params[p_aov_shadow_group_16].STR); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_1")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_2")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_3")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_4")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_5")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_6")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_7")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_8")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_9")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_10")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_11")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_12")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_13")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_14")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_15")); \
+data->aovs_rgba.push_back(AiNodeGetStr(node, "aov_shadow_group_16")); \
 assert(NUM_AOVs_RGBA == data->aovs_rgba.size() && "NUM_AOVs_RGBA does not match size of aovs_rgba array!"); \
 for (size_t i=0; i < data->aovs_rgba.size(); ++i) \
         AiAOVRegister(data->aovs_rgba[i].c_str(), AI_TYPE_RGBA, AI_AOV_BLEND_OPACITY); \

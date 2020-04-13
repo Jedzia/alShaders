@@ -647,7 +647,7 @@ struct HairBsdf
         float randomHue = AiShaderEvalParamFlt(p_randomHue) * 0.1f;
         float randomSaturation = AiShaderEvalParamFlt(p_randomSaturation);
         float randomMelanin = AiShaderEvalParamFlt(p_randomMelanin);
-        melanin = CLAMP(melanin+randomMelanin*cv.z, 0.0f, 1.0f);
+        melanin = AiClamp(melanin+randomMelanin*cv.z, 0.0f, 1.0f);
 
         if (randomHue != 0.0f || randomSaturation != 0.0f)
         {
@@ -659,7 +659,7 @@ struct HairBsdf
             dyeColor = hsv2rgb(dyeColor);
         }
         
-        float m = MAX(powf(melanin, 2.0f)*33.0f, 1.0e-2f);
+        float m = AiMax(powf(melanin, 2.0f)*33.0f, 1.0e-2f);
         hairColor = exp(m * -rgb(0.187f, 0.4f, 1.05f));
         hairColor *= dyeColor;
 
@@ -1123,7 +1123,7 @@ struct HairBsdf
                 int lightGroup = data->lightGroups[sg->Lp];
 
                 float cos_theta_i = AiV3Dot(U, sg->Ld);
-                float sin_theta_i = sqrtf(MAX(1.0f - SQR(cos_theta_i), 0.0f));
+                float sin_theta_i = sqrtf(AiMax(1.0f - SQR(cos_theta_i), 0.0f));
 
                 AtRGB L = sg->Li * sg->we * diffuse_strength * sin_theta_i * hairColor * (1.0f / (4*AI_PI));
                 assert(isValidColor(L));
@@ -1842,9 +1842,9 @@ shader_evaluate
 
     // early-out regardless if we're in a shadow ray, or if opacity is zero
 #if AI_VERSION_MINOR_NUM >= 2
-    if (sg->Rt & AI_RAY_SHADOW || AiColorIsZero(hb.opacity) || AiShaderGlobalsIsObjectMatte(sg)) return; 
+    if (sg->Rt & AI_RAY_SHADOW || AiColorIsSmall(hb.opacity) || AiShaderGlobalsIsObjectMatte(sg)) return; 
 #else
-    if (sg->Rt & AI_RAY_SHADOW || AiColorIsZero(hb.opacity)) return; 
+    if (sg->Rt & AI_RAY_SHADOW || AiColorIsSmall(hb.opacity)) return; 
 #endif
     // early out if we're a hair-hair glossy ray and the ray depth says we should be calculating dual scattering only
     if (sg->Rr_gloss > data->dual_depth && als_raytype == ALS_RAY_HAIR) 

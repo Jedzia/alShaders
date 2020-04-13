@@ -329,6 +329,7 @@ shader_evaluate
     ShaderData* shaderData = (ShaderData*)AiNodeGetLocalData(node);
 
     // old
+    // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
     //sg->out_opacity = AI_RGB_WHITE;
 
     // new (jed)

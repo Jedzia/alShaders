@@ -642,8 +642,8 @@ node_update
    // set up AOVs
    REGISTER_AOVS
 
-   data->standardAovs = params[p_standardAovs].BOOL;
-   data->transmitAovs = params[p_transmitAovs].BOOL;
+    data->standardAovs =AiNodeGetBool(node, "standardAovs");
+    data->transmitAovs =AiNodeGetBool(node, "transmitAovs");
 
    // store some options we'll reuse later
    AtNode* options = AiUniverseGetOptions();
@@ -651,22 +651,22 @@ node_update
    data->GI_reflection_depth = AiNodeGetInt(options, "GI_reflection_depth");
    data->GI_refraction_depth = AiNodeGetInt(options, "GI_refraction_depth");
    data->GI_glossy_depth = AiNodeGetInt(options, "GI_glossy_depth");
-   data->GI_glossy_samples = AiNodeGetInt(options, "GI_glossy_samples") +
-                             params[p_specular1ExtraSamples].INT;
+    data->GI_glossy_samples = AiNodeGetInt(options, "GI_glossy_samples") +
+                              AiNodeGetInt(node, "specular1ExtraSamples");
    data->glossy_samples2 = SQR(data->GI_glossy_samples);
-   data->GI_glossy2_samples = AiNodeGetInt(options, "GI_glossy_samples") +
-                              params[p_specular2ExtraSamples].INT;
-   data->glossy2_samples2 = SQR(data->GI_glossy2_samples);
-   data->GI_diffuse_samples = AiNodeGetInt(options, "GI_diffuse_samples") +
-                              params[p_diffuseExtraSamples].INT;
-   data->diffuse_samples2 = SQR(data->GI_diffuse_samples);
-   data->GI_refraction_samples =
-       AiNodeGetInt(options, "GI_refraction_samples") +
-       params[p_transmissionExtraSamples].INT;
-   data->refraction_samples2 = SQR(data->GI_refraction_samples);
-   data->sss_bssrdf_samples = AiNodeGetInt(options, "sss_bssrdf_samples") +
-                              params[p_sssExtraSamples].INT;
-   data->sss_bssrdf_samples2 = SQR(data->sss_bssrdf_samples);
+    data->GI_glossy2_samples = AiNodeGetInt(options, "GI_glossy_samples") +
+                               AiNodeGetInt(node, "specular2ExtraSamples");
+    data->glossy2_samples2 = SQR(data->GI_glossy2_samples);
+    data->GI_diffuse_samples = AiNodeGetInt(options, "GI_diffuse_samples") +
+                               AiNodeGetInt(node, "diffuseExtraSamples");
+    data->diffuse_samples2 = SQR(data->GI_diffuse_samples);
+    data->GI_refraction_samples =
+            AiNodeGetInt(options, "GI_refraction_samples") +
+            AiNodeGetInt(node, "transmissionExtraSamples");
+    data->refraction_samples2 = SQR(data->GI_refraction_samples);
+    data->sss_bssrdf_samples = AiNodeGetInt(options, "sss_bssrdf_samples") +
+                               AiNodeGetInt(node, "sssExtraSamples");
+    data->sss_bssrdf_samples2 = SQR(data->sss_bssrdf_samples);
 
    // setup samples
    AiSamplerDestroy(data->diffuse_sampler);
@@ -675,12 +675,14 @@ node_update
    AiSamplerDestroy(data->glossy2_sampler);
    AiSamplerDestroy(data->refraction_sampler);
    AiSamplerDestroy(data->backlight_sampler);
-   data->diffuse_sampler = AiSampler(data->GI_diffuse_samples, 2);
-   data->sss_sampler = AiSampler(data->sss_bssrdf_samples, 2);
-   data->glossy_sampler = AiSampler(data->GI_glossy_samples, 2);
-   data->glossy2_sampler = AiSampler(data->GI_glossy2_samples, 2);
-   data->refraction_sampler = AiSampler(data->GI_refraction_samples, 2);
-   data->backlight_sampler = AiSampler(data->GI_diffuse_samples, 2);
+    static const uint32_t seed =
+            static_cast<uint32_t>(AiNodeEntryGetNameAtString(AiNodeGetNodeEntry(node)).hash());
+    data->diffuse_sampler = AiSampler(seed, data->GI_diffuse_samples, 2);
+   data->sss_sampler = AiSampler(seed, data->sss_bssrdf_samples, 2);
+   data->glossy_sampler = AiSampler(seed, data->GI_glossy_samples, 2);
+   data->glossy2_sampler = AiSampler(seed, data->GI_glossy2_samples, 2);
+   data->refraction_sampler = AiSampler(seed, data->GI_refraction_samples, 2);
+   data->backlight_sampler = AiSampler(seed, data->GI_diffuse_samples, 2);
 
    // Get all the light nodes in the scene and try and find their light group
    // parameter
@@ -707,24 +709,24 @@ node_update
    data->transmissionNormalConnected =
        AiNodeIsLinked(node, "transmissionNormal");
 
-   data->rrTransmissionDepth = params[p_rrTransmissionDepth].INT;
+    data->rrTransmissionDepth =AiNodeGetInt(node, "rrTransmissionDepth");
 
-   data->specular1IndirectClamp = params[p_specular1IndirectClamp].FLT;
-   if (data->specular1IndirectClamp == 0.0f)
-      data->specular1IndirectClamp = AI_INFINITE;
-   data->specular2IndirectClamp = params[p_specular2IndirectClamp].FLT;
-   if (data->specular2IndirectClamp == 0.0f)
-      data->specular2IndirectClamp = AI_INFINITE;
-   data->transmissionClamp = params[p_transmissionClamp].FLT;
-   if (data->transmissionClamp == 0.0f) data->transmissionClamp = AI_INFINITE;
-   data->diffuseIndirectClamp = params[p_diffuseIndirectClamp].FLT;
-   if (data->diffuseIndirectClamp == 0.0f)
-      data->diffuseIndirectClamp = AI_INFINITE;
+    data->specular1IndirectClamp =AiNodeGetFlt(node, "specular1IndirectClamp");
+    if (data->specular1IndirectClamp == 0.0f)
+        data->specular1IndirectClamp = AI_INFINITE;
+    data->specular2IndirectClamp =AiNodeGetFlt(node, "specular2IndirectClamp");
+    if (data->specular2IndirectClamp == 0.0f)
+        data->specular2IndirectClamp = AI_INFINITE;
+    data->transmissionClamp =AiNodeGetFlt(node, "transmissionClamp");
+    if (data->transmissionClamp == 0.0f) data->transmissionClamp = AI_INFINITE;
+    data->diffuseIndirectClamp =AiNodeGetFlt(node, "diffuseIndirectClamp");
+    if (data->diffuseIndirectClamp == 0.0f)
+        data->diffuseIndirectClamp = AI_INFINITE;
 
-   data->transmissionDoDirect = params[p_transmissionDoDirect].BOOL;
+    data->transmissionDoDirect =AiNodeGetBool(node, "transmissionDoDirect");
 
-   // Set up info for RR
-   data->do_rr = params[p_rr].BOOL;
+    // Set up info for RR
+    data->do_rr =AiNodeGetBool(node, "rr");
    data->AA_samples = SQR(std::max(1, AiNodeGetInt(options, "AA_samples")));
    data->AA_samples_inv = 1.0f / float(data->AA_samples);
 
@@ -818,8 +820,8 @@ node_update
    data->xres = AiNodeGetInt(options, "xres");
 
    // fresnel
-   data->specular1FresnelMode = params[p_specular1FresnelMode].INT;
-   data->specular2FresnelMode = params[p_specular2FresnelMode].INT;
+    data->specular1FresnelMode =AiNodeGetInt(node, "specular1FresnelMode");
+    data->specular2FresnelMode =AiNodeGetInt(node, "specular2FresnelMode");
 
    // Trace sets setup
    data->trace_set_all_enabled = false;
@@ -829,9 +831,9 @@ node_update
    data->trace_set_specular2_enabled = false;
    data->trace_set_transmission_enabled = false;
 
-   if (strlen(params[p_trace_set_all].STR))
-   {
-      std::string tmp(params[p_trace_set_all].STR);
+    if (strlen(AiNodeGetStr(node, "trace_set_all")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_all"));
       data->trace_set_all_enabled = true;
       if (tmp[0] == '-')
       {
@@ -845,10 +847,10 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_shadows].STR))
-   {
-      std::string tmp(params[p_trace_set_shadows].STR);
-      data->trace_set_shadows_enabled = true;
+    if (strlen(AiNodeGetStr(node, "trace_set_shadows")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_shadows"));
+        data->trace_set_shadows_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_shadows_inclusive = false;
@@ -861,9 +863,9 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_diffuse].STR))
-   {
-      std::string tmp(params[p_trace_set_diffuse].STR);
+    if (strlen(AiNodeGetStr(node, "trace_set_diffuse")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_diffuse"));
       data->trace_set_diffuse_enabled = true;
       if (tmp[0] == '-')
       {
@@ -877,9 +879,9 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_backlight].STR))
-   {
-      std::string tmp(params[p_trace_set_backlight].STR);
+    if (strlen(AiNodeGetStr(node, "trace_set_backlight")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_backlight"));
       data->trace_set_backlight_enabled = true;
       if (tmp[0] == '-')
       {
@@ -893,9 +895,9 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_specular1].STR))
-   {
-      std::string tmp(params[p_trace_set_specular1].STR);
+    if (strlen(AiNodeGetStr(node, "trace_set_specular1")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_specular1"));
       data->trace_set_specular1_enabled = true;
       if (tmp[0] == '-')
       {
@@ -909,13 +911,13 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_specular2].STR))
-   {
-      std::string tmp(params[p_trace_set_specular2].STR);
-      data->trace_set_specular2_enabled = true;
-      if (tmp[0] == '-')
-      {
-         data->trace_set_specular2_inclusive = false;
+    if (strlen(AiNodeGetStr(node, "trace_set_specular2")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_specular2"));
+        data->trace_set_specular2_enabled = true;
+        if (tmp[0] == '-')
+        {
+            data->trace_set_specular2_inclusive = false;
          data->trace_set_specular2 = tmp.substr(1);
       }
       else
@@ -925,10 +927,10 @@ node_update
       }
    }
 
-   if (strlen(params[p_trace_set_transmission].STR))
-   {
-      std::string tmp(params[p_trace_set_transmission].STR);
-      data->trace_set_transmission_enabled = true;
+    if (strlen(AiNodeGetStr(node, "trace_set_transmission")))
+    {
+        std::string tmp(AiNodeGetStr(node, "trace_set_transmission"));
+        data->trace_set_transmission_enabled = true;
       if (tmp[0] == '-')
       {
          data->trace_set_transmission_inclusive = false;
@@ -941,9 +943,9 @@ node_update
       }
    }
 
-   if (strlen(params[p_sssTraceSet].STR))
-   {
-      std::string tmp(params[p_sssTraceSet].STR);
+    if (strlen(AiNodeGetStr(node, "sssTraceSet")))
+    {
+        std::string tmp(AiNodeGetStr(node, "sssTraceSet"));
       data->trace_set_sss_enabled = true;
       if (tmp[0] == '-')
       {
@@ -964,118 +966,118 @@ node_update
    // for now just assume we're connected
    data->cel_connected = true;
 
-   data->sssMode = params[p_sssMode].INT;
+    data->sssMode =AiNodeGetInt(node, "sssMode");
 
-   data->debug = params[p_debug].INT;
+    data->debug =AiNodeGetInt(node, "debug");
 
-   // sample clamping values
-   data->aov_diffuse_color_clamp = params[p_aov_diffuse_color_clamp].FLT;
-   if (data->aov_diffuse_color_clamp == 0.0f)
-      data->aov_diffuse_color_clamp = AI_INFINITE;
-   data->aov_direct_diffuse_clamp = params[p_aov_direct_diffuse_clamp].FLT;
-   if (data->aov_direct_diffuse_clamp == 0.0f)
-      data->aov_direct_diffuse_clamp = AI_INFINITE;
-   data->aov_direct_diffuse_raw_clamp =
-       params[p_aov_direct_diffuse_raw_clamp].FLT;
-   if (data->aov_direct_diffuse_raw_clamp == 0.0f)
-      data->aov_direct_diffuse_raw_clamp = AI_INFINITE;
-   data->aov_indirect_diffuse_clamp = params[p_aov_indirect_diffuse_clamp].FLT;
-   if (data->aov_indirect_diffuse_clamp == 0.0f)
-      data->aov_indirect_diffuse_clamp = AI_INFINITE;
-   data->aov_indirect_diffuse_raw_clamp =
-       params[p_aov_indirect_diffuse_raw_clamp].FLT;
-   if (data->aov_indirect_diffuse_raw_clamp == 0.0f)
-      data->aov_indirect_diffuse_raw_clamp = AI_INFINITE;
-   data->aov_direct_backlight_clamp = params[p_aov_direct_backlight_clamp].FLT;
+    // sample clamping values
+    data->aov_diffuse_color_clamp =AiNodeGetFlt(node, "aov_diffuse_color_clamp");
+    if (data->aov_diffuse_color_clamp == 0.0f)
+        data->aov_diffuse_color_clamp = AI_INFINITE;
+    data->aov_direct_diffuse_clamp =AiNodeGetFlt(node, "aov_direct_diffuse_clamp");
+    if (data->aov_direct_diffuse_clamp == 0.0f)
+        data->aov_direct_diffuse_clamp = AI_INFINITE;
+    data->aov_direct_diffuse_raw_clamp =
+            AiNodeGetFlt(node, "aov_direct_diffuse_raw_clamp");
+    if (data->aov_direct_diffuse_raw_clamp == 0.0f)
+        data->aov_direct_diffuse_raw_clamp = AI_INFINITE;
+    data->aov_indirect_diffuse_clamp =AiNodeGetFlt(node, "aov_indirect_diffuse_clamp");
+    if (data->aov_indirect_diffuse_clamp == 0.0f)
+        data->aov_indirect_diffuse_clamp = AI_INFINITE;
+    data->aov_indirect_diffuse_raw_clamp =
+            AiNodeGetFlt(node, "aov_indirect_diffuse_raw_clamp");
+    if (data->aov_indirect_diffuse_raw_clamp == 0.0f)
+        data->aov_indirect_diffuse_raw_clamp = AI_INFINITE;
+    data->aov_direct_backlight_clamp =AiNodeGetFlt(node, "aov_direct_backlight_clamp");
    if (data->aov_direct_backlight_clamp == 0.0f)
       data->aov_direct_backlight_clamp = AI_INFINITE;
-   data->aov_indirect_backlight_clamp =
-       params[p_aov_indirect_backlight_clamp].FLT;
-   if (data->aov_indirect_backlight_clamp == 0.0f)
-      data->aov_indirect_backlight_clamp = AI_INFINITE;
-   data->aov_direct_specular_clamp = params[p_aov_direct_specular_clamp].FLT;
-   if (data->aov_direct_specular_clamp == 0.0f)
-      data->aov_direct_specular_clamp = AI_INFINITE;
-   data->aov_indirect_specular_clamp =
-       params[p_aov_indirect_specular_clamp].FLT;
-   if (data->aov_indirect_specular_clamp == 0.0f)
-      data->aov_indirect_specular_clamp = AI_INFINITE;
-   data->aov_direct_specular_2_clamp =
-       params[p_aov_direct_specular_2_clamp].FLT;
-   if (data->aov_direct_specular_2_clamp == 0.0f)
-      data->aov_direct_specular_2_clamp = AI_INFINITE;
-   data->aov_indirect_specular_2_clamp =
-       params[p_aov_indirect_specular_2_clamp].FLT;
-   if (data->aov_indirect_specular_2_clamp == 0.0f)
-      data->aov_indirect_specular_2_clamp = AI_INFINITE;
-   data->aov_single_scatter_clamp = params[p_aov_single_scatter_clamp].FLT;
-   if (data->aov_single_scatter_clamp == 0.0f)
-      data->aov_single_scatter_clamp = AI_INFINITE;
-   data->aov_sss_clamp = params[p_aov_sss_clamp].FLT;
-   if (data->aov_sss_clamp == 0.0f) data->aov_sss_clamp = AI_INFINITE;
-   data->aov_refraction_clamp = params[p_aov_refraction_clamp].FLT;
-   if (data->aov_refraction_clamp == 0.0f)
-      data->aov_refraction_clamp = AI_INFINITE;
-   data->aov_emission_clamp = params[p_aov_emission_clamp].FLT;
-   if (data->aov_emission_clamp == 0.0f) data->aov_emission_clamp = AI_INFINITE;
-   data->aov_light_group_clamp[0] = params[p_aov_light_group_1_clamp].FLT;
-   if (data->aov_light_group_clamp[0] == 0.0f)
-      data->aov_light_group_clamp[0] = AI_INFINITE;
-   data->aov_light_group_clamp[1] = params[p_aov_light_group_2_clamp].FLT;
-   if (data->aov_light_group_clamp[1] == 0.0f)
-      data->aov_light_group_clamp[1] = AI_INFINITE;
-   data->aov_light_group_clamp[2] = params[p_aov_light_group_3_clamp].FLT;
-   if (data->aov_light_group_clamp[2] == 0.0f)
-      data->aov_light_group_clamp[2] = AI_INFINITE;
-   data->aov_light_group_clamp[3] = params[p_aov_light_group_4_clamp].FLT;
-   if (data->aov_light_group_clamp[3] == 0.0f)
-      data->aov_light_group_clamp[3] = AI_INFINITE;
-   data->aov_light_group_clamp[4] = params[p_aov_light_group_5_clamp].FLT;
-   if (data->aov_light_group_clamp[4] == 0.0f)
-      data->aov_light_group_clamp[4] = AI_INFINITE;
-   data->aov_light_group_clamp[5] = params[p_aov_light_group_6_clamp].FLT;
-   if (data->aov_light_group_clamp[5] == 0.0f)
-      data->aov_light_group_clamp[5] = AI_INFINITE;
-   data->aov_light_group_clamp[6] = params[p_aov_light_group_7_clamp].FLT;
-   if (data->aov_light_group_clamp[6] == 0.0f)
-      data->aov_light_group_clamp[6] = AI_INFINITE;
-   data->aov_light_group_clamp[7] = params[p_aov_light_group_8_clamp].FLT;
-   if (data->aov_light_group_clamp[7] == 0.0f)
-      data->aov_light_group_clamp[7] = AI_INFINITE;
+    data->aov_indirect_backlight_clamp =
+            AiNodeGetFlt(node, "aov_indirect_backlight_clamp");
+    if (data->aov_indirect_backlight_clamp == 0.0f)
+        data->aov_indirect_backlight_clamp = AI_INFINITE;
+    data->aov_direct_specular_clamp =AiNodeGetFlt(node, "aov_direct_specular_clamp");
+    if (data->aov_direct_specular_clamp == 0.0f)
+        data->aov_direct_specular_clamp = AI_INFINITE;
+    data->aov_indirect_specular_clamp =
+            AiNodeGetFlt(node, "aov_indirect_specular_clamp");
+    if (data->aov_indirect_specular_clamp == 0.0f)
+        data->aov_indirect_specular_clamp = AI_INFINITE;
+    data->aov_direct_specular_2_clamp =
+            AiNodeGetFlt(node, "aov_direct_specular_2_clamp");
+    if (data->aov_direct_specular_2_clamp == 0.0f)
+        data->aov_direct_specular_2_clamp = AI_INFINITE;
+    data->aov_indirect_specular_2_clamp =
+            AiNodeGetFlt(node, "aov_indirect_specular_2_clamp");
+    if (data->aov_indirect_specular_2_clamp == 0.0f)
+        data->aov_indirect_specular_2_clamp = AI_INFINITE;
+    data->aov_single_scatter_clamp =AiNodeGetFlt(node, "aov_single_scatter_clamp");
+    if (data->aov_single_scatter_clamp == 0.0f)
+        data->aov_single_scatter_clamp = AI_INFINITE;
+    data->aov_sss_clamp =AiNodeGetFlt(node, "aov_sss_clamp");
+    if (data->aov_sss_clamp == 0.0f) data->aov_sss_clamp = AI_INFINITE;
+    data->aov_refraction_clamp =AiNodeGetFlt(node, "aov_refraction_clamp");
+    if (data->aov_refraction_clamp == 0.0f)
+        data->aov_refraction_clamp = AI_INFINITE;
+    data->aov_emission_clamp =AiNodeGetFlt(node, "aov_emission_clamp");
+    if (data->aov_emission_clamp == 0.0f) data->aov_emission_clamp = AI_INFINITE;
+    data->aov_light_group_clamp[0] =AiNodeGetFlt(node, "aov_light_group_1_clamp");
+    if (data->aov_light_group_clamp[0] == 0.0f)
+        data->aov_light_group_clamp[0] = AI_INFINITE;
+    data->aov_light_group_clamp[1] =AiNodeGetFlt(node, "aov_light_group_2_clamp");
+    if (data->aov_light_group_clamp[1] == 0.0f)
+        data->aov_light_group_clamp[1] = AI_INFINITE;
+    data->aov_light_group_clamp[2] =AiNodeGetFlt(node, "aov_light_group_3_clamp");
+    if (data->aov_light_group_clamp[2] == 0.0f)
+        data->aov_light_group_clamp[2] = AI_INFINITE;
+    data->aov_light_group_clamp[3] =AiNodeGetFlt(node, "aov_light_group_4_clamp");
+    if (data->aov_light_group_clamp[3] == 0.0f)
+        data->aov_light_group_clamp[3] = AI_INFINITE;
+    data->aov_light_group_clamp[4] =AiNodeGetFlt(node, "aov_light_group_5_clamp");
+    if (data->aov_light_group_clamp[4] == 0.0f)
+        data->aov_light_group_clamp[4] = AI_INFINITE;
+    data->aov_light_group_clamp[5] =AiNodeGetFlt(node, "aov_light_group_6_clamp");
+    if (data->aov_light_group_clamp[5] == 0.0f)
+        data->aov_light_group_clamp[5] = AI_INFINITE;
+    data->aov_light_group_clamp[6] =AiNodeGetFlt(node, "aov_light_group_7_clamp");
+    if (data->aov_light_group_clamp[6] == 0.0f)
+        data->aov_light_group_clamp[6] = AI_INFINITE;
+    data->aov_light_group_clamp[7] =AiNodeGetFlt(node, "aov_light_group_8_clamp");
+    if (data->aov_light_group_clamp[7] == 0.0f)
+        data->aov_light_group_clamp[7] = AI_INFINITE;
 
-   data->aov_light_group_clamp[8] = params[p_aov_light_group_9_clamp].FLT;
-   if (data->aov_light_group_clamp[8] == 0.0f)
-      data->aov_light_group_clamp[8] = AI_INFINITE;
-   data->aov_light_group_clamp[9] = params[p_aov_light_group_10_clamp].FLT;
-   if (data->aov_light_group_clamp[9] == 0.0f)
-      data->aov_light_group_clamp[9] = AI_INFINITE;
-   data->aov_light_group_clamp[10] = params[p_aov_light_group_11_clamp].FLT;
-   if (data->aov_light_group_clamp[10] == 0.0f)
-      data->aov_light_group_clamp[10] = AI_INFINITE;
-   data->aov_light_group_clamp[11] = params[p_aov_light_group_12_clamp].FLT;
-   if (data->aov_light_group_clamp[11] == 0.0f)
-      data->aov_light_group_clamp[11] = AI_INFINITE;
-   data->aov_light_group_clamp[12] = params[p_aov_light_group_13_clamp].FLT;
-   if (data->aov_light_group_clamp[12] == 0.0f)
-      data->aov_light_group_clamp[12] = AI_INFINITE;
-   data->aov_light_group_clamp[13] = params[p_aov_light_group_14_clamp].FLT;
-   if (data->aov_light_group_clamp[13] == 0.0f)
-      data->aov_light_group_clamp[13] = AI_INFINITE;
-   data->aov_light_group_clamp[14] = params[p_aov_light_group_15_clamp].FLT;
-   if (data->aov_light_group_clamp[14] == 0.0f)
-      data->aov_light_group_clamp[14] = AI_INFINITE;
-   data->aov_light_group_clamp[15] = params[p_aov_light_group_16_clamp].FLT;
-   if (data->aov_light_group_clamp[15] == 0.0f)
-      data->aov_light_group_clamp[15] = AI_INFINITE;
+    data->aov_light_group_clamp[8] =AiNodeGetFlt(node, "aov_light_group_9_clamp");
+    if (data->aov_light_group_clamp[8] == 0.0f)
+        data->aov_light_group_clamp[8] = AI_INFINITE;
+    data->aov_light_group_clamp[9] =AiNodeGetFlt(node, "aov_light_group_10_clamp");
+    if (data->aov_light_group_clamp[9] == 0.0f)
+        data->aov_light_group_clamp[9] = AI_INFINITE;
+    data->aov_light_group_clamp[10] =AiNodeGetFlt(node, "aov_light_group_11_clamp");
+    if (data->aov_light_group_clamp[10] == 0.0f)
+        data->aov_light_group_clamp[10] = AI_INFINITE;
+    data->aov_light_group_clamp[11] =AiNodeGetFlt(node, "aov_light_group_12_clamp");
+    if (data->aov_light_group_clamp[11] == 0.0f)
+        data->aov_light_group_clamp[11] = AI_INFINITE;
+    data->aov_light_group_clamp[12] =AiNodeGetFlt(node, "aov_light_group_13_clamp");
+    if (data->aov_light_group_clamp[12] == 0.0f)
+        data->aov_light_group_clamp[12] = AI_INFINITE;
+    data->aov_light_group_clamp[13] =AiNodeGetFlt(node, "aov_light_group_14_clamp");
+    if (data->aov_light_group_clamp[13] == 0.0f)
+        data->aov_light_group_clamp[13] = AI_INFINITE;
+    data->aov_light_group_clamp[14] =AiNodeGetFlt(node, "aov_light_group_15_clamp");
+    if (data->aov_light_group_clamp[14] == 0.0f)
+        data->aov_light_group_clamp[14] = AI_INFINITE;
+    data->aov_light_group_clamp[15] =AiNodeGetFlt(node, "aov_light_group_16_clamp");
+    if (data->aov_light_group_clamp[15] == 0.0f)
+        data->aov_light_group_clamp[15] = AI_INFINITE;
 
    data->cryptomatte->setup_all(AiNodeGetStr(node, "aov_crypto_asset"), 
       AiNodeGetStr(node, "aov_crypto_object"), AiNodeGetStr(node, "aov_crypto_material"));
 
-   // caustic flags
-   data->specular1CausticPaths = params[p_specular1CausticPaths].BOOL;
-   data->specular2CausticPaths = params[p_specular2CausticPaths].BOOL;
-   data->transmissionCausticPaths = params[p_transmissionCausticPaths].BOOL;
-   if (data->transmissionCausticPaths) data->transmissionDoDirect = true;
+    // caustic flags
+    data->specular1CausticPaths =AiNodeGetBool(node, "specular1CausticPaths");
+    data->specular2CausticPaths =AiNodeGetBool(node, "specular2CausticPaths");
+    data->transmissionCausticPaths =AiNodeGetBool(node, "transmissionCausticPaths");
+    if (data->transmissionCausticPaths) data->transmissionDoDirect = true;
 };
 
 shader_evaluate
@@ -1155,7 +1157,9 @@ shader_evaluate
       }
 
       sg->out.RGB() = result;
-      sg->out_opacity = AI_RGB_WHITE;
+
+      // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+      // sg->out_opacity = AI_RGB_WHITE;
       return;
    }
 
@@ -1256,7 +1260,7 @@ shader_evaluate
 
    // check custom ray type
    int als_raytype = ALS_RAY_UNDEFINED;
-   AiStateGetMsgInt("als_raytype", &als_raytype);
+   AiStateGetMsgInt(AtString("als_raytype"), &als_raytype);
 
    // build a local frame for sampling
    AtVector U, V;
@@ -1287,7 +1291,7 @@ shader_evaluate
       deepGroupPtr = (AtRGB*)AiShaderGlobalsQuickAlloc(
           sg, sizeof(AtRGB) * NUM_LIGHT_GROUPS);
       memset(deepGroupPtr, 0, sizeof(AtRGB) * NUM_LIGHT_GROUPS);
-      AiStateSetMsgPtr("als_deepGroupPtr", deepGroupPtr);
+      AiStateSetMsgPtr(AtString("als_deepGroupPtr"), deepGroupPtr);
    }
    else if (doDeepGroups)
    {
@@ -1295,7 +1299,7 @@ shader_evaluate
       // if the pointer hasn't been set we're being called from a BSDF that
       // doesn't have deep group support
       // so don't try and do it or we'll be in (crashy) trouble!
-      if (!AiStateGetMsgPtr("als_deepGroupPtr", (void**)&deepGroupPtr))
+      if (!AiStateGetMsgPtr(AtString("als_deepGroupPtr"), (void**)&deepGroupPtr))
          doDeepGroups = false;
    }
 
@@ -1308,22 +1312,22 @@ shader_evaluate
          transmittedAovPtr =
              (AtRGB*)AiShaderGlobalsQuickAlloc(sg, sizeof(AtRGB) * NUM_AOVs);
          memset(transmittedAovPtr, 0, sizeof(AtRGB) * NUM_AOVs);
-         AiStateSetMsgPtr("als_transmittedAovPtr", transmittedAovPtr);
+         AiStateSetMsgPtr(AtString("als_transmittedAovPtr"), transmittedAovPtr);
      }
    }
    else // otherwise, we're in a secondary ray so turn on transmitAovs if it has been turned on upstream
    {
-      transmitAovs = AiStateGetMsgPtr("als_transmittedAovPtr",
+      transmitAovs = AiStateGetMsgPtr(AtString("als_transmittedAovPtr"),
                                       (void**)&transmittedAovPtr);
    }
 
    // get path throughput so far
    AtRGB path_throughput = AI_RGB_WHITE;
    if (data->do_rr && sg->bounces > 0)
-      AiStateGetMsgRGB("als_throughput", &path_throughput);
+      AiStateGetMsgRGB(AtString("als_throughput"), &path_throughput);
 
    DirectionalMessageData* diffusion_msgdata = NULL;
-   AiStateGetMsgPtr("als_dmd", (void**)&diffusion_msgdata);
+   AiStateGetMsgPtr(AtString("als_dmd"), (void**)&diffusion_msgdata);
 
    float sssMix = AiShaderEvalParamFlt(p_sssMix);
    if (als_raytype == ALS_RAY_SSS)
@@ -1334,7 +1338,8 @@ shader_evaluate
           sg, diffusion_msgdata, data->diffuse_sampler, U, V, data->lightGroups,
           path_throughput, data->trace_set_sss.c_str(),
           data->trace_set_sss_enabled, data->trace_set_sss_inclusive, sssMix);
-      sg->out_opacity = AI_RGB_WHITE;
+       // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+       //sg->out_opacity = AI_RGB_WHITE;
       return;
    }
    // if it's a shadow ray, handle shadow colouring through absorption
@@ -1359,16 +1364,16 @@ shader_evaluate
             {
                AtPoint alsPreviousIntersection;
                AtRGB als_sigma_t = sigma_t_prime;
-               if (AiStateGetMsgPnt("alsPreviousIntersection",
+               if (AiStateGetMsgVec(AtString("alsPreviousIntersection"),
                                     &alsPreviousIntersection))
                {
-                  AiStateGetMsgRGB("alsPrevious_sigma_t", &als_sigma_t);
+                  AiStateGetMsgRGB(AtString("alsPrevious_sigma_t"), &als_sigma_t);
                   bool doExtinction = false;
                   if (AiV3Dot(sg->N, sg->Rd) < 0.0f)
                   {
                      // ray is entering a closed volume
                      bool alsInside;
-                     AiStateGetMsgBool("alsInside", &alsInside);
+                     AiStateGetMsgBool(AtString("alsInside"), &alsInside);
                      if (alsInside)
                      {
                         // ray is entering an embedded volume
@@ -1405,22 +1410,23 @@ shader_evaluate
                   // tell the next shader invocation that we're now inside the
                   // surface and what our extinction
                   // coefficient is
-                  AiStateSetMsgRGB("alsPrevious_sigma_t", sigma_t_prime);
-                  AiStateSetMsgBool("alsInside", true);
+                  AiStateSetMsgRGB(AtString("alsPrevious_sigma_t"), sigma_t_prime);
+                  AiStateSetMsgBool(AtString("alsInside"), true);
                   outOpacity = 1.0f - kt * transmissionColor;
                }
             }
             else  // no extinction, shadows are fresnel only.
             {
-               AiStateSetMsgRGB("alsPrevious_sigma_t", AI_RGB_BLACK);
+               AiStateSetMsgRGB(AtString("alsPrevious_sigma_t"), AI_RGB_BLACK);
                outOpacity = 1.0f - kt * transmissionColor;
             }
          }
       }
 
       // store intersection position
-      AiStateSetMsgPnt("alsPreviousIntersection", sg->P);
-      sg->out_opacity = outOpacity * opacity;
+      AiStateSetMsgVec(AtString("alsPreviousIntersection"), sg->P);
+       // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+       //sg->out_opacity = outOpacity * opacity;
       return;
    }
    else if (!diffusion_msgdata)
@@ -1430,15 +1436,17 @@ shader_evaluate
           sg, sizeof(DirectionalMessageData));
       // printf("dmd: %p\n", diffusion_msgdata);
       memset(diffusion_msgdata, 0, sizeof(DirectionalMessageData));
-      AiStateSetMsgPtr("als_dmd", diffusion_msgdata);
+      AiStateSetMsgPtr(AtString("als_dmd"), diffusion_msgdata);
    }
 
    if (maxh(opacity) < IMPORTANCE_EPS)
    {
       sg->out.RGB() = AI_RGB_BLACK;
-      sg->out_opacity = AI_RGB_BLACK;
+       // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+       //sg->out_opacity = AI_RGB_BLACK;
    }
-   sg->out_opacity = opacity;
+    // ToDoJed: Fix for Porting->v6, opacity needs fix, out.CLOSURE()
+    //sg->out_opacity = opacity;
 
    // do cryptomattes before early out for fully transparent but after opacity is set
    data->cryptomatte->do_cryptomattes(sg, node, p_crypto_asset_override, 
@@ -1446,7 +1454,7 @@ shader_evaluate
                                       p_crypto_material_override);
 
    // early out if we're fully transparent or the object is matte
-   if (AiColorIsZero(opacity) ||
+   if (AiColorIsSmall(opacity) ||
        (AiShaderGlobalsIsObjectMatte(sg) && (sg->Rt & AI_RAY_CAMERA)))
       return;
 
@@ -1454,7 +1462,7 @@ shader_evaluate
    // AtRGB bump = AiShaderEvalParamRGB(p_bump);
 
    // reset ray type just to be safe
-   AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+   AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
 
    // Initialize parameter temporaries
    // TODO: reorganize this so we're not evaluating upstream when we don't need
@@ -1524,7 +1532,7 @@ shader_evaluate
 
    // adapt the roughness values for anisotropy
    float specular1Anisotropy =
-       CLAMP(AiShaderEvalParamFlt(p_specular1Anisotropy), 0.0f, 1.0f);
+       AiClamp(AiShaderEvalParamFlt(p_specular1Anisotropy), 0.0f, 1.0f);
    float roughness_x = roughness;
    float roughness_y = roughness;
    if (specular1Anisotropy != 0.5f)
@@ -1532,13 +1540,13 @@ shader_evaluate
       float aniso_t = SQR(fabsf(2.0f * specular1Anisotropy - 1.0f));
       roughness_x = (specular1Anisotropy >= 0.5f)
                         ? roughness
-                        : LERP(aniso_t, MAX(roughness, 0.0025f), 1.0f);
+                        : AiLerp(aniso_t, AiMax(roughness, 0.0025f), 1.0f);
       roughness_y = (specular1Anisotropy <= 0.5f)
                         ? roughness
-                        : LERP(aniso_t, MAX(roughness, 0.0025f), 1.0f);
+                        : AiLerp(aniso_t, AiMax(roughness, 0.0025f), 1.0f);
    }
    float specular2Anisotropy =
-       CLAMP(AiShaderEvalParamFlt(p_specular2Anisotropy), 0.0f, 1.0f);
+       AiClamp(AiShaderEvalParamFlt(p_specular2Anisotropy), 0.0f, 1.0f);
    float roughness2_x = roughness2;
    float roughness2_y = roughness2;
    if (specular2Anisotropy != 0.5f)
@@ -1546,17 +1554,17 @@ shader_evaluate
       float aniso_t = SQR(fabsf(2.0f * specular2Anisotropy - 1.0f));
       roughness2_x = (specular2Anisotropy >= 0.5f)
                          ? roughness2
-                         : LERP(aniso_t, MAX(roughness2, 0.0025f), 1.0f);
+                         : AiLerp(aniso_t, AiMax(roughness2, 0.0025f), 1.0f);
       roughness2_y = (specular2Anisotropy <= 0.5f)
                          ? roughness2
-                         : LERP(aniso_t, MAX(roughness2, 0.0025f), 1.0f);
+                         : AiLerp(aniso_t, AiMax(roughness2, 0.0025f), 1.0f);
    }
    // Grab the roughness from the previous surface and make sure we're slightly
    // rougher than it to avoid glossy-glossy fireflies
    float alsPreviousRoughness = 0.0f;
    if (sg->bounces > 0)
    {
-      AiStateGetMsgFlt("alsPreviousRoughness", &alsPreviousRoughness);
+      AiStateGetMsgFlt(AtString("alsPreviousRoughness"), &alsPreviousRoughness);
       if (data->do_rr)
       {
          roughness_x = std::max(
@@ -1677,7 +1685,7 @@ shader_evaluate
 
    float dummy;
    if (sg->Rr_diff > 0 || sg->Rr_gloss > 1 || sssMix < 0.01f ||
-       AiStateGetMsgFlt("als_hairNumIntersections", &dummy) ||
+       AiStateGetMsgFlt(AtString("als_hairNumIntersections"), &dummy) ||
        als_raytype == ALS_RAY_HAIR)
    {
       do_sss = false;
@@ -2728,7 +2736,7 @@ shader_evaluate
                   AiStateSetMsgFlt("alsPreviousRoughness", 0.0f);
                   AiTrace(&wi_ray, &sample);
                   AtRGB transmittance = AI_RGB_WHITE;
-                  bool hit = !AiColorIsZero(sample.opacity);
+                  bool hit = !AiColorIsSmall(sample.opacity);
 
                   if (maxh(sigma_t) > 0.0f && !inside)
                   {
@@ -2876,7 +2884,7 @@ shader_evaluate
                   AiStateSetMsgFlt("alsPreviousRoughness",
                                    transmissionRoughness);
                   AiTrace(&wi_ray, &sample);
-                  bool hit = !AiColorIsZero(sample.opacity);
+                  bool hit = !AiColorIsSmall(sample.opacity);
                   AtRGB transmittance = AI_RGB_WHITE;
                   if (maxh(sigma_t) > 0.0f && !inside)
                   {
@@ -3210,7 +3218,7 @@ shader_evaluate
          for (int i = 0; i < nc; ++i)
          {
             diffusion_msgdata->sp[i] = ScatteringProfileDirectional(
-                MAX(Rd[i], 0.001f), sssDensityScale / radii[i]);
+                AiMax(Rd[i], 0.001f), sssDensityScale / radii[i]);
          }
 
          /*

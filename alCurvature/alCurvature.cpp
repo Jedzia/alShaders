@@ -209,11 +209,11 @@ shader_evaluate
 			
 			if (data->mode == CRV_POSITIVE)
 			{
-				result = MAX(uq, 0.0f);
+				result = AiMax(uq, 0.0f);
 			}
 			else
 			{
-				result = MAX(-uq, 0.0f);
+				result = AiMax(-uq, 0.0f);
 			}
 			
 			RemapFloat r = REMAP_FLOAT_CREATE;

@@ -473,7 +473,7 @@ shader_evaluate
                 {
                     AtPoint alsPreviousIntersection;
                     AtRGB als_sigma_t = sigma_t;
-                    if (AiStateGetMsgPnt("alsPreviousIntersection", &alsPreviousIntersection))
+                    if (AiStateGetMsgVec("alsPreviousIntersection", &alsPreviousIntersection))
                     {
                         AiStateGetMsgRGB("alsPrevious_sigma_t", &als_sigma_t);
                         bool doExtinction = false;

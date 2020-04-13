@@ -75,8 +75,8 @@ struct ShaderData
    float diffuseIndirectClamp;
 
    // AOV names
-   std::vector<std::string> aovs;
-   std::vector<std::string> aovs_rgba;
+   std::vector<AtString> aovs;
+   std::vector<AtString> aovs_rgba;
 
    // Fresnel
    int specular1FresnelMode;
