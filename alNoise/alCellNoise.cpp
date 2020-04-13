@@ -139,23 +139,23 @@ node_finish
 node_update
 {
 	ShaderData* data = (ShaderData*)AiNodeGetLocalData(node);
-	data->space = params[p_space].INT;
-	data->mode = params[p_mode].INT;
-	data->octaves = params[p_octaves].INT;
+	data->space = AiNodeGetInt(node, "space");
+	data->mode = AiNodeGetInt(node, "mode");
+	data->octaves = AiNodeGetInt(node, "octaves");
 	// data->mynkowskiShape = params[p_mynkowskiShape].FLT;
 	data->mynkowskiShape = 2.0f;
-	data->randomChips = params[p_randomChips].BOOL;
-	data->smoothChips = params[p_smoothChips].BOOL;
+	data->randomChips = AiNodeGetBool(node, "randomChips");
+	data->smoothChips = AiNodeGetBool(node, "smoothChips");
 	float cpsum = 0.0f;
-	data->chipProb1 = params[p_chipProb1].FLT;
+	data->chipProb1 = AiNodeGetFlt(node, "chipProb1");
 	cpsum += data->chipProb1;
-	data->chipProb2 = params[p_chipProb2].FLT;
+	data->chipProb2 = AiNodeGetFlt(node, "chipProb2");
 	cpsum += data->chipProb2;
-	data->chipProb3 = params[p_chipProb3].FLT;
+	data->chipProb3 = AiNodeGetFlt(node, "chipProb3");
 	cpsum += data->chipProb3;
-	data->chipProb4 = params[p_chipProb4].FLT;
+	data->chipProb4 = AiNodeGetFlt(node, "chipProb4");
 	cpsum += data->chipProb4;
-	data->chipProb5 = params[p_chipProb5].FLT;
+	data->chipProb5 = AiNodeGetFlt(node, "chipProb5");
 	cpsum += data->chipProb5;
 
 	data->chipProb1 /= cpsum;
@@ -259,9 +259,9 @@ shader_evaluate
 		if (data->randomChips)
 		{
 			AtVector v = AiVCellNoise3(AtPoint(ID[0]/100, 0, 0));
-			sg->out.RGB.r = v.x;
-			sg->out.RGB.g = v.y;
-			sg->out.RGB.b = v.z;
+			sg->out.RGB().r = v.x;
+			sg->out.RGB().g = v.y;
+			sg->out.RGB().b = v.z;
 		}
 		else
 		{

@@ -591,9 +591,9 @@ node_finish
 node_update
 {
     ShaderData* data = (ShaderData*)AiNodeGetLocalData(node);
-    data->space = params[p_space].INT;
-    data->octaves = params[p_octaves].INT;
-    data->turbulent = params[p_turbulent].BOOL;
+    data->space = AiNodeGetInt(node, "space");
+    data->octaves = AiNodeGetInt(node, "octaves");
+    data->turbulent = AiNodeGetBool(node, "turbulent");
 }
 
 shader_evaluate
@@ -641,8 +641,7 @@ shader_evaluate
     float amp = 1.0f;
     float g = 1.0f;
     float result = 0.0f;
-    AtVector deriv, advect;
-    AiV3Create(advect, 0, 0, 0);
+    AtVector deriv, advect(0, 0, 0);;
     float n;
     for (int i=0; i < data->octaves; ++i)
     {

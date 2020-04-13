@@ -125,7 +125,7 @@ void gaborSample(GaborParams& gp, const AtVector& x_c, LCG& rng, AtVector& omega
         float sin_omega_p = sqrtf(std::max(0.0f, 1.0f - SQR(cos_omega_p)));
         float sin_omega_t, cos_omega_t;
         sincosf_(omega_t, &sin_omega_t, &cos_omega_t);
-        AiV3Create(omega, cos_omega_t*sin_omega_p, sin_omega_t*sin_omega_p, cos_omega_p);
+        omega = AtVector(cos_omega_t*sin_omega_p, sin_omega_t*sin_omega_p, cos_omega_p);
         AiV3Normalize(omega);
     }
     else // hybrid
@@ -134,8 +134,7 @@ void gaborSample(GaborParams& gp, const AtVector& x_c, LCG& rng, AtVector& omega
         float omega_t = AI_PITIMES2 * rng();
         float sin_omega_t, cos_omega_t;
         sincosf_(omega_t, &sin_omega_t, &cos_omega_t);
-        AtVector omega_tt;
-        AiV3Create(omega_tt, cos_omega_t, sin_omega_t, 0.0f);
+        AtVector omega_tt(cos_omega_t, sin_omega_t, 0.0f);
         omega = omega_r * omega_tt;
     }
     phi = AI_PITIMES2 * rng();
@@ -152,7 +151,7 @@ float gaborCell(GaborParams& gp, const AtVector& c_i, const AtVector& x_c_i, int
     for (int i=0; i < n_impules; ++i)
     {
         float z_rng = rng(); float y_rng = rng(); float x_rng = rng();
-        AtVector x_i_c; AiV3Create(x_i_c, x_rng, y_rng, z_rng);
+        AtVector x_i_c(x_rng, y_rng, z_rng);
         AtVector x_k_i = gp.radius * (x_c_i - x_i_c);
         float phi_i;
         AtVector omega_i;
@@ -179,8 +178,7 @@ float gaborGrid(GaborParams& gp, const AtVector& x_g, int seed=0)
         {
             for (int i = -1; i <= 1; ++i)
             {
-                AtVector c;
-                AiV3Create(c, i, j, k);
+                AtVector c(i, j, k);
                 AtVector c_i = floor_x_g + c;
                 AtVector x_c_i = x_c - c;
 
@@ -286,11 +284,11 @@ node_finish
 node_update
 {
     ShaderData* data = (ShaderData*)AiNodeGetLocalData(node);
-    data->anisotropy = params[p_anisotropy].INT;
-    data->filter = params[p_filter].BOOL;
-    data->impulses = params[p_impulses].INT;
-    data->space = params[p_space].INT;
-    data->turbulent = params[p_turbulent].BOOL;
+    data->anisotropy = AiNodeGetInt(node, "anisotropy");
+    data->filter = AiNodeGetBool(node, "filter");
+    data->impulses = AiNodeGetInt(node, "impulses");
+    data->space = AiNodeGetInt(node, "space");
+    data->turbulent = AiNodeGetBool(node, "turbulent");
 
 }
 
@@ -323,7 +321,7 @@ shader_evaluate
             P.z = 0.0f;
             break;
         case NS_PREF:
-            if (!AiUDataGetVec(AtString("Pref"), &P))
+            if (!AiUDataGetVec(AtString("Pref"), P))
                 P = sg->Po;
             break;
         default:

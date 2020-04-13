@@ -104,13 +104,9 @@ node_finish
 node_update
 {
 	ShaderData* data = (ShaderData*)AiNodeGetLocalData(node);
-	//data->mode = params[p_mode].INT;
 	data->mode = AiNodeGetInt(node, "mode");
-	//data->space = params[p_space].INT;
 	data->space = AiNodeGetInt(node, "space");
-	//data->octaves = params[p_octaves].INT;
 	data->octaves = AiNodeGetInt(node, "octaves");
-	//data->turbulent = params[p_turbulent].BOOL;
 	data->turbulent = AiNodeGetBool(node, "turbulent");;
 }
 
