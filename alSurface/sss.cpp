@@ -140,7 +140,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     {
         if (dmd->sss_depth < SSS_MAX_SAMPLES && dmd->maxdist > 0.0f)
         {
-            AiMakeRay(&ray, AI_RAY_SUBSURFACE, &sg->P, &sg->Rd, dmd->maxdist, sg);
+            ray = AiMakeRay(AI_RAY_SUBSURFACE, sg->P, &sg->Rd, dmd->maxdist, sg);
             AiTrace(&ray, &scrs);
         }
         return;
@@ -173,7 +173,8 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     }
 
     assert(samp.lightGroupsDirect[0] == AI_RGB_BLACK);
-    while (AiLightsGetSample(sg))
+    AtLightSample ls;
+    while (AiLightsGetSample(sg, ls))
     {
         // get the group assigned to this light from the hash table using the light's pointer
         int lightGroup = lightGroupMap[sg->Lp];
@@ -181,7 +182,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
 
         // Does not using MIS here get us anything?
         // AtRGB L = AiEvaluateLightSample(sg, brdf_data, AiOrenNayarMISSample, AiOrenNayarMISBRDF, AiOrenNayarMISPDF);
-        AtRGB L = sg->Li * AiMax(AiV3Dot(sg->Ld, sg->N), 0.0f) * AI_ONEOVERPI * sg->we * diffuse_strength;
+        AtRGB L = sg->Li * AiMax(AiV3Dot(sg->Ld, sg->N), 0.0f) * AI_ONEOVERPI * JedPortGetShaderWeight(sg) * diffuse_strength;
         if (AiColorIsSmall(L)) continue;
         if (directional)
         {
@@ -217,7 +218,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     AtSamplerIterator* sampit = AiSamplerIterator(diffuse_sampler, sg);
     float samples[2];
     
-    AiMakeRay(&ray, AI_RAY_DIFFUSE, &sg->P, &sg->N, AI_BIG, sg);
+    ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, &sg->N, AI_BIG, sg);
     while (AiSamplerGetSample(sampit, samples))
     {
         float stheta = sqrtf(float(samples[0]));
@@ -280,7 +281,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
         {
             AiShaderGlobalsSetTraceSet(sg, trace_set, trace_set_inclusive);
         }
-        AiMakeRay(&ray, AI_RAY_SUBSURFACE, &sg->P, &sg->Rd, dmd->maxdist, sg);
+        ray = AiMakeRay(AI_RAY_SUBSURFACE, sg->P, &sg->Rd, dmd->maxdist, sg);
         AiTrace(&ray, &scrs);
     }
 }
@@ -440,7 +441,7 @@ AtRGB alsDiffusion(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSampler* 
         AtPoint origin = sg->P + Wsss*(dz*.25) + Usss * dx + Vsss * dy;
         float maxdist = R_max ;//* 2.0f;
 
-        AiMakeRay(&wi_ray, AI_RAY_SUBSURFACE, &origin, &dir, maxdist, sg);
+        wi_ray = AiMakeRay(AI_RAY_SUBSURFACE, origin, &dir, maxdist, sg);
 
         AiStateSetMsgInt("als_raytype", ALS_RAY_SSS);
         AiStateSetMsgPtr("als_sss_op", sg->Op);

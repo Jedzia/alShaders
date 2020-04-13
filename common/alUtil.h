@@ -15,6 +15,47 @@
 #define IMPORTANCE_EPS 1e-5f
 
 // ToDoJed: Port to V6 modifications.
+
+// dirty hack to compile
+
+
+/** \name BRDF Evaluation Methods
+ *
+ * \details
+ * We provide an interface for users to define a BRDF and its
+ * associated methods. All the functions receive an arbitrary
+ * void pointer where the programmer can store needed parameters.
+ * An "instance" of a BRDF is meant to be located at a certain
+ * point and to a certain viewing direction. The programmer must
+ * take care of this and store it in the arbitrary data pointer.
+ * \{
+ */
+/** Returns a direction according to some distribution based on the reflectance of the BRDF. */
+typedef AtVector(*AtBRDFEvalSampleFunc)(const void* brdf_data, float rx, float ry);
+/** Returns the actual reflectance from a given direction to the viewer's direction. */
+typedef AtColor (*AtBRDFEvalBrdfFunc)(const void* brdf_data, const AtVector* indir);
+/** Returns the probability density for the above sample function at a certain incoming direction. */
+typedef float   (*AtBRDFEvalPdfFunc)(const void* brdf_data, const AtVector* indir);
+/* \}*/
+
+/** \name BRDF Integration
+ * \{
+ */
+/*AI_API*/ AtColor AiEvaluateLightSample(AtShaderGlobals* sg, const void* brdf_data, AtBRDFEvalSampleFunc eval_sample, AtBRDFEvalBrdfFunc eval_brdf, AtBRDFEvalPdfFunc eval_pdf)
+{
+    return AI_RGB_WHITE;
+}
+
+/** Overwrite the obsolete sg->we
+ *
+ * ToDoJed: Fix for Porting->v6, the is no sg->we!
+ * @param sg shader globals
+ * @return the fake shader weight
+ */
+inline float JedPortGetShaderWeight(AtShaderGlobals* sg) {
+    return 1.0;
+}
+
 inline void AiV3Normalize(AtVector& out, const AtVector& in)
 {
     out = AiV3Normalize(in);

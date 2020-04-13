@@ -785,7 +785,8 @@ shader_evaluate
     if (doDeepGroups || (sg->Rt & AI_RAY_CAMERA)) 
     {
         AtRGB LdiffuseDirect, LbacklightDirect, LspecularDirect, Lspecular2Direct;
-        while(AiLightsGetSample(sg))
+        AtLightSample ls;
+        while (AiLightsGetSample(sg, ls))
         {
             // get the group assigned to this light from the hash table using the light's pointer
             int lightGroup = data->lightGroups[sg->Lp];
@@ -853,7 +854,8 @@ shader_evaluate
     }
     else
     {
-        while(AiLightsGetSample(sg))
+        AtLightSample ls;
+        while (AiLightsGetSample(sg, ls))
         {
             float specular_strength = AiLightGetSpecular(sg->Lp);
             float diffuse_strength = AiLightGetDiffuse(sg->Lp);
@@ -926,7 +928,7 @@ shader_evaluate
         n1 = 1.5f;
         n2 = 1.0f;
     }
-    AiMakeRay(&wi_ray, AI_RAY_REFRACTED, &sg->P, NULL, AI_BIG, sg);
+    wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
     bool tir = (!AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg)) && inside;
     bool rr_transmission = (data->rrTransmission && (sg->bounces >= data->rrTransmissionDepth) && !tir);
     if (rr_transmission)
@@ -957,7 +959,7 @@ shader_evaluate
             {
                 AiStateSetMsgFlt("alsPreviousRoughness", roughness);
                 sg->Nf = specular1Normal;
-                AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+                wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
                 AiReflectRay(&wi_ray, &sg->Nf, sg);
                 if (!rr_transmission)
                 {
@@ -992,7 +994,7 @@ shader_evaluate
         }
         else
         {
-            AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+            wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
             kti = 0.0f;
             AiStateSetMsgFlt("alsPreviousRoughness", roughness);
             sg->Nf = specular1Normal;
@@ -1048,7 +1050,7 @@ shader_evaluate
     if (do_glossy2)
     {
         AtSamplerIterator* sampit = AiSamplerIterator(data->glossy2_sampler, sg);
-        AiMakeRay(&wi_ray, AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+        wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
         kti2 = 0.0f;
         AiStateSetMsgFlt("alsPreviousRoughness", roughness2);
         sg->Nf = specular2Normal;
@@ -1104,7 +1106,7 @@ shader_evaluate
     {
         float kr = kti*kti2;
         AtSamplerIterator* sampit = AiSamplerIterator(data->diffuse_sampler, sg);
-        AiMakeRay(&wi_ray, AI_RAY_DIFFUSE, &sg->P, NULL, AI_BIG, sg);
+        wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
         while (AiSamplerGetSample(sampit, samples))
         {
             // cosine hemisphere sampling as O-N sampling does not work outside of a light loop
@@ -1163,7 +1165,7 @@ shader_evaluate
 #endif
         float kt;
         AtRay wi_ray;
-        AiMakeRay(&wi_ray, AI_RAY_REFRACTED, &sg->P, NULL, AI_BIG, sg);
+        wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
         AtVector wi, R;
         AtScrSample sample;
        
@@ -1435,7 +1437,7 @@ shader_evaluate
         flipNormals(sg);
         float kr = kti*kti2;
         AtSamplerIterator* sampit = AiSamplerIterator(data->backlight_sampler, sg);
-        AiMakeRay(&wi_ray, AI_RAY_DIFFUSE, &sg->P, NULL, AI_BIG, sg);
+        wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
         while (AiSamplerGetSample(sampit, samples))
         {
             // cosine hemisphere sampling as O-N sampling does not work outside of a light loop

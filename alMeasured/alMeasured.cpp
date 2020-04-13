@@ -98,14 +98,15 @@ shader_evaluate
 
 		result = AI_RGB_BLACK;
 		AiLightsPrepare(sg);
-		while (AiLightsGetSample(sg))
+        AtLightSample ls;
+        while (AiLightsGetSample(sg, ls))
 		{
 			float cos_theta_in = AiV3Dot(sg->Ld, sg->Nf);
 			float theta_in = acosf(cos_theta_in);
 			float phi_in = sphericalPhi(sg->Ld, U, V);
 			double r, g, b;
 			lookup_brdf_val(data->brdf, theta_in, phi_in, theta_out, phi_out, r, g, b);
-			result += sg->Li * sg->we * rgb(float(r), float(g), float(b)) * cos_theta_in;
+			result += sg->Li * JedPortGetShaderWeight(sg) * rgb(float(r), float(g), float(b)) * cos_theta_in;
 			//result += sg->Li * sg->we * AiV3Dot(sg->Ld, sg->Nf) * AI_ONEOVERPI * 0.18f;
 		}
 	}

@@ -1904,7 +1904,8 @@ shader_evaluate
       }
 
       AiLightsPrepare(sg);
-      while (AiLightsGetSample(sg))
+       AtLightSample ls;
+       while (AiLightsGetSample(sg, ls))
       {
          if (AiLightGetAffectSpecular(sg->Lp))
          {
@@ -1953,7 +1954,8 @@ shader_evaluate
       }
       AiLightsPrepare(sg);
       AtRGB Lspecular2Direct = AI_RGB_BLACK;
-      while (AiLightsGetSample(sg))
+       AtLightSample ls;
+       while (AiLightsGetSample(sg, ls))
       {
          if (AiLightGetAffectSpecular(sg->Lp))
          {
@@ -1992,7 +1994,8 @@ shader_evaluate
       }
       AiLightsPrepare(sg);
       AtRGB LdiffuseDirect = AI_RGB_BLACK;
-      while (AiLightsGetSample(sg))
+       AtLightSample ls;
+       while (AiLightsGetSample(sg, ls))
       {
          if (AiLightGetAffectDiffuse(sg->Lp))
          {
@@ -2010,9 +2013,9 @@ shader_evaluate
             {
                lightGroupsDirect[lightGroup] += LdiffuseDirect * diffuseColor;
                shadowGroups[lightGroup].rgb() +=
-                   sg->Liu * sg->we * std::max(0.0f, AiV3Dot(sg->Nf, sg->Ld)) *
+                   sg->Liu * JedPortGetShaderWeight(sg) * std::max(0.0f, AiV3Dot(sg->Nf, sg->Ld)) *
                    sg->Lo * kti * diffuseColor * AI_ONEOVERPI;
-               shadowGroups[lightGroup].a += maxh(sg->Lo) * sg->we;
+               shadowGroups[lightGroup].a += maxh(sg->Lo) * JedPortGetShaderWeight(sg);
             }
             result_diffuseDirect += LdiffuseDirect;
             assert(AiIsFinite(result_diffuseDirect));
@@ -2028,7 +2031,8 @@ shader_evaluate
       flipNormals(sg);
       AiLightsPrepare(sg);
       AtRGB LbacklightDirect;
-      while (AiLightsGetSample(sg))
+       AtLightSample ls;
+       while (AiLightsGetSample(sg, ls))
       {
          if (AiLightGetAffectDiffuse(sg->Lp))
          {
@@ -2069,7 +2073,8 @@ shader_evaluate
       MicrofacetTransmission* mft = MicrofacetTransmission::create(
           sg, transmissionRoughness, transmissionRoughness, t_eta, sg->Nf, U,
           V);
-      while (AiLightsGetSample(sg))
+       AtLightSample ls;
+       while (AiLightsGetSample(sg, ls))
       {
          if (AiLightGetAffectSpecular(sg->Lp))
          {
@@ -2138,7 +2143,7 @@ shader_evaluate
       n1 = ior;
       n2 = 1.0f;
    }
-   AiMakeRay(&wi_ray, AI_RAY_REFRACTED, &sg->P, NULL, AI_BIG, sg);
+   wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
    bool tir = (!AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg)) && inside;
    bool rr_transmission =
        (do_glossy && do_transmission && sg->bounces >= data->rrTransmissionDepth &&
@@ -2221,7 +2226,7 @@ shader_evaluate
             AiStateSetMsgFlt("alsPreviousRoughness",
                              std::max(roughness_x, roughness_y));
             sg->Nf = specular1Normal;
-            wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+            wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
             AiReflectRay(&wi_ray, &sg->Nf, sg);
             AtRGB kr;
             if (!rr_transmission)
@@ -2302,7 +2307,7 @@ shader_evaluate
       }
       else
       {
-         wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+         wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
          kti = 0.0f;
          AiStateSetMsgFlt("alsPreviousRoughness",
                           std::max(roughness_x, roughness_y));
@@ -2429,7 +2434,7 @@ shader_evaluate
       }
 
       AtSamplerIterator* sampit = AiSamplerIterator(data->glossy2_sampler, sg);
-      wi_ray = AiMakeRay(AI_RAY_GLOSSY, &sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
       kti2 = 0.0f;
       AtRGB kr;
       AiStateSetMsgFlt("alsPreviousRoughness",
@@ -2555,7 +2560,7 @@ shader_evaluate
 
       float kr = kti * kti2;
       AtSamplerIterator* sampit = AiSamplerIterator(data->diffuse_sampler, sg);
-      AiMakeRay(&wi_ray, AI_RAY_DIFFUSE, &sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
       int ssi = 0;
       while (AiSamplerGetSample(sampit, samples))
       {
@@ -2682,7 +2687,7 @@ shader_evaluate
           else
             sg->Nf = transmissionNormal;
       }
-      AiMakeRay(&wi_ray, AI_RAY_REFRACTED, &sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
       AtVector wi, R;
       AtScrSample sample;
 
@@ -3016,7 +3021,7 @@ shader_evaluate
       float kr = kti * kti2;
       AtSamplerIterator* sampit =
           AiSamplerIterator(data->backlight_sampler, sg);
-      AiMakeRay(&wi_ray, AI_RAY_DIFFUSE, &sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
       int ssi = 0;
       while (AiSamplerGetSample(sampit, samples))
       {
