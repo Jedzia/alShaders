@@ -67,6 +67,18 @@ inline AtColor JedPortGetAiTraceWeight(AtShaderGlobals* sg) {
     return AI_RGB_WHITE;
 }
 
+/** Apply Global Opacity
+ *
+ * ToDoJed: Fix for Porting->v6, the is no AiShaderGlobalsApplyOpacity!
+ * @param sg shader globals
+ * @param opacity Opacity to apply.
+ * @return ?
+ */
+inline bool AiShaderGlobalsApplyOpacity(AtShaderGlobals* sg, AtRGB opacity)
+{
+    return true;
+}
+
 inline void AiV3Normalize(AtVector& out, const AtVector& in)
 {
     out = AiV3Normalize(in);

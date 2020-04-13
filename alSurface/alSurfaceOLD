@@ -903,7 +903,7 @@ shader_evaluate
     result_glossy2Direct *= specular2Color;       
 
     // Sample BRDFS
-#if AI_VERSION_MAJOR_NUM > 0
+#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4
     float samples[2];
 #else
     double samples[2];
@@ -1158,7 +1158,7 @@ shader_evaluate
     memset(childAovs, 0, sizeof(AtRGB)*NUM_AOVs);
     if (do_transmission)
     {
-#if AI_VERSION_MAJOR_NUM > 0
+#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4
         float samples[2];
 #else
         double samples[2];
@@ -1489,7 +1489,7 @@ shader_evaluate
     if (do_sss)
     {
         AtRGB radius = max(rgb(0.0001), sssRadius*sssRadiusColor/sssDensityScale);
-#if AI_VERSION_MAJOR_NUM > 0
+#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4
         AtRGB weights[3] = {AI_RGB_RED, AI_RGB_GREEN, AI_RGB_BLUE};
         float r[3] = {radius.r, radius.g, radius.b};
         result_sss = AiBSSRDFCubic(sg, r, weights, 3);

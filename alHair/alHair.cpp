@@ -335,7 +335,7 @@ struct HairBsdf
             delete ds;
         }
 
-        void update(AtParamValue* params)
+        void update(/*AtParamValue* params*/)
         {
             AtNode *options   = AiUniverseGetOptions();
             int glossy_samples = std::max(0, AiNodeGetInt(options, "GI_glossy_samples") +AiNodeGetInt(options, "extraSamplesGlossy"));
@@ -1294,7 +1294,7 @@ struct HairBsdf
                     }
                 }
             }
-            AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+            AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
             float weight = AiSamplerGetSampleInvCount(sampit) * glossyIndirectStrength;
             result_R_indirect *= weight;
 
@@ -1368,7 +1368,7 @@ struct HairBsdf
 
         if (do_glossy && glossyIndirectStrength > 0.0f)
         {
-            AiStateSetMsgInt("als_raytype", ALS_RAY_HAIR);
+            AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_HAIR);
             sampit = AiSamplerIterator(data->sampler_glossy, sg);
             while(AiSamplerGetSample(sampit, samples))
             {
@@ -1377,7 +1377,7 @@ struct HairBsdf
                 AtScrSample scrs;
 
                 // trace our ray
-                AiStateSetMsgFlt("alsPreviousRoughness", 1.0f);
+                AiStateSetMsgFlt(AtString("alsPreviousRoughness"), 1.0f);
                 // trace our ray
                 bool hit = AiTrace(wi_ray, JedPortGetAiTraceWeight(sg), scrs);
                 // calculate result
@@ -1402,7 +1402,7 @@ struct HairBsdf
                     }
                 }
             }
-            AiStateSetMsgInt("als_raytype", ALS_RAY_UNDEFINED);
+            AiStateSetMsgInt(AtString("als_raytype"), ALS_RAY_UNDEFINED);
             weight = AiSamplerGetSampleInvCount(sampit) * glossyIndirectStrength;
             result_R_indirect *= weight;
 
@@ -1654,7 +1654,7 @@ struct HairBsdf
     ShaderData* data;
     AtRay wi_ray;
     AtScrSample scrs;
-#if AI_VERSION_MAJOR_NUM > 0
+#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4
     float samples[2];
 #else
     double samples[2];
@@ -1737,7 +1737,7 @@ node_finish
 node_update
 {
     HairBsdf::ShaderData* data = (HairBsdf::ShaderData*)AiNodeGetLocalData(node);
-    data->update(params);
+    data->update();
 
     AiAOVRegister("diffuse_color", AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
     AiAOVRegister("direct_specular", AI_TYPE_RGB, AI_AOV_BLEND_OPACITY);
@@ -1803,7 +1803,7 @@ shader_evaluate
     hb.evaluateParameters(sg, data);
 
     float geo_opacity = 1.0f;
-    if (AiUDataGetFlt(AtString("geo_opacity"), &geo_opacity))
+    if (AiUDataGetFlt(AtString("geo_opacity"), geo_opacity))
     {
         hb.opacity *= geo_opacity;
     }

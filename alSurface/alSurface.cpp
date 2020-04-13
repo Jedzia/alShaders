@@ -3134,7 +3134,7 @@ shader_evaluate
       {
          AtRGB radius =
              max(rgb(0.0001), sssRadius * sssRadiusColor / sssDensityScale);
-#if AI_VERSION_MAJOR_NUM > 0
+#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4
          // if the user has only specified one layer (default) then just use
          // that
          if (sssWeight2 == 0.0f && sssWeight3 == 0.0f)

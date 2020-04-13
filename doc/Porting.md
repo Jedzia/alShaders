@@ -2,9 +2,9 @@
 nominator for things to look at again:
 > // ToDoJed: Fix for Porting->v6, 
 
-# ToDo List #
+## ToDo List ##
 
-* make the dist folder result more descriptive  
+- make the dist folder result more descriptive  
 
        cmake-build-debug-visual-c-2015-x64/dist/1.0.0rc20/ai/bin
 
@@ -19,7 +19,7 @@ nominator for things to look at again:
     
 
 
-# Notes on Actions done
+## Notes on Actions done
  
 - what is #ifdef AI_GPU_COMPILER ? this disables AtString in some definitions?
 
@@ -34,7 +34,7 @@ nominator for things to look at again:
         AiAOVEnabled(
 
 
-    alle 	const char* userName = AiShaderEvalParamStr(p_userName);
+    alle 	const char- userName = AiShaderEvalParamStr(p_userName);
     zu 		AtString userName = AiShaderEvalParamStr(
     
     alle 	AiM4PointByMatrixMult(&result, mtx, &vector);
@@ -49,16 +49,22 @@ nominator for things to look at again:
     all     std::string / .c_str() 
     to      AtString replacements 
 
-* sg->Rr becomes sg->bounces
-* sg->Rr_diff becomes sg->bounces_diffuse
+- sg->Rr becomes sg->bounces
+- sg->Rr_diff becomes sg->bounces_diffuse
 
-* AiShaderEvalParamPnt becomes AiShaderEvalParamVec
+- AiShaderEvalParamPnt becomes AiShaderEvalParamVec
 
-* Replace	AiColorLerp() and AiRGBALerp() with AiLerp
-* Replace	AiColorClamp()	with	the	templated	AiRGBClamp():	
-* Replace	AiV3Exists()	with	AiV3IsFinite():		
+- Replace	AiColorLerp() and AiRGBALerp() with AiLerp
+- Replace	AiColorClamp()	with	the	templated	AiRGBClamp():	
+- Replace	AiV3Exists()	with	AiV3IsFinite():		
 
-* Replace	.c_str()	with	AtString replacements
+- Replace	.c_str()	with	AtString replacements
+
+## ToDo's about porting steps done
+
+- Check everywhere `#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4` is if that 
+makes sense.
+ 
 
 ## Hints for compilation
 #### Linux
