@@ -218,7 +218,7 @@ void alsIrradiateSample(AtShaderGlobals* sg, DirectionalMessageData* dmd, AtSamp
     AtSamplerIterator* sampit = AiSamplerIterator(diffuse_sampler, sg);
     float samples[2];
     
-    ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, &sg->N, AI_BIG, sg);
+    ray = AiMakeRay(AI_RAY_ALL_DIFFUSE | AI_RAY_VOLUME, sg->P, &sg->N, AI_BIG, sg);
     while (AiSamplerGetSample(sampit, samples))
     {
         float stheta = sqrtf(float(samples[0]));

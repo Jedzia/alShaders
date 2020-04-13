@@ -2143,7 +2143,7 @@ shader_evaluate
       n1 = ior;
       n2 = 1.0f;
    }
-   wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
+   wi_ray = AiMakeRay(AI_RAY_SPECULAR_TRANSMIT, sg->P, NULL, AI_BIG, sg);
    bool tir = (!AiRefractRay(&wi_ray, &sg->Nf, n1, n2, sg)) && inside;
    bool rr_transmission =
        (do_glossy && do_transmission && sg->bounces >= data->rrTransmissionDepth &&
@@ -2226,7 +2226,7 @@ shader_evaluate
             AiStateSetMsgFlt("alsPreviousRoughness",
                              std::max(roughness_x, roughness_y));
             sg->Nf = specular1Normal;
-            wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
+            wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
             AiReflectRay(&wi_ray, &sg->Nf, sg);
             AtRGB kr;
             if (!rr_transmission)
@@ -2307,7 +2307,7 @@ shader_evaluate
       }
       else
       {
-         wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
+         wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
          kti = 0.0f;
          AiStateSetMsgFlt("alsPreviousRoughness",
                           std::max(roughness_x, roughness_y));
@@ -2434,7 +2434,7 @@ shader_evaluate
       }
 
       AtSamplerIterator* sampit = AiSamplerIterator(data->glossy2_sampler, sg);
-      wi_ray = AiMakeRay(AI_RAY_GLOSSY, sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_SPECULAR_REFLECT, sg->P, NULL, AI_BIG, sg);
       kti2 = 0.0f;
       AtRGB kr;
       AiStateSetMsgFlt("alsPreviousRoughness",
@@ -2560,7 +2560,7 @@ shader_evaluate
 
       float kr = kti * kti2;
       AtSamplerIterator* sampit = AiSamplerIterator(data->diffuse_sampler, sg);
-      wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_ALL_DIFFUSE | AI_RAY_VOLUME, sg->P, NULL, AI_BIG, sg);
       int ssi = 0;
       while (AiSamplerGetSample(sampit, samples))
       {
@@ -2687,7 +2687,7 @@ shader_evaluate
           else
             sg->Nf = transmissionNormal;
       }
-      wi_ray = AiMakeRay(AI_RAY_REFRACTED, sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_SPECULAR_TRANSMIT, sg->P, NULL, AI_BIG, sg);
       AtVector wi, R;
       AtScrSample sample;
 
@@ -3021,7 +3021,7 @@ shader_evaluate
       float kr = kti * kti2;
       AtSamplerIterator* sampit =
           AiSamplerIterator(data->backlight_sampler, sg);
-      wi_ray = AiMakeRay(AI_RAY_DIFFUSE, sg->P, NULL, AI_BIG, sg);
+      wi_ray = AiMakeRay(AI_RAY_ALL_DIFFUSE | AI_RAY_VOLUME, sg->P, NULL, AI_BIG, sg);
       int ssi = 0;
       while (AiSamplerGetSample(sampit, samples))
       {
