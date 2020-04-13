@@ -50,6 +50,7 @@ nominator for things to look at again:
     to      AtString replacements 
 
 * sg->Rr becomes sg->bounces
+* sg->Rr_diff becomes sg->bounces_diffuse
 
 * AiShaderEvalParamPnt becomes AiShaderEvalParamVec
 
