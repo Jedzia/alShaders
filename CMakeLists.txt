@@ -67,6 +67,7 @@ endif()
 
 # Set up installation paths
 set(DSO_INSTALL_DIR ${INSTALL_DIR}/bin)
+set(HOUDINI_DSO_INSTALL_DIR ${INSTALL_DIR}/hbin)
 set(MTD_INSTALL_DIR ${INSTALL_DIR}/bin)
 set(AE_INSTALL_DIR ${INSTALL_DIR}/ae)
 set(AEXML_INSTALL_DIR ${INSTALL_DIR}/aexml)
