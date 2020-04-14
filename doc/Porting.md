@@ -95,7 +95,12 @@ state of the art and current progress in porting.
   makes sense.
 - ../common/alUtil.cpp was added to the alHair target because of AiEvaluateLightSample(...) proxy.
   Remove it, after cleanup.
- 
+
+## Hints about the theory ##
+
+- PDF or Probability Density Function, see  3Blue1Brown, Why “probability of 0” does not 
+  mean “impossible” | Probabilities of probabilities, part 2 - 
+  https://www.youtube.com/watch?v=ZA4JkHKZM50 
 
 ## Hints for compilation
 #### Linux

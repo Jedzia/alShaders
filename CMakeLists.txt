@@ -87,7 +87,8 @@ include_directories(common)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # Set the list of subdirectories to recurse into to find stuff to build
-set(SUBDIRECTORIES 
+set(SUBDIRECTORIES
+        myVex
         alSurface
         alRemap
         alCombine

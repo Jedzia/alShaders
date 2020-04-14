@@ -196,3 +196,4 @@ dkms.conf
 
 /.idea
 buildWin
+/tmp
