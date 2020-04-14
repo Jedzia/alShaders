@@ -20,34 +20,37 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-# set(Python_ADDITIONAL_VERSIONS xxx xxx)
-#find_package(PythonInterp 2.7 EXACT REQUIRED)
-set(PYTHON_EXECUTABLE "C:/Python/Python27-64/python.exe")
-#message(FATAL_ERROR "PYTHON_VERSION_MAJOR: ${PYTHON_VERSION_MAJOR}")
-
 # Compiler flags
 if (MINGW)
     # ToDo: check whats needed here (jed)
     #add_definitions( "-D_CRT_SECURE_NO_WARNINGS -wd4005 -wd4996 -wd4305 -wd4244 -nologo" )
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fvisibility=hidden -DNDEBUG")
-	# my stuff during debug (jed)
+    # my stuff during debug (jed)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wfatal-errors -static")
     # set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -fno-omit-frame-pointer")
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     # Disable some of the bullshit warnings MSVC wants to barf
-    add_definitions( "-W3 -D_CRT_SECURE_NO_WARNINGS -wd4005 -wd4996 -wd4305 -wd4244 -nologo" )
-else()
+    add_definitions("-W3 -D_CRT_SECURE_NO_WARNINGS -wd4005 -wd4996 -wd4305 -wd4244 -nologo")
+else ()
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fvisibility=hidden -DNDEBUG")
     # set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -fno-omit-frame-pointer")
-endif()
+endif ()
 
 # check if we have a local cmake include file and include it if we do
 # this is useful for setting our arnold location as an alternative to
 # environment variables
-if(EXISTS ${CMAKE_SOURCE_DIR}/local.cmake)
+if (EXISTS ${CMAKE_SOURCE_DIR}/local.cmake)
     message(STATUS "Using local.cmake")
     include(${CMAKE_SOURCE_DIR}/local.cmake)
-endif()
+endif ()
+
+if (NOT PYTHON_EXECUTABLE)
+    #if (CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "Set PYTHON_EXECUTABLE to a valid Python27 interpreter.")
+else ()
+    find_package(PythonInterp 2.7 EXACT REQUIRED)
+endif ()
+#message(FATAL_ERROR "PYTHON_VERSION_MAJOR: ${PYTHON_VERSION_MAJOR}")
 
 # Find Arnold SDK
 find_package(Arnold REQUIRED)
@@ -58,13 +61,13 @@ if (NOT DEFINED INSTALL_DIR)
     if (DEFINED INSTALL_ROOT)
         set(INSTALL_DIR "${INSTALL_ROOT}/${ALS_VERSION}/ai${ARNOLD_VERSION}")
         message("INSTALL_ROOT defined. Adding versions automatically:\n\t${INSTALL_DIR}")
-    else()
+    else ()
         set(INSTALL_DIR "${CMAKE_BINARY_DIR}/dist/${ALS_VERSION}/ai${ARNOLD_VERSION}")
         message("INSTALL_DIR not defined. Defaulting to:\n\t${INSTALL_DIR}")
-    endif()
-else()
+    endif ()
+else ()
     message("Installing to:\n\t${INSTALL_DIR}")
-endif()
+endif ()
 
 # Set up installation paths
 set(DSO_INSTALL_DIR ${INSTALL_DIR}/bin)
@@ -110,11 +113,11 @@ set(SUBDIRECTORIES
         alFlake
         cryptomatte
         common
-)
+        )
 
 # define shader build function
 function(build_shader)
-    foreach(SHADER ${ARGV})
+    foreach (SHADER ${ARGV})
         set(SRC ${SHADER}.cpp ../common/alUtil.cpp ../common/Color.cpp)
         set(UI ${CMAKE_CURRENT_SOURCE_DIR}/${SHADER}.ui)
         set(MTD ${CMAKE_CURRENT_BINARY_DIR}/${SHADER}.mtd)
@@ -143,25 +146,25 @@ function(build_shader)
         install(FILES ${KARGS} DESTINATION ${ARGS_INSTALL_DIR})
         install(FILES ${KARGS} DESTINATION ${ARGS_INSTALL_DIR})
         install(DIRECTORY ${C4DRES} DESTINATION ${INSTALL_DIR})
-    endforeach()
+    endforeach ()
 endfunction(build_shader)
 
 # loop over subdirectories
-foreach(SUBDIR ${SUBDIRECTORIES})
+foreach (SUBDIR ${SUBDIRECTORIES})
     add_subdirectory(${SUBDIR})
-endforeach()
+endforeach ()
 
 # add top-level files
 INSTALL(FILES README INSTALL common/alsUtil.mel DESTINATION ${INSTALL_DIR})
 
 # 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/package.in.py"
-    "${PROJECT_SOURCE_DIR}/package.py"
+        "${PROJECT_SOURCE_DIR}/package.in.py"
+        "${PROJECT_SOURCE_DIR}/package.py"
 )
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/test.in.py"
-    "${PROJECT_SOURCE_DIR}/test.py"
+        "${PROJECT_SOURCE_DIR}/test.in.py"
+        "${PROJECT_SOURCE_DIR}/test.py"
 )
 
