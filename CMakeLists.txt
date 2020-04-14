@@ -21,7 +21,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # set(Python_ADDITIONAL_VERSIONS xxx xxx)
-find_package(PythonInterp 2.7 EXACT REQUIRED)
+#find_package(PythonInterp 2.7 EXACT REQUIRED)
+set(PYTHON_EXECUTABLE "C:/Python/Python27-64/python.exe")
 #message(FATAL_ERROR "PYTHON_VERSION_MAJOR: ${PYTHON_VERSION_MAJOR}")
 
 # Compiler flags

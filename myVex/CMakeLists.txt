@@ -15,14 +15,12 @@ add_library(${SHADER} SHARED ${SRC})
 
 target_compile_definitions(${SHADER} PRIVATE "-DBOOST_ALL_NO_LIB")
 target_include_directories(${SHADER} PRIVATE "C:/Program Files/Side Effects Software/Houdini 17.5.425/toolkit/include")
-target_link_directories(${SHADER} PRIVATE
-        "D:/Program Files/Side Effects Software/Houdini 15.5.480/custom/houdini/dsolib/"
-        )
+#target_link_directories(${SHADER} PRIVATE "D:/Program Files/Side Effects Software/Houdini 15.5.480/custom/houdini/dsolib/")
+file(GLOB LIB_FILES "C:/Program Files/Side Effects Software/Houdini 17.5.425/custom/houdini/dsolib/*.lib")
 target_link_libraries(${SHADER} ai
-        #libCVEX
-        "C:/Program Files/Side Effects Software/Houdini 17.5.425/custom/houdini/dsolib/*.lib"
+        ${LIB_FILES}
+        #"C:/Program Files/Side Effects Software/Houdini 17.5.425/custom/houdini/dsolib/*.lib"
         "C:/Program Files/Side Effects Software/Houdini 17.5.425/python27/libs/python27.lib"
-        #        "Q:/Devel/CPP/Libs/boost/boost-1.55.0/lib/x64/lib/libboost_thread-vc120-mt-1_55.lib"
         )
 target_link_libraries(${SHADER} ai)
 set_target_properties(${SHADER} PROPERTIES PREFIX "")
