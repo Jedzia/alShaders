@@ -2,34 +2,38 @@
 nominator for things to look at again:
 > // ToDoJed: Fix for Porting->v6, 
 
-state of the art and current progress in porting.
+## State of the art and current progress in porting: ##
 
 |               |       |                 |              |       |         |
 |---------------|-------|-----------------|--------------|-------|---------| 
 |shader         | ready | quality of port | improvements | C++11 | -Werror |
 |---------------|-------|-----------------|--------------|-------|---------| 
-|alSurface      |       |                 |              |       |         |             
-|alRemap        |       |                 |              |       |         |           
-|alCombine      |       |                 |              |       |         |             
-|alNoise        |       |                 |              |       |         |           
-|alLayer        |       |                 |              |       |         |           
-|alPattern      |       |                 |              |       |         |             
-|alCurvature    |       |                 |              |       |         |               
-|alBlackbody    |       |                 |              |       |         |               
-|alInputVector  |       |                 |              |       |         |                 
-|alHair         |       |                 |              |       |         |          
-|alColorSpace   |       |                 |              |       |         |                
-|alTriplanar    |       |                 |              |       |         |               
-|alSwitch       |       |                 |              |       |         |            
-|alJitterColor  |       |                 |              |       |         |                 
-|alCache        |       |                 |              |       |         |           
-|alCel          |       |                 |              |       |         |         
-|alFlake        |       |                 |              |       |         |           
-|cryptomatte    |       |                 |              |       |         |               
+|alSurface      |  no   |   horrible(1)   |              |       |         |             
+|alRemap        |  yes  |   good          |              |       |         |           
+|alCombine      |  yes  |   good          |              |       |         |             
+|alNoise        |  yes  |   good          |              |       |         |           
+|alLayer        |  no   |  no opacity(2)  |              |       |         |           
+|alPattern      |  yes  |   good          |              |       |         |             
+|alCurvature    |  ?    | needs inspection|              |       |         |               
+|alBlackbody    |  yes  |   good          |              |       |         |               
+|alInputVector  |  yes  |   good          |              |       |         |                 
+|alHair         |  no   |  no opacity(2)  |              |       |         |           
+|               |       | needs inspection|              |       |         |          
+|alColorSpace   |  yes  |   good          |              |       |         |                
+|alTriplanar    |  yes  |   good          |              |       |         |               
+|alSwitch       |  yes  |   good          |              |       |         |            
+|alJitterColor  |  yes  |   good          |              |       |         |                 
+|alCache        |  yes  |   good          |              |       |         |           
+|alCel          |  no   |  no opacity(2)  |              |       |         |         
+|alFlake        |  yes  |   good          |              |       |         |           
+|cryptomatte    |  no   |  no opacity(2)  |              |       |         |               
 |               |       |                 |              |       |         |    
-|common         |       |                 |              |       |         |          
+|common         |  yes  |   mediocre      |              |       |         |          
 -----------------------------------------------------------------------------
 
+1) There were a lot of deprecated changed i had to mask out or temporary skip with hacks
+   to get it compile. 
+2) sg->out_opacity is deprecated. Use sg->out.CLOSURE() with opacity shaders.
 
 ## ToDo List ##
 
@@ -93,12 +97,12 @@ state of the art and current progress in porting.
 
 - Check everywhere `#if AI_VERSION_MAJOR_NUM > 0 || AI_VERSION_ARCH_NUM > 4` is if that 
   makes sense.
-- ../common/alUtil.cpp was added to the alHair target because of AiEvaluateLightSample(...) proxy.
+- DONE ../common/alUtil.cpp was added to the alHair target because of AiEvaluateLightSample(...) proxy.
   Remove it, after cleanup.
 
 ## Hints about the theory ##
 
-- PDF or Probability Density Function, see  3Blue1Brown, Why “probability of 0” does not 
+- PDF or Probability Density Function, see 3Blue1Brown, Why “probability of 0” does not 
   mean “impossible” | Probabilities of probabilities, part 2 - 
   https://www.youtube.com/watch?v=ZA4JkHKZM50 
 

@@ -15,7 +15,7 @@ node_parameters
 {
 	AiParameterFlt("input", 0.0f);
 	REMAP_FLOAT_PARAM_DECLARE;
-   AiParameterFlt("mask", 1.0f);
+    AiParameterFlt("mask", 1.0f);
 }
 
 node_loader
