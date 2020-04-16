@@ -197,3 +197,13 @@ dkms.conf
 /.idea
 buildWin
 /tmp
+/config/CompilerWarnings.cmake
+/config/WelcomeShell.txt
+/config/class-header-cpp.txt
+/config/config.bat
+/config/func-header-cpp.txt
+/config/header-cpp.txt
+/config/uncrustify-cpp-doc.cfg
+/config/uncrustify-cpp.cfg
+/config/uncrustify.cfg
+/start-clion-msys2.bat
