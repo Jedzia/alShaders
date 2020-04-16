@@ -26,7 +26,7 @@ nominator for things to look at again:
 |alCache        |  yes  |   good          |              |       |         |           
 |alCel          |  no   |  no opacity(2)  |              |       |         |         
 |alFlake        |  yes  |   good          |              |       |         |           
-|cryptomatte    |  no   |  no opacity(2)  |              |       |         |               
+|cryptomatte    |  no   |  no opacity(2)  |  obsolete(3) |       |         |               
 |               |       |                 |              |       |         |    
 |common         |  yes  |   mediocre      |              |       |         |          
 -----------------------------------------------------------------------------
@@ -34,6 +34,7 @@ nominator for things to look at again:
 1) There were a lot of deprecated changed i had to mask out or temporary skip with hacks
    to get it compile. 
 2) sg->out_opacity is deprecated. Use sg->out.CLOSURE() with opacity shaders.
+3) cryptomatte and a Arnold 5 implementation is its own project at https://github.com/Psyop/CryptomatteArnold.
 
 ## ToDo List ##
 
